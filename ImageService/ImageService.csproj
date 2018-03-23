@@ -58,32 +58,32 @@
     <Compile Include="ImageService\ImageModal\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="ImageService\ImageModal\IImageServiceModal.cs" />
     <Compile Include="ImageService\ImageModal\ImageServiceModal.cs" />
-    <Compile Include="ImageService\ProjectInstaller.cs">
+    <Compile Include="ImageService\Service\ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ImageService\ProjectInstaller.Designer.cs">
+    <Compile Include="ImageService\Service\ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageService\ImageService.cs">
+    <Compile Include="ImageService\Service\ImageService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ImageService\ImageService.Designer.cs">
+    <Compile Include="ImageService\Service\ImageService.Designer.cs">
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageService\Server\ImageServer.cs" />
-    <Compile Include="Infrastructure\Enums\CommandEnum.cs" />
-    <Compile Include="Logging\ILoggingService.cs" />
-    <Compile Include="Logging\LoggingService.cs" />
-    <Compile Include="Logging\Modal\MessageRecievedEventArgs.cs" />
-    <Compile Include="Logging\Modal\MessageTypeEnum.cs" />
+    <Compile Include="ImageService\Infrastructure\Enums\CommandEnum.cs" />
+    <Compile Include="ImageService\Logging\ILoggingService.cs" />
+    <Compile Include="ImageService\Logging\LoggingService.cs" />
+    <Compile Include="ImageService\Logging\Modal\MessageRecievedEventArgs.cs" />
+    <Compile Include="ImageService\Logging\Modal\MessageTypeEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ImageService\App.config" />
+    <None Include="ImageService\Service\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ImageService\ProjectInstaller.resx">
+    <EmbeddedResource Include="ImageService\Service\ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
