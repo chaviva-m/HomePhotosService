@@ -4,8 +4,11 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using ImageServiceProgram.Logging;
+using ImageServiceProgram.Modal;
+using ImageServiceProgram.Service;
 
-namespace ImageService
+namespace ImageServiceProgram
 {
     static class Program
     {
@@ -17,9 +20,10 @@ namespace ImageService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new ImageService()
+                new ImageService()                  
             };
             ServiceBase.Run(ServicesToRun);
+            
         }
     }
 }
