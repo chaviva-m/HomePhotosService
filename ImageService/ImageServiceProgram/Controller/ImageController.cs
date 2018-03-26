@@ -21,7 +21,7 @@ namespace ImageServiceProgram.Controller
             Commands = new Dictionary<int, ICommand>()
             {
                 {0, new NewFileCommand(this.Modal) }
-				// For Now will contain NEW_FILE_COMMAND
+				
             };
         }
         public string ExecuteCommand(int commandID, string[] args, out bool result)
