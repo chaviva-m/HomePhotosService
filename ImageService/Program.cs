@@ -17,13 +17,14 @@ namespace ImageServiceProgram
         /// </summary>
         static void Main()
         {
+            Console.WriteLine("in main");
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
                 new ImageService()                  
             };
             ServiceBase.Run(ServicesToRun);
-            ILoggingService logger = new LoggingService();
+
             
         }
     }

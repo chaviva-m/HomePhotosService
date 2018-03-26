@@ -42,8 +42,8 @@ namespace ImageServiceProgram.Service
         public ImageService()
         {
             InitializeComponent();
-            string eventSourceName = "MySource";
-            string logName = "MyNewLog";
+            string eventSourceName = ConfigurationManager.AppSettings["SourceName"];
+            string logName = ConfigurationManager.AppSettings["LogName"];
             eventLog = new System.Diagnostics.EventLog();
             if (!System.Diagnostics.EventLog.SourceExists(eventSourceName))
             {
@@ -87,7 +87,7 @@ namespace ImageServiceProgram.Service
 
             //create logger and add OnMessage to logging event
             logger = new LoggingService();
-            logger.MessageRecieved += onMessage;
+            logger.MessageRecieved += onMessage;          
             //create ImageModal
             string outputDir = ConfigurationManager.AppSettings["OutputDir"];
             int thumbnailSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);

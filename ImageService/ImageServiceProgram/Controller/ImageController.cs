@@ -12,20 +12,21 @@ namespace ImageServiceProgram.Controller
 {
     public class ImageController : IImageController
     {
-        private IImageServiceModal modal;                      // The Modal Object
-        private Dictionary<int, ICommand> commands;
+        private IImageServiceModal Modal;                      // The Modal Object
+        private Dictionary<int, ICommand> Commands;
 
         public ImageController(IImageServiceModal modal)
         {
-            this.modal = modal;                    // Storing the Modal Of The System
-            commands = new Dictionary<int, ICommand>()
+            this.Modal = modal;                    // Storing the Modal Of The System
+            Commands = new Dictionary<int, ICommand>()
             {
 				// For Now will contain NEW_FILE_COMMAND
             };
         }
-        public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
+        public string ExecuteCommand(int commandID, string[] args, out bool result)
         {
-           // Write Code Here
+            // Write Code Here
+
         }
     }
 }
