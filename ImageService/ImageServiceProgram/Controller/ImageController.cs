@@ -20,12 +20,22 @@ namespace ImageServiceProgram.Controller
             this.Modal = modal;                    // Storing the Modal Of The System
             Commands = new Dictionary<int, ICommand>()
             {
+                {0, new NewFileCommand(this.Modal) }
 				// For Now will contain NEW_FILE_COMMAND
             };
         }
         public string ExecuteCommand(int commandID, string[] args, out bool result)
         {
-            // Write Code Here
+            if (Commands.ContainsKey(commandID))
+            {
+                result = true;
+                return this.Commands[commandID].Execute(args, out result);
+            }
+            else
+            {
+                result = false;                                 //not sure this makes sense. Is this really the functionality of the result?
+                return "Command not found";
+            }
 
         }
     }

@@ -26,7 +26,7 @@ namespace ImageServiceProgram.Modal
             this.ThumbnailSize = thumbnailSize;
         }
 
-        public string AddFile(string path, out bool result)                       //why is this called addFile and not addImage? it won't work for files that are not images (can't extract date or create thumbail)  
+        public string AddFile(string path, out bool result)                          
         {
             //extract date from image
             DateTime dateTime;
@@ -84,10 +84,10 @@ namespace ImageServiceProgram.Modal
                 }
                 result = true;
                 return "Created folder " + path;
-            } catch (Exception e)                                                                           //use specific exception?
+            } catch (Exception e)                                                                           
             {
                 result = false;
-                return "Could not create folder " + path + ".\nProblem: " + e.ToString();
+                return "Could not create folder " + path + ".\nProblem: " + e.Message;
             }
       
         }
@@ -107,10 +107,10 @@ namespace ImageServiceProgram.Modal
                 System.IO.File.Move(sourceFile, destinationFile);
                 result = true;
                 return "Moved file from " + sourceFile + " to " + destinationFile;
-            } catch(Exception e)                                                                            //use specific exception?
+            } catch(Exception e)                                                                            
             {
                 result = false;
-                return "Could not move file " + sourceFile + " to " + destinationFile + ".\nProblem: " + e.ToString();
+                return "Could not move file " + sourceFile + " to " + destinationFile + ".\nProblem: " + e.Message;
             }
            
         }
@@ -122,7 +122,7 @@ namespace ImageServiceProgram.Modal
         /// <param name="dateTime">date and time that the picture was taken on</param>
         /// <param name="result">result of action: true = success, false = failure</param>
         /// <returns>string describing the result of function's action.</returns>
-        public string ExtractDateOfImage(string path, out DateTime dateTime, out bool result)                   //should this function be private or public?
+        private string ExtractDateOfImage(string path, out DateTime dateTime, out bool result)                   
         {
             try
             {
@@ -137,7 +137,7 @@ namespace ImageServiceProgram.Modal
                         dateTime = DateTime.Parse(dateOfPicture);
                         return "Extracted date taken from image " + path;
                     }
-                    catch (Exception)                                                 //do I need to use specific exception instead of creating a new try-catch?
+                    catch (Exception)                                                
                     {
                         //this method of extracting the date might return an inaccurate date
                         result = true;
@@ -146,11 +146,11 @@ namespace ImageServiceProgram.Modal
                     }
                 }
             }
-            catch (Exception e)                                                       // do I need to use specific exceptions? 
+            catch (Exception e)                                                       
             {
                 result = false;
                 dateTime = new FileInfo(path).LastWriteTime;
-                return "Could not extract date taken from image " + path + ".\nProblem: " + e.ToString();
+                return "Could not extract date taken from image " + path + ".\nProblem: " + e.Message;
             }
         }
 
@@ -178,10 +178,10 @@ namespace ImageServiceProgram.Modal
 
                 }
             }
-            catch (Exception e)                                                           //use specific exception?
+            catch (Exception e)                                                           
             {
                 result = false;
-                return "Could not save thumbnail of image " + imagePath + ".\n Problem: " + e.ToString();
+                return "Could not save thumbnail of image " + imagePath + ".\n Problem: " + e.Message;
             }
         }
 
