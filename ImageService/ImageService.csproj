@@ -32,13 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ImageService.Program</StartupObject>
+    <StartupObject>ImageServiceProgram.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,8 +52,8 @@
   <ItemGroup>
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />
-    <Compile Include="ImageServiceProgram\Controller\Handlers\DirectoyHandler.cs" />
-    <Compile Include="ImageServiceProgram\Controller\Handlers\IDirectoryHandler.cs" />
+    <Compile Include="ImageServiceProgram\Handlers\DirectoyHandler.cs" />
+    <Compile Include="ImageServiceProgram\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageServiceProgram\Controller\IImageController.cs" />
     <Compile Include="ImageServiceProgram\Controller\ImageController.cs" />
     <Compile Include="ImageServiceProgram\ImageModal\Event\CommandRecievedEventArgs.cs" />
@@ -84,9 +85,6 @@
     <None Include="ImageServiceProgram\Service\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ImageServiceProgram\Service\ImageService.resx">
-      <DependentUpon>ImageService.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ImageServiceProgram\Service\ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
