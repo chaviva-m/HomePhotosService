@@ -47,16 +47,25 @@ namespace ImageServiceProgram.Controller.Handlers
             this.m_controller = controller;
             this.m_logging = logger;
             this.m_dirWatcher = new FileSystemWatcher();
-            m_dirWatcher.Created += new FileSystemEventHandler(OnChanged);
+            m_dirWatcher.Created += new FileSystemEventHandler(OnCreated);
         }
 
+        /// <summary>
+        /// set fileSystemWatcher to watch specific directory.
+        /// </summary>
+        /// <param name="dirPath"> directory path to watch</param>
         public void StartHandleDirectory(string dirPath)
         {
             this.m_dirWatcher.Path = dirPath;
 
         }
 
-        private void OnChanged(object source, FileSystemEventArgs e)
+        /// <summary>
+        /// activate controller once picture is added to watched directory
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"> that contains the event data.</param>
+        private void OnCreated(FileSystemEventArgs e)
         {
             // get the file's extension 
             string strFileExt = Path.GetExtension(e.FullPath);
