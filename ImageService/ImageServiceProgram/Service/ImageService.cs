@@ -35,6 +35,7 @@ namespace ImageServiceProgram.Service
         private IImageServiceModal imageModal;
         private IImageController controller;
         private ILoggingService logger;
+        private string[] directories;
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
@@ -94,9 +95,13 @@ namespace ImageServiceProgram.Service
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
             //create controller
             controller = new ImageController(imageModal);
-            //create server
-            imageServer = new ImageServer(controller, logger); 
-
+            //create server and handlers for each directory in app configuration
+            imageServer = new ImageServer(controller, logger);
+            directories = ConfigurationManager.AppSettings["Handler"].Split(';');
+            foreach (string directory in directories)
+            {
+                imageServer.CreateHandler(directory);
+            }
         }
 
         protected override void OnStop()
@@ -110,6 +115,12 @@ namespace ImageServiceProgram.Service
             eventLog.WriteEntry("In onStop.");
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+
+            //close directory handlers
+            foreach (string directory in directories)
+            {
+                imageServer.SendCommand(new CommandReceivedEventArgs(..., ..., directory)); //not sure what command id & args to give it
+            }           
         }
 
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
