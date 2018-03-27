@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ImageServiceProgram.Controller
@@ -21,22 +22,37 @@ namespace ImageServiceProgram.Controller
             Commands = new Dictionary<int, ICommand>()
             {
                 {0, new NewFileCommand(this.Modal) }
-				// For Now will contain NEW_FILE_COMMAND
             };
         }
-        public string ExecuteCommand(int commandID, string[] args, out bool result)
-        {
-            if (Commands.ContainsKey(commandID))
-            {
-                result = true;
-                return this.Commands[commandID].Execute(args, out result);
-            }
-            else
-            {
-                result = false;                                 //not sure this makes sense. Is this really the functionality of the result?
-                return "Command not found";
-            }
 
+
+        public string ExecuteCommand(int commandID, string[] args,out bool result)
+        {
+
+            Task<Tuple<bool,string>> execution = new Task< Tuple < bool,string>> (() => {
+
+                bool res;
+                if (Commands.ContainsKey(commandID))
+                {
+                    res = true;
+                    string str = Commands[commandID].Execute(args, out res);
+                    return new Tuple<bool, string>(res,str);
+
+                }
+                else
+                {
+
+                    res = false;
+                    string str = "command not found";
+                    return new Tuple<bool, string>(res, str);
+                }
+                
+            });
+            execution.Start();
+            var tuple = execution.Result;
+            result = tuple.Item1;
+            return tuple.Item2;
         }
+
     }
 }
