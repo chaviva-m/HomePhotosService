@@ -53,12 +53,12 @@
   <ItemGroup>
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />
-    <Compile Include="ImageServiceProgram\Handlers\DirectoyHandler.cs" />
+    <Compile Include="ImageServiceProgram\Handlers\DirectoryHandler.cs" />
     <Compile Include="ImageServiceProgram\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageServiceProgram\Controller\IImageController.cs" />
     <Compile Include="ImageServiceProgram\Controller\ImageController.cs" />
-    <Compile Include="ImageServiceProgram\ImageModal\Event\CommandRecievedEventArgs.cs" />
-    <Compile Include="ImageServiceProgram\ImageModal\Event\DirectoryCloseEventArgs.cs" />
+    <Compile Include="ImageServiceProgram\Event\CommandRecievedEventArgs.cs" />
+    <Compile Include="ImageServiceProgram\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="ImageServiceProgram\ImageModal\IImageServiceModal.cs" />
     <Compile Include="ImageServiceProgram\ImageModal\ImageServiceModal.cs" />
     <Compile Include="ImageServiceProgram\Service\ProjectInstaller.cs">
