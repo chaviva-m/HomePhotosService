@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 
 namespace ImageServiceProgram.Controller.Handlers
 {
-    public class DirectoyHandler : IDirectoryHandler
+    public class DirectoryHandler : IDirectoryHandler
     {
         #region Members
         private IImageController m_controller;              // The Image Processing Controller
