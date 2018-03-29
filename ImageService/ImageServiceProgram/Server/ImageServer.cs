@@ -31,9 +31,10 @@ namespace ImageServiceProgram.Server
 
         public void CreateHandler(string directory)
         {
-            IDirectoryHandler handler = new DirectoryHandler(Controller, Logger, directory);
+            IDirectoryHandler handler = new DirectoryHandler(Controller, Logger);
             CommandReceived += handler.OnCommandReceived;
             handler.DirectoryClose += onClose;
+            handler.StartHandleDirectory(directory);
         }
 
         public void SendCommand(CommandReceivedEventArgs commandArgs)               
@@ -45,7 +46,7 @@ namespace ImageServiceProgram.Server
         {
             DirectoryHandler handler = (DirectoryHandler)sender;
             handler.DirectoryClose -= onClose;
-            CommandReceived -= handler.OnCommandRecieved;
+            CommandReceived -= handler.OnCommandReceived;
         }      
     }
 }
