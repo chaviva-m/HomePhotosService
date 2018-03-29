@@ -14,6 +14,6 @@ namespace ImageServiceProgram.Controller.Handlers
         void StartHandleDirectory(string dirPath);             // The Function Recieves the directory to Handle
 
 
-        void OnCommandRecieved(object sender, CommandRecievedEventArgs e);     // The Event that will be activated upon new Command
+        void OnCommandRecieved(object sender, CommandReceivedEventArgs e);     // The Event that will be activated upon new Command
     }
 }

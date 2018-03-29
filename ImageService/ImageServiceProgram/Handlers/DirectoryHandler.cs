@@ -41,7 +41,7 @@ namespace ImageServiceProgram.Controller.Handlers
 
         // Implement Here!
 
-        public DirectoyHandler(string dirPath, IImageController controller, ILoggingService logger)
+        public DirectoryHandler(string dirPath, IImageController controller, ILoggingService logger)
         {
             this.m_path = dirPath;
             this.m_controller = controller;
@@ -91,7 +91,6 @@ namespace ImageServiceProgram.Controller.Handlers
             }
 
         }
-
 
     }
 

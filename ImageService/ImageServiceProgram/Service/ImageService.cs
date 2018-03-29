@@ -119,7 +119,7 @@ namespace ImageServiceProgram.Service
             //close directory handlers
             foreach (string directory in directories)
             {
-                imageServer.SendCommand(new CommandReceivedEventArgs(..., ..., directory)); //not sure what command id & args to give it
+                imageServer.SendCommand(new CommandReceivedEventArgs(..., ..., directory)); //not sure which command id & args to give it
             }           
         }
 
