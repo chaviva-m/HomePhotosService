@@ -10,8 +10,6 @@ using ImageServiceProgram.Infrastructure.Enums;
 using ImageServiceProgram.Logging;
 using ImageServiceProgram.Logging.Modal;
 using System.Text.RegularExpressions;
-
-
 using ImageServiceProgram.Modal;
 using System;
 using System.IO;
@@ -35,20 +33,24 @@ namespace ImageServiceProgram.Controller.Handlers
         private ILoggingService logging;
         private FileSystemWatcher dirWatcher;             // The Watcher of the Dir
         private string path;                             // The Path of directory
-        private Dictionary<int, ICommand> Commands;
         private CommandReceivedEventArgs eventArgs;
         #endregion
 
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
         
 
-
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="icontroller">controller</param>
+        /// <param name="logger">logger</param>
         public DirectoryHandler(IImageController icontroller, ILoggingService logger)
         {
             path = "";
             controller = icontroller;
             logging = logger;
             dirWatcher = new FileSystemWatcher();
+            dirWatcher.EnableRaisingEvents = true;
             dirWatcher.Created += new FileSystemEventHandler(OnCreated);
 
         }
@@ -78,54 +80,38 @@ namespace ImageServiceProgram.Controller.Handlers
             if (Regex.IsMatch(strFileExt, @"\.jpg)|\.png|\.gif|\.bmp", RegexOptions.IgnoreCase))
             {
                 string[] args = { e.FullPath };
-                bool result;
-                string msg = controller.ExecuteCommand(0, args, out result);
-                MessageTypeEnum mte;
-
-                //find out if command succeeded or not in order to inform logger
-                if (result == false)
-                {
-                    mte = MessageTypeEnum.FAIL;
-                }
-                else
-                {
-                    mte = MessageTypeEnum.INFO;
-                }
-
-                logging.Log(msg, mte);
+                CommandReceivedEventArgs commandReceived = new CommandReceivedEventArgs((int)CommandEnum.NewFileCommand, args, e.FullPath);
+                OnCommandReceived(this, commandReceived);
             }
 
         }
 
-        public void OnCommandReceived(object sender, EventArgs e)
+        /// <summary>
+        /// command execution
+        /// </summary>
+        /// <param name="sender">object that sent the command</param>
+        /// <param name="e">command received event args</param>
+        public void OnCommandReceived(object sender, CommandReceivedEventArgs e)
         {
             bool result;
             string msg;
-            if (e.GetType() == typeof(DirectoryCloseEventArgs))
+            
+            //make sure command was meant for the handler for the specific path
+            if (e.RequestDirPath != path)
             {
-                //make sure command was meant for the handler for the specific path
-                DirectoryCloseEventArgs closeEvent = (DirectoryCloseEventArgs)e;
-                if (closeEvent.DirectoryPath != path)
-                {
-                    return;
-                }
+                return;
+            }
 
-                //DirectoryCloseEventArgs closeEvent = (DirectoryCloseEventArgs)e;
+            if (e.CommandID == (int)CommandEnum.CloseCommand)
+            {
+                //close the hanler
                 msg = closeHandler(out result);
 
             }
-            //a command was passed that was NOT to close directory
+            //a command was passed that was not to close directory
             else
-            {
-                CommandReceivedEventArgs commandEvent = (CommandReceivedEventArgs)e;
-                //make sure command was meant for the handler for the specific path
-                if (commandEvent.RequestDirPath != path)
-                {
-                    return;
-                }
-
-
-                msg = Commands[commandEvent.CommandID].Execute(commandEvent.Args, out result);
+            {                
+                msg = controller.ExecuteCommand(e.CommandID,e.Args, out result);
             }
                 MessageTypeEnum mte;
 
@@ -144,27 +130,29 @@ namespace ImageServiceProgram.Controller.Handlers
 
         }
 
-
-
-        public string closeHandler(out bool result)
+        /// <summary>
+        /// handler close
+        /// </summary>
+        /// <param name="result">true-if close succeeded, false otherwise</param>
+        /// <returns>success/failure information for logger</returns>
+        private string closeHandler(out bool result)
         {
-           
+            string msg;
             result = true;
-
-            //disable fileSystemWatcher
-            dirWatcher.Created -= OnCreated;
-            dirWatcher.Dispose();
-
-            string msg = "stopped monitoring path" + path;
-
+            try
+            {
+                //disable fileSystemWatcher 
+                dirWatcher.EnableRaisingEvents = false;
+                msg = "stopped monitoring path " + path;
+                result = true;
+            } catch (Exception e)
+            {
+                result = false;
+                msg = "could not quit monitoring path " + path;
+            }            
             //evoke event
             DirectoryClose?.Invoke(this, new DirectoryCloseEventArgs(path, msg));
-
             return msg;
         }
-
-
-    }
-
-    
+    }    
 }

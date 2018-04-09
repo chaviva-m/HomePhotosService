@@ -15,7 +15,10 @@ namespace ImageServiceProgram.Controller
     {
         private IImageServiceModal Modal;                      // The Modal Object
         private Dictionary<int, ICommand> Commands;
-
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="modal">image service modal</param>
         public ImageController(IImageServiceModal modal)
         {
             this.Modal = modal;                    // Storing the Modal Of The System
@@ -25,7 +28,13 @@ namespace ImageServiceProgram.Controller
             };
         }
 
-
+        /// <summary>
+        /// command execution
+        /// </summary>
+        /// <param name="commandID">unique command id</param>
+        /// <param name="args">argument</param>
+        /// <param name="result">true- if successful, false otherwise</param>
+        /// <returns></returns>
         public string ExecuteCommand(int commandID, string[] args,out bool result)
         {
 
