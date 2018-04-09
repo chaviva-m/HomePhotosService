@@ -11,6 +11,9 @@ namespace ImageServiceProgram.Logging
     public class LoggingService : ILoggingService
     {
         public event EventHandler<MessageReceivedEventArgs> MessageRecieved;
+
+        public LoggingService() {}
+
         public void Log(string message, MessageTypeEnum type)
         {
             MessageRecieved?.Invoke(this, new MessageReceivedEventArgs(type, message));
