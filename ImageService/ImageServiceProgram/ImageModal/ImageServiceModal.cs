@@ -205,7 +205,7 @@ namespace ImageServiceProgram.ImageModal
             catch (Exception e)
             {
                 result = false;
-                return "Could not save thumbnail of image " + imagePath + ".\n Problem: " + e.Message;
+                return "Could not save thumbnail of image " + imagePath + ".\nProblem: " + e.Message;
             }
         }
 
