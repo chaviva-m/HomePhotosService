@@ -1,5 +1,5 @@
 ﻿using ImageServiceProgram.Infrastructure;
-using ImageServiceProgram.Modal;
+using ImageServiceProgram.ImageModal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace ImageServiceProgram.Commands
 
         public string Execute(string[] args, out bool result)
         {
-            // The String Will Return the New Path if result = true, and will return the error message
+            // The String Will Return the message with new Path if result = true, else will return the error message        
             return Modal.AddFile(args[0], out result);
         }
     }

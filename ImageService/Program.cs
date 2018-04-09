@@ -5,7 +5,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using ImageServiceProgram.Logging;
-using ImageServiceProgram.Modal;
+using ImageServiceProgram.ImageModal;
 using ImageServiceProgram.Service;
 
 namespace ImageServiceProgram

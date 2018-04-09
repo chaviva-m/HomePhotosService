@@ -1,6 +1,6 @@
 ﻿using ImageServiceProgram.Logging;
 using ImageServiceProgram.Logging.Modal;
-using ImageServiceProgram.Modal;
+using ImageServiceProgram.ImageModal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageServiceProgram.Controller;
 using ImageServiceProgram.Server;
+using ImageServiceProgram.Infrastructure.Enums;
 
 namespace ImageServiceProgram.Service
 {
@@ -117,9 +118,10 @@ namespace ImageServiceProgram.Service
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             //close directory handlers
+            string[] args = { "" };
             foreach (string directory in directories)
             {
-                imageServer.SendCommand(new CommandReceivedEventArgs(..., ..., directory)); //not sure what command id & args to give it
+                imageServer.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
             }           
         }
 
@@ -139,7 +141,7 @@ namespace ImageServiceProgram.Service
             switch(args.Status)
             {
                 case MessageTypeEnum.INFO:
-                        eventLog.WriteEntry("Info: "); //take this out?
+                        eventLog.WriteEntry("Info: "); 
                         break;
                 case MessageTypeEnum.WARNING:
                         eventLog.WriteEntry("Warning: ");

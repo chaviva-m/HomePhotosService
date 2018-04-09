@@ -1,14 +1,14 @@
 ﻿using ImageServiceProgram.Commands;
 using ImageServiceProgram.Controller;
-using ImageServiceProgram.Controller.Handlers;
 using ImageServiceProgram.Infrastructure.Enums;
 using ImageServiceProgram.Logging;
-using ImageServiceProgram.Modal;
+using ImageServiceProgram.ImageModal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImageServiceProgram.Handlers;
 
 namespace ImageServiceProgram.Server
 {
