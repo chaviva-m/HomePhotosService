@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImageServiceProgram.Modal
+namespace ImageServiceProgram.ImageModal
 {
     public class ImageServiceModal : IImageServiceModal
     {
@@ -65,7 +65,7 @@ namespace ImageServiceProgram.Modal
             }
             //finished adding file
             result = true;
-            return "Successfully added file " + path;
+            return "Successfully added file " + newPath;
         }
 
         /// <summary>
@@ -94,7 +94,6 @@ namespace ImageServiceProgram.Modal
 
         /// <summary>
         /// Moves file from sourceFile to destinationFile.
-        /// Note: will not override existing file with the same name.
         /// </summary>
         /// <param name="sourceFile">source path of file</param>
         /// <param name="destinationFile">destination path of file</param>
@@ -102,17 +101,42 @@ namespace ImageServiceProgram.Modal
         /// <returns>string describing the result of function's action.</returns>
         public string MoveFile(string sourceFile, string destinationFile, out bool result)
         {
+            string UniqueDestFile = UniqueFileName(destinationFile);
             try
             {
-                System.IO.File.Move(sourceFile, destinationFile);
+                System.IO.File.Move(sourceFile, UniqueDestFile);
                 result = true;
-                return "Moved file from " + sourceFile + " to " + destinationFile;
+                return "Moved file from " + sourceFile + " to " + UniqueDestFile;
             } catch(Exception e)                                                                            
             {
                 result = false;
-                return "Could not move file " + sourceFile + " to " + destinationFile + ".\nProblem: " + e.Message;
+                return "Could not move file " + sourceFile + " to " + UniqueDestFile + ".\nProblem: " + e.Message;
             }
            
+        }
+
+        /// <summary>
+        /// this function checks if file name already exists, if it does then the function adds a number to the name.
+        /// </summary>
+        /// <param name="file">file name to make unique</param>
+        /// <returns>unique name for file</returns>
+        private string UniqueFileName(string file)
+        {
+            string uniqueFileName = file;
+
+            if (File.Exists(uniqueFileName))
+            {
+                string dirName = Path.GetDirectoryName(uniqueFileName);
+                string fileName = Path.GetFileNameWithoutExtension(uniqueFileName);
+                string extension = Path.GetExtension(uniqueFileName);
+                int i = 1;
+                while (File.Exists(uniqueFileName))
+                {
+                    uniqueFileName = Path.Combine(dirName, fileName + "(" + i + ")" + extension);
+                    i++;
+                }
+            }
+            return uniqueFileName;
         }
 
         /// <summary>
@@ -170,7 +194,7 @@ namespace ImageServiceProgram.Modal
                     Size ThumbWidthHeight = GetThumbnailSize(image);
                     using (Image thumbnail = image.GetThumbnailImage(ThumbWidthHeight.Width, ThumbWidthHeight.Height, null, IntPtr.Zero))
                     {
-                        string thumbPath = Path.Combine(thumbnailLocation, Path.GetFileName(imagePath));
+                        string thumbPath = UniqueFileName(Path.Combine(thumbnailLocation, Path.GetFileName(imagePath)));
                         thumbnail.Save(Path.ChangeExtension(thumbPath, "thumb"));
                         result = true;
                         return "saved thumbnail of image " + imagePath;
@@ -178,7 +202,7 @@ namespace ImageServiceProgram.Modal
 
                 }
             }
-            catch (Exception e)                                                           
+            catch (Exception e)
             {
                 result = false;
                 return "Could not save thumbnail of image " + imagePath + ".\n Problem: " + e.Message;

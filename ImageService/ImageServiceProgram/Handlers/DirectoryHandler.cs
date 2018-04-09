@@ -1,18 +1,4 @@
-﻿using ImageServiceProgram.Modal;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImageServiceProgram.Infrastructure;
-using ImageServiceProgram.Infrastructure.Enums;
-using ImageServiceProgram.Logging;
-using ImageServiceProgram.Logging.Modal;
-using System.Text.RegularExpressions;
-
-
-using ImageServiceProgram.Modal;
+﻿using ImageServiceProgram.ImageModal;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -25,8 +11,9 @@ using ImageServiceProgram.Logging;
 using ImageServiceProgram.Logging.Modal;
 using System.Text.RegularExpressions;
 using ImageServiceProgram.Commands;
+using ImageServiceProgram.Controller;
 
-namespace ImageServiceProgram.Controller.Handlers
+namespace ImageServiceProgram.Handlers
 {
     public class DirectoryHandler : IDirectoryHandler
     {
@@ -146,7 +133,7 @@ namespace ImageServiceProgram.Controller.Handlers
 
 
 
-        public string closeHandler(out bool result)
+        public string closeHandler(out bool result) //this should get DirectoryCloseEventArgs -------
         {
            
             result = true;

@@ -1,11 +1,11 @@
-﻿using ImageServiceProgram.Modal;
+﻿using ImageServiceProgram.ImageModal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageServiceProgram.Controller.Handlers
+namespace ImageServiceProgram.Handlers
 {
     public interface IDirectoryHandler
     {
