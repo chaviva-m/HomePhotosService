@@ -79,7 +79,7 @@ namespace ImageServiceProgram.Handlers
             if (Regex.IsMatch(strFileExt, @"\.jpg|\.png|\.gif|\.bmp", RegexOptions.IgnoreCase))
             {
                 string[] args = { e.FullPath };
-                CommandReceivedEventArgs commandReceived = new CommandReceivedEventArgs((int)CommandEnum.NewFileCommand, args, e.FullPath);
+                CommandReceivedEventArgs commandReceived = new CommandReceivedEventArgs((int)CommandEnum.NewFileCommand, args, path);
                 OnCommandReceived(this, commandReceived);
             }
 
@@ -103,7 +103,7 @@ namespace ImageServiceProgram.Handlers
 
             if (e.CommandID == (int)CommandEnum.CloseCommand)
             {
-                //close the hanler
+                //close the handler
                 msg = closeHandler(out result);
 
             }
@@ -112,20 +112,20 @@ namespace ImageServiceProgram.Handlers
             {                
                 msg = controller.ExecuteCommand(e.CommandID,e.Args, out result);
             }
-                MessageTypeEnum mte;
+            MessageTypeEnum mte;
 
-                //find out if command succeeded or not in order to inform logger
-                if (result == false)
-                {
-                    mte = MessageTypeEnum.FAIL;
-                }
-                else
-                {
-                    mte = MessageTypeEnum.INFO;
-                }
+            //find out if command succeeded or not in order to inform logger
+            if (result == false)
+            {
+              mte = MessageTypeEnum.FAIL;
+            }
+            else
+            {
+                mte = MessageTypeEnum.INFO;
+            }
 
-                //inform logger
-                logging.Log(msg, mte);
+            //inform logger
+            logging.Log(msg, mte);
 
         }
 
