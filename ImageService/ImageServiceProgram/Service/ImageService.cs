@@ -70,8 +70,7 @@ namespace ImageServiceProgram.Service
         // Here You will Use the App Config!
         protected override void OnStart(string[] args)
         {
-            //debugger
-            System.Diagnostics.Debugger.Launch();
+            
             // Update the service state to Start Pending.   
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;

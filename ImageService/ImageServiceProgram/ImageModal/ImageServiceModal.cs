@@ -30,6 +30,7 @@ namespace ImageServiceProgram.ImageModal
         {
             //extract date from image
             DateTime dateTime;
+            Thread.Sleep(100);
             string resultDescription = ExtractDateOfImage(path, out dateTime, out result);
             if (!result)
             {
