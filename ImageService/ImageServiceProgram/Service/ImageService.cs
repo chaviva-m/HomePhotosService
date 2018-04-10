@@ -31,8 +31,7 @@ namespace ImageServiceProgram.Service
 
     public partial class ImageService : ServiceBase
     {
-        private int eventId = 1;
-        private ImageServer imageServer;          // The Image Server
+        private ImageServer imageServer;      
         private IImageServiceModal imageModal;
         private IImageController controller;
         private ILoggingService logger;
@@ -41,6 +40,10 @@ namespace ImageServiceProgram.Service
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
 
+        /// <summary>
+        /// ImageService constructor
+        /// sets event log.
+        /// </summary>
         public ImageService()
         {
             InitializeComponent();
@@ -67,10 +70,13 @@ namespace ImageServiceProgram.Service
             public int dwWaitHint;
         };
 
-        // Here You will Use the App Config!
+        /// <summary>
+        /// starts service, updates to running.
+        /// Creates logger, imageModal, server and handlers.
+        /// </summary>
+        /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
-            //System.Diagnostics.Debugger.Launch();
             // Update the service state to Start Pending.   
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
@@ -124,6 +130,11 @@ namespace ImageServiceProgram.Service
             eventLog.WriteEntry("In OnContinue.");
         }
 
+        /// <summary>
+        /// writes entry to logger.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args: has message for logger and type of message"></param>
         protected void OnMessage(object sender, MessageReceivedEventArgs args)
         {
             switch(args.Status)

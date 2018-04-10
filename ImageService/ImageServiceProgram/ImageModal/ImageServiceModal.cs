@@ -20,6 +20,11 @@ namespace ImageServiceProgram.ImageModal
         private Regex Rgx = new Regex(":");
         #endregion
 
+        /// <summary>
+        /// image modal service constructor
+        /// </summary>
+        /// <param name="outputFolder where it will move files"></param>
+        /// <param name="thumbnailSize the size of the thumbnail of the file"></param>
         public ImageServiceModal(string outputFolder, int thumbnailSize)
         {
             this.OutputFolder = outputFolder;

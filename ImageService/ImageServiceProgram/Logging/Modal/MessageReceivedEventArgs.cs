@@ -10,6 +10,12 @@ namespace ImageServiceProgram.Logging.Modal
     {
         public MessageTypeEnum Status { get; set; }
         public string Message { get; set; }
+
+        /// <summary>
+        /// constructor for messageReceivedEventArgs 
+        /// </summary>
+        /// <param name="status the type of the message"></param>
+        /// <param name="msg the msg to write in the logger"></param>
         public MessageReceivedEventArgs(MessageTypeEnum status, string msg)
         {
             Status = status;
