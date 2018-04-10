@@ -38,10 +38,6 @@ namespace ImageServiceProgram.Handlers
             path = "";
             controller = icontroller;
             logging = logger;
-            dirWatcher = new FileSystemWatcher();
-            dirWatcher.EnableRaisingEvents = true;
-            dirWatcher.Created += new FileSystemEventHandler(OnCreated);
-
         }
 
         /// <summary>
@@ -51,7 +47,18 @@ namespace ImageServiceProgram.Handlers
         public void StartHandleDirectory(string dirPath)
         {
             path = dirPath;
+            dirWatcher = new FileSystemWatcher();
             dirWatcher.Path = dirPath;
+            dirWatcher.Created += new FileSystemEventHandler(OnCreated);
+
+            try
+            {
+                dirWatcher.EnableRaisingEvents = true;
+            }
+            catch (Exception e)
+            {
+                logging.Log("fileSystemWatcher initialization failed: " + e.Message, MessageTypeEnum.FAIL);
+            }
 
         }
 
@@ -66,7 +73,7 @@ namespace ImageServiceProgram.Handlers
             string strFileExt = Path.GetExtension(e.FullPath);
 
             // filter file types 
-            if (Regex.IsMatch(strFileExt, @"\.jpg)|\.png|\.gif|\.bmp", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(strFileExt, @"\.jpg|\.png|\.gif|\.bmp", RegexOptions.IgnoreCase))
             {
                 string[] args = { e.FullPath };
                 CommandReceivedEventArgs commandReceived = new CommandReceivedEventArgs((int)CommandEnum.NewFileCommand, args, path);

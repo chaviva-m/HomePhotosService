@@ -44,7 +44,7 @@ namespace ImageServiceProgram.ImageModal
                 return resultDescription;
             }
             //move image to folder
-            string newPath = Path.Combine(newLocation, Path.GetFileName(path));
+            string newPath = UniqueFileName(Path.Combine(newLocation, Path.GetFileName(path)));
             resultDescription = MoveFile(path, newPath, out result);
             if (!result)
             {
@@ -101,16 +101,15 @@ namespace ImageServiceProgram.ImageModal
         /// <returns>string describing the result of function's action.</returns>
         public string MoveFile(string sourceFile, string destinationFile, out bool result)
         {
-            string UniqueDestFile = UniqueFileName(destinationFile);
             try
             {
-                System.IO.File.Move(sourceFile, UniqueDestFile);
+                System.IO.File.Move(sourceFile, destinationFile);
                 result = true;
-                return "Moved file from " + sourceFile + " to " + UniqueDestFile;
+                return "Moved file from " + sourceFile + " to " + destinationFile;
             } catch(Exception e)                                                                            
             {
                 result = false;
-                return "Could not move file " + sourceFile + " to " + UniqueDestFile + ".\nProblem: " + e.Message;
+                return "Could not move file " + sourceFile + " to " + destinationFile + ".\nProblem: " + e.Message;
             }
            
         }
@@ -194,7 +193,7 @@ namespace ImageServiceProgram.ImageModal
                     Size ThumbWidthHeight = GetThumbnailSize(image);
                     using (Image thumbnail = image.GetThumbnailImage(ThumbWidthHeight.Width, ThumbWidthHeight.Height, null, IntPtr.Zero))
                     {
-                        string thumbPath = UniqueFileName(Path.Combine(thumbnailLocation, Path.GetFileName(imagePath)));
+                        string thumbPath = Path.Combine(thumbnailLocation, Path.GetFileName(imagePath));
                         thumbnail.Save(Path.ChangeExtension(thumbPath, "thumb"));
                         result = true;
                         return "saved thumbnail of image " + imagePath;
