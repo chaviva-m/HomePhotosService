@@ -134,7 +134,7 @@ namespace ImageServiceProgram.Service
                     eventLog.WriteEntry(args.Message, EventLogEntryType.Warning);
                     break;
                 case MessageTypeEnum.FAIL:
-                    eventLog.WriteEntry(args.Message, EventLogEntryType.FailureAudit); //is this right?
+                    eventLog.WriteEntry(args.Message, EventLogEntryType.FailureAudit);
                     break;
             }
         }
