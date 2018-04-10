@@ -38,9 +38,6 @@ namespace ImageServiceProgram.Handlers
             path = "";
             controller = icontroller;
             logging = logger;
-            
-            
-
         }
 
         /// <summary>
@@ -51,6 +48,7 @@ namespace ImageServiceProgram.Handlers
         {
             dirWatcher = new FileSystemWatcher();
             path = dirPath;
+            dirWatcher = new FileSystemWatcher();
             dirWatcher.Path = dirPath;
             try
             {
@@ -62,6 +60,15 @@ namespace ImageServiceProgram.Handlers
             }
 
             dirWatcher.Created += new FileSystemEventHandler(OnCreated);
+
+            try
+            {
+                dirWatcher.EnableRaisingEvents = true;
+            }
+            catch (Exception e)
+            {
+                logging.Log("fileSystemWatcher initialization failed: " + e.Message, MessageTypeEnum.FAIL);
+            }
 
         }
 
