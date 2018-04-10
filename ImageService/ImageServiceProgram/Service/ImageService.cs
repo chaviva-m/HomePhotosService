@@ -105,6 +105,9 @@ namespace ImageServiceProgram.Service
             }
         }
 
+        /// <summary>
+        /// Server termination. Updates the handler that service is closed.
+        /// </summary>
         protected override void OnStop()
         {
             // Update the service state to stop pending.
@@ -124,6 +127,7 @@ namespace ImageServiceProgram.Service
                 imageServer.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
             }           
         }
+
 
         protected override void OnContinue()
         {

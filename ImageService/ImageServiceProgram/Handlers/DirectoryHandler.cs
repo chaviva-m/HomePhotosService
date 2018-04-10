@@ -46,9 +46,19 @@ namespace ImageServiceProgram.Handlers
         /// <param name="dirPath"> directory path to watch</param>
         public void StartHandleDirectory(string dirPath)
         {
+            dirWatcher = new FileSystemWatcher();
             path = dirPath;
             dirWatcher = new FileSystemWatcher();
             dirWatcher.Path = dirPath;
+            try
+            {
+                dirWatcher.EnableRaisingEvents = true;
+            }
+            catch (Exception e)
+            {
+                logging.Log(e.Message, MessageTypeEnum.FAIL);
+            }
+
             dirWatcher.Created += new FileSystemEventHandler(OnCreated);
 
             try
