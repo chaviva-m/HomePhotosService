@@ -42,7 +42,7 @@ namespace ImageServiceProgram.Server
         {
             IDirectoryHandler handler = new DirectoryHandler(Controller, Logger);
             CommandReceived += handler.OnCommandReceived;
-            handler.DirectoryClose += onClose;
+            handler.DirectoryClose += onHandlerClose;
             handler.StartHandleDirectory(directory);
         }
 
@@ -60,10 +60,10 @@ namespace ImageServiceProgram.Server
         /// </summary>
         /// <param name="sender">the sender object</param>
         /// <param name="args">arguments relevant to server shut down</param>
-        public void onClose(object sender, DirectoryCloseEventArgs args)
+        public void onHandlerClose(object sender, DirectoryCloseEventArgs args)
         {
             DirectoryHandler handler = (DirectoryHandler)sender;
-            handler.DirectoryClose -= onClose;
+            handler.DirectoryClose -= onHandlerClose;
             CommandReceived -= handler.OnCommandReceived;
         }      
     }

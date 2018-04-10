@@ -93,7 +93,7 @@ namespace ImageServiceProgram.Handlers
 
             if (e.CommandID == (int)CommandEnum.CloseCommand)
             {
-                //close the hanler
+                //close the handler
                 msg = closeHandler(out result);
 
             }

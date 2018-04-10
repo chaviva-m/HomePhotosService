@@ -82,7 +82,7 @@ namespace ImageServiceProgram.Service
 
             //create logger and add OnMessage to logging event
             logger = new LoggingService();
-            logger.MessageRecieved += onMessage;          
+            logger.MessageRecieved += OnMessage;          
             //create ImageModal
             string outputDir = ConfigurationManager.AppSettings["OutputDir"];
             int thumbnailSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
@@ -106,7 +106,7 @@ namespace ImageServiceProgram.Service
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            eventLog.WriteEntry("In onStop.");
+            eventLog.WriteEntry("In OnStop.");
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
@@ -123,21 +123,20 @@ namespace ImageServiceProgram.Service
             eventLog.WriteEntry("In OnContinue.");
         }
 
-        protected void onMessage(object sender, MessageReceivedEventArgs args)
+        protected void OnMessage(object sender, MessageReceivedEventArgs args)
         {
             switch(args.Status)
             {
                 case MessageTypeEnum.INFO:
-                        eventLog.WriteEntry("Info: "); 
-                        break;
+                    eventLog.WriteEntry(args.Message, EventLogEntryType.Information);
+                    break;
                 case MessageTypeEnum.WARNING:
-                        eventLog.WriteEntry("Warning: ");
-                        break;
+                    eventLog.WriteEntry(args.Message, EventLogEntryType.Warning);
+                    break;
                 case MessageTypeEnum.FAIL:
-                        eventLog.WriteEntry("Fail: ");
-                        break;
+                    eventLog.WriteEntry(args.Message, EventLogEntryType.FailureAudit); //is this right?
+                    break;
             }
-            eventLog.WriteEntry(args.Message);
         }
     }
 }
