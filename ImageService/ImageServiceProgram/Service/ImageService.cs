@@ -31,8 +31,7 @@ namespace ImageServiceProgram.Service
 
     public partial class ImageService : ServiceBase
     {
-        private int eventId = 1;
-        private ImageServer imageServer;          // The Image Server
+        private ImageServer imageServer;          
         private IImageServiceModal imageModal;
         private IImageController controller;
         private ILoggingService logger;
@@ -67,10 +66,8 @@ namespace ImageServiceProgram.Service
             public int dwWaitHint;
         };
 
-        // Here You will Use the App Config!
         protected override void OnStart(string[] args)
-        {
-            
+        {            
             // Update the service state to Start Pending.   
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
@@ -99,6 +96,9 @@ namespace ImageServiceProgram.Service
             }
         }
 
+        /// <summary>
+        /// Server termination. Updates the handler that service is closed.
+        /// </summary>
         protected override void OnStop()
         {
             // Update the service state to stop pending.
