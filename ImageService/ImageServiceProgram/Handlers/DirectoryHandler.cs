@@ -21,8 +21,7 @@ namespace ImageServiceProgram.Handlers
         private IImageController controller;              // The Image Processing Controller
         private ILoggingService logging;
         private FileSystemWatcher dirWatcher;             // The Watcher of the Dir
-        private string path;                             // The Path of directory
-        private CommandReceivedEventArgs eventArgs;
+        private string path;                            // The Path of directory
         #endregion
 
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
