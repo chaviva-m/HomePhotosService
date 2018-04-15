@@ -33,6 +33,13 @@ namespace ImageServiceProgram.ImageModal
 
         public string AddFile(string path, out bool result)                          
         {
+            //create output directory
+            string resultDescription = CreateFolder(OutputFolder, FileAttributes.Hidden, out result);
+            if (!result)
+            {
+                return resultDescription;
+            }
+
             //extract date from image
             DateTime dateTime;
             Thread.Sleep(1000);
@@ -44,7 +51,7 @@ namespace ImageServiceProgram.ImageModal
             //create folder for image according to date
             string relativeDateLocation = Path.Combine(dateTime.Year.ToString(), dateTime.ToString("MMMM"));
             string newLocation = Path.Combine(OutputFolder, relativeDateLocation);
-            resultDescription = CreateFolder(newLocation, out result);
+            resultDescription = CreateFolder(newLocation, FileAttributes.Normal, out result);
             if (!result)
             {
                 return resultDescription;
@@ -58,7 +65,7 @@ namespace ImageServiceProgram.ImageModal
             }
             //create folder for thumbnail image according to date
             string thumbnailLocation = Path.Combine(OutputFolder, "Thumbnails", relativeDateLocation);
-            resultDescription = CreateFolder(thumbnailLocation, out result);
+            resultDescription = CreateFolder(thumbnailLocation, FileAttributes.Normal, out result);
             if (!result)
             {
                 return resultDescription;
@@ -76,20 +83,31 @@ namespace ImageServiceProgram.ImageModal
 
         /// <summary>
         /// Creates folder according to path parameter, if folder doesn't already exist.
+        /// If fileAtr is hidden, will set attribute of folder to hidden.
         /// </summary>
         /// <param name="path">path of new folder</param>
         /// <param name="result">result of action: true = success, false = failure</param>
+        /// <param name="dirAtr">attribute of folder</param>        /// 
         /// <returns>string describing the result of function's action.</returns>
-        public string CreateFolder(string path, out bool result)
+        public string CreateFolder(string path, FileAttributes dirAtr, out bool result)
         {
             try
             {
                 if (!Directory.Exists(path)) 
                 {
-                    Directory.CreateDirectory(path);
+                    DirectoryInfo dir = Directory.CreateDirectory(path);
+                    if (dirAtr == FileAttributes.Hidden && !dir.Attributes.HasFlag(FileAttributes.Hidden))
+                    {
+                        dir.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                    }
+                    result = true;
+                    return "Created folder " + path;
+                } else
+                {
+                    result = true;
+                    return "Folder " + path + " exists.";
                 }
-                result = true;
-                return "Created folder " + path;
+
             } catch (Exception e)                                                                           
             {
                 result = false;
@@ -162,24 +180,32 @@ namespace ImageServiceProgram.ImageModal
                     {
                         PropertyItem propItem = picture.GetPropertyItem(36867);
                         string dateOfPicture = Rgx.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                        result = true;
                         dateTime = DateTime.Parse(dateOfPicture);
+                        result = true;
                         return "Extracted date taken from image " + path;
                     }
                     catch (Exception)                                                
                     {
                         //this method of extracting the date might return an inaccurate date
-                        result = true;
                         dateTime = new FileInfo(path).LastWriteTime;
+                        result = true;
                         return "Extracted date taken from image " + path;
                     }
                 }
             }
             catch (Exception e)                                                       
             {
-                result = false;
-                dateTime = new FileInfo(path).LastWriteTime;
-                return "Could not extract date taken from image " + path + ".\nProblem: " + e.Message;
+                //returning current date time
+                dateTime = DateTime.Now;
+                if (File.Exists(path))
+                {
+                    result = true;
+                    return "Cannot extract date from " + path + ". Returning current date time instead.";
+                } else
+                {
+                    result = false;
+                    return "Cannot extract date from " + path + ". File does not exist.";
+                }
             }
         }
 
@@ -200,7 +226,7 @@ namespace ImageServiceProgram.ImageModal
                     using (Image thumbnail = image.GetThumbnailImage(ThumbWidthHeight.Width, ThumbWidthHeight.Height, null, IntPtr.Zero))
                     {
                         string thumbPath = Path.Combine(thumbnailLocation, Path.GetFileName(imagePath));
-                        thumbnail.Save(Path.ChangeExtension(thumbPath, "thumb"));
+                        thumbnail.Save(thumbPath);
                         result = true;
                         return "saved thumbnail of image " + imagePath;
                     }
