@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService", "ImageService\ImageService.csproj", "{3B493FD1-08E2-4046-A9BD-FDFFEFE1358A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{734886D7-049B-4E2E-B2C9-0B815AC2FD8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3B493FD1-08E2-4046-A9BD-FDFFEFE1358A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B493FD1-08E2-4046-A9BD-FDFFEFE1358A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B493FD1-08E2-4046-A9BD-FDFFEFE1358A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734886D7-049B-4E2E-B2C9-0B815AC2FD8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734886D7-049B-4E2E-B2C9-0B815AC2FD8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734886D7-049B-4E2E-B2C9-0B815AC2FD8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734886D7-049B-4E2E-B2C9-0B815AC2FD8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
