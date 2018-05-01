@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:GUI"
         xmlns:controlers="clr-namespace:GUI.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <TabControl>
+        Title="Image Service" Height="450" Width="800">
+    <TabControl Margin="5">
         <TabItem Header="Settings">
             <controlers:SettingsView></controlers:SettingsView>
         </TabItem>
-        
+        <TabItem Header="Log">
+            <controlers:LogView></controlers:LogView>
+        </TabItem>
     </TabControl>
 </Window>
