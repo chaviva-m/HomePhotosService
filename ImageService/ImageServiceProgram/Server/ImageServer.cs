@@ -52,7 +52,7 @@ namespace ImageServiceProgram.Server
         /// <param name="commandArgs">command details</param>
         public void SendCommand(CommandReceivedEventArgs commandArgs)               
         {
-            CommandReceived?.Invoke(this, commandArgs);                            
+            CommandReceived?.Invoke(this, commandArgs);
         }
 
         /// <summary>

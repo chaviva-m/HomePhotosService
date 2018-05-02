@@ -46,7 +46,6 @@ namespace ImageServiceProgram.Controller
                     res = true;
                     string str = Commands[commandID].Execute(args, out res);
                     return new Tuple<bool, string>(res,str);
-
                 }
                 else
                 {
