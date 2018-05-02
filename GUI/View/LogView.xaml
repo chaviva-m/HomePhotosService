@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.View"
         mc:Ignorable="d"
-        Title="LogView" Height="450" Width="800">
+        Height="450" Width="800">
 
     <StackPanel>
         <TextBlock HorizontalAlignment="Center"
@@ -17,4 +17,4 @@
                     Foreground="Blue" />
 
     </StackPanel>
-</Window>
+</UserControl>
