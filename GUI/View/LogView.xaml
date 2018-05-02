@@ -6,7 +6,15 @@
         xmlns:local="clr-namespace:GUI.View"
         mc:Ignorable="d"
         Title="LogView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+
+    <StackPanel>
+        <TextBlock HorizontalAlignment="Center"
+                    Width="Auto"
+                    Text="Logs"                     
+                    FontSize="20"
+                    FontFamily="Comic Sans MS"
+                    FontWeight="Bold"
+                    Foreground="Blue" />
+
+    </StackPanel>
 </Window>
