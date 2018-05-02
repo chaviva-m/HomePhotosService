@@ -18,7 +18,7 @@ namespace GUI.View
     /// <summary>
     /// Interaction logic for LogView.xaml
     /// </summary>
-    public partial class LogView : Window
+    public partial class LogView : UserControl
     {
         private LogViewModel vm();
         public LogView()

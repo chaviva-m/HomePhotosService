@@ -4,15 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
-        xmlns:controlers="clr-namespace:GUI.View"
+        xmlns:views="clr-namespace:GUI.View"
         mc:Ignorable="d"
         Title="Image Service" Height="626.147" Width="1408.257">
     <TabControl Margin="5">
         <TabItem Header="Settings">
-            <controlers:SettingsView></controlers:SettingsView>
+            <views:SettingsView/>
         </TabItem>
         <TabItem Header="Log">
-            <controlers:LogView></controlers:LogView>
+            <views:LogView/>
         </TabItem>
     </TabControl>
 </Window>
