@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         xmlns:views="clr-namespace:GUI.View"
         mc:Ignorable="d"
-        Title="Image Service" Height="626.147" Width="1408.257">
+        Title="Image Service" Height="500" Width="700">
     <TabControl Margin="5">
         <TabItem Header="Settings">
             <views:SettingsView/>

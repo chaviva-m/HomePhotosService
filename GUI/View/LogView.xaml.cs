@@ -20,12 +20,9 @@ namespace GUI.View
     /// </summary>
     public partial class LogView : UserControl
     {
-        private LogViewModel vm();
         public LogView()
         {
             InitializeComponent();
-            vm = new LogViewModel();
-            this.DataContext = vm;
         }
     }
 }

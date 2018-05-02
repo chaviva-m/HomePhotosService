@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.View"
         mc:Ignorable="d"
-        Height="300" Width="300">
+        Height="500" Width="650">
     <StackPanel>
         <TextBlock x:Name="title" FontSize="20" Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Settings</TextBlock>
         <Grid>
             <Grid.Resources>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="5"></Setter>
+                    <Setter Property="Margin" Value="0,5"></Setter>
                     <Style.Triggers>
                         <Trigger Property="Grid.Column" Value="0">
                             <Setter Property="FontWeight" Value="Bold"/>
@@ -30,16 +30,16 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="Output Directory: "/>
-            <TextBlock Grid.Column="1">Bind data here</TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding VM_OutputDirectory}"/>
             <TextBlock Grid.Row="1" Text="Source Name: "/>
-            <TextBlock Grid.Column="1" Grid.Row="1">Bind data here</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding VM_SourceName}"/>
             <TextBlock Grid.Row="2" Text="Log Name: "/>
-            <TextBlock Grid.Column="1" Grid.Row="2">Bind data here</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding VM_LogName}"/>
             <TextBlock Grid.Row="3" Text="Thumbnail Size: "/>
-            <TextBlock Grid.Column="1" Grid.Row="3">Bind data here</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding VM_ThumbnailSize}"/>
         </Grid>
-        <Button x:Name="btnRemove" Command="{Binding RemoveComand}">Remove</Button>
-        <ListBox x:Name="directoryList">Bind data here</ListBox>
+        <Button x:Name="btnRemove" Content="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding ElementName=directoryList}"/>
+        <ListBox x:Name="directoryList" ItemsSource="{Binding VM_Directories}" SelectedItem="{Binding VM_DirToRemove, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>
     
