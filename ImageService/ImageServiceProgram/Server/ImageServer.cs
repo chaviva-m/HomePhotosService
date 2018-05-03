@@ -1,6 +1,6 @@
 ﻿using ImageServiceProgram.Commands;
 using ImageServiceProgram.Controller;
-using ImageServiceProgram.Infrastructure.Enums;
+using Communication.Infrastructure.Enums;
 using ImageServiceProgram.Logging;
 using ImageServiceProgram.ImageModal;
 using System;

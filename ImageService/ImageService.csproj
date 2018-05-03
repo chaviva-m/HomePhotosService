@@ -74,7 +74,6 @@
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageServiceProgram\Server\ImageServer.cs" />
-    <Compile Include="ImageServiceProgram\Infrastructure\Enums\CommandEnum.cs" />
     <Compile Include="ImageServiceProgram\Logging\ILoggingService.cs" />
     <Compile Include="ImageServiceProgram\Logging\LoggingService.cs" />
     <Compile Include="ImageServiceProgram\Logging\Modal\MessageReceivedEventArgs.cs" />
@@ -90,6 +89,11 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\communication\Communication.csproj">
+      <Project>{83360ea3-8eeb-45c7-8a54-1d9680d200de}</Project>
+      <Name>Communication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,4 @@
-﻿using ImageServiceProgram.Infrastructure.Enums;
+﻿using Communication.Infrastructure.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

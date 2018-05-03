@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI.communication;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -84,12 +85,24 @@ namespace GUI.Model
             get { return directories; }
             set { directories = value; }
         }
+       
+        public SettingsModel()
+        {
+            //add GetAppConfig 
+            //ClientChannel.Instance.SendCommand(); //send command to get app config 
+        }        
+        
+        //add this function in delegate to client's event
+        private void GetAppConfig()
+        {
+            //set all properties to values in args from client channel    
+        }
         //add this function in delegate to client's event
         public void DeleteDir(string dirToRemove)       //make this private
         {
             directories.Remove(dirToRemove);
         }
-        //add this function in delegate to client's event
+        //probably don't need this
         public void AddDir(string dirToAdd)       //make this private
         {
             directories.Add(dirToAdd);
