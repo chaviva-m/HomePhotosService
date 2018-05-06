@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using ImageServiceProgram.Controller;
 using ImageServiceProgram.Server;
 using Communication.Infrastructure.Enums;
+using ImageServiceProgram.Event;
 
 namespace ImageServiceProgram.Service
 {

@@ -1,5 +1,4 @@
-﻿using ImageServiceProgram.ImageModal;
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,7 @@ using ImageServiceProgram.Logging.Modal;
 using System.Text.RegularExpressions;
 using ImageServiceProgram.Commands;
 using ImageServiceProgram.Controller;
+using ImageServiceProgram.Event;
 
 namespace ImageServiceProgram.Handlers
 {

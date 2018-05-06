@@ -23,8 +23,6 @@ namespace ImageServiceProgram
                 new ImageService()                  
             };
             ServiceBase.Run(ServicesToRun);
-
-            
         }
     }
 }
