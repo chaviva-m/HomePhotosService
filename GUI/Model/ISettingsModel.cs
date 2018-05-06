@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GUI.Model
 {
-    interface ISettingsModel : INotifyPropertyChanged
+    public interface ISettingsModel : INotifyPropertyChanged
     {
         string OutputDirectory { get; set; }
         string SourceName { get; set; }

@@ -14,7 +14,9 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageServiceProgram.Controller;
 using ImageServiceProgram.Server;
-using ImageServiceProgram.Infrastructure.Enums;
+using Communication.Commands.Enums;
+using ImageServiceProgram.Event;
+using Communication.Commands;
 
 namespace ImageServiceProgram.Service
 {

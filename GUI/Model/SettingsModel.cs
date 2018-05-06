@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Communication.Commands;
+using Communication.Commands.Enums;
+using GUI.Communication;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,7 +12,7 @@ using System.Windows;
 
 namespace GUI.Model
 {
-    class SettingsModel : ISettingsModel
+    public class SettingsModel : ISettingsModel
     {
         //need to get values from client
 
@@ -84,12 +87,40 @@ namespace GUI.Model
             get { return directories; }
             set { directories = value; }
         }
+       
+        public SettingsModel()
+        {
+            ClientChannel clientChannel = ClientChannel.Instance;
+            //add methods to client channel's event
+            clientChannel.CommandReceived += GetAppConfig;
+            clientChannel.CommandReceived += DeleteDir;
+            //request app config settings
+            string[] args = { "" };
+            clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetConfigCommand, args, ""));
+        }        
+        
         //add this function in delegate to client's event
+        private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
+        {
+            //set all properties to values in args from client channel
+
+        }
+        //add this function in delegate to client's event
+        private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
+        {
+            if (cmdArgs.CommandID == (int)CommandEnum.CloseCommand)
+            {
+                directories.Remove(cmdArgs.RequestDirPath);
+            }
+        }
+
+        //erase
         public void DeleteDir(string dirToRemove)       //make this private
         {
             directories.Remove(dirToRemove);
         }
-        //add this function in delegate to client's event
+
+        /*probably don't need this*/
         public void AddDir(string dirToAdd)       //make this private
         {
             directories.Add(dirToAdd);

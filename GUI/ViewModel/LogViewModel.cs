@@ -11,7 +11,7 @@ using GUI.communication;
 
 namespace GUI.ViewModel
 {
-    class LogViewModel
+    public class LogViewModel
     {
 
         private ILogModel logModel;

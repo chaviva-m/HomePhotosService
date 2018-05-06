@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageServiceProgram.Infrastructure.Enums
+namespace ConsoleApp1
 {
-    public enum CommandEnum : int
+    class Program
     {
-        NewFileCommand,
-        CloseCommand
+        static void Main(string[] args)
+        {
+        }
     }
 }

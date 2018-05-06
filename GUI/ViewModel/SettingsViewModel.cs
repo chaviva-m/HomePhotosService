@@ -14,7 +14,7 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace GUI.ViewModel
 {
-    class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand RemoveCommand { get; private set; }
