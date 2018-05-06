@@ -1,6 +1,6 @@
 ﻿using ImageServiceProgram.Commands;
 using ImageServiceProgram.Controller;
-using Communication.Infrastructure.Enums;
+using Communication.Commands.Enums;
 using ImageServiceProgram.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ImageServiceProgram.Handlers;
 using ImageServiceProgram.Event;
+using Communication.Commands;
 
 namespace ImageServiceProgram.Server
 {

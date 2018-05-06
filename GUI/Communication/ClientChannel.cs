@@ -1,4 +1,6 @@
-﻿using Communication.Infrastructure.Enums;
+﻿using Communication.Commands;
+using Communication.Commands.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,9 +15,10 @@ namespace GUI.Communication
 {
     public sealed class ClientChannel
     {
-        /*close client when we exit GUI*/
+        /*update server to close client when we exit GUI*/
 
         //make event that will pass command from server
+        public event EventHandler<CommandReceivedEventArgs> CommandReceived;
 
         private IPEndPoint ep;
         private TcpClient client;
@@ -64,17 +67,20 @@ namespace GUI.Communication
             {
                 while(true) //use variable to stop the loop when exit GUI?
                 {
-                    //read command (reader.Read) and invoke event
+                    string input = reader.ReadString();
+                    CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+                    CommandReceived?.Invoke(this, cmdArgs);
                 }
             }
         }
 
-        public void SendCommand()
+        public void SendCommand(CommandReceivedEventArgs cmdArgs)
         {
             using (NetworkStream stream = client.GetStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
-                //send command (writer.Write)
+                string output = JsonConvert.SerializeObject(cmdArgs);
+                writer.Write(output);
             }
         }
     }

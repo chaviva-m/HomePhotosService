@@ -1,6 +1,6 @@
 ﻿using ImageServiceProgram.Commands;
-using Communication.Infrastructure;
-using Communication.Infrastructure.Enums;
+using Communication.Commands;
+using Communication.Commands.Enums;
 using ImageServiceProgram.ImageModal;
 using System;
 using System.Collections.Generic;

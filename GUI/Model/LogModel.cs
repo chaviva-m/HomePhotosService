@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GUI.Model
 {
-    class LogModel : ILogModel
+    public class LogModel : ILogModel
     {
     }
 }

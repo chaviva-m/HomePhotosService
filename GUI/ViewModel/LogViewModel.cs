@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GUI.ViewModel
 {
-    class LogViewModel
+    public class LogViewModel
     {
     }
 }
