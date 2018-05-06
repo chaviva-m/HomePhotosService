@@ -63,7 +63,6 @@ namespace ImageServiceProgram.Communication
                         logger.Log(msg, mte);
                     }
                 }
-
             });
         }
     }

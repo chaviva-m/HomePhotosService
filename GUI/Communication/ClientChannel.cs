@@ -79,12 +79,16 @@ namespace GUI.Communication
         public void SendCommand(CommandReceivedEventArgs cmdArgs)
         {
             //might not work
-            using (NetworkStream stream = client.GetStream())
-            using (StreamWriter writer = new StreamWriter(stream))
+            Task t = new Task(() =>
             {
-                string output = JsonConvert.SerializeObject(cmdArgs);
-                writer.Write(output);
-            }
+                using (NetworkStream stream = client.GetStream())
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    string output = JsonConvert.SerializeObject(cmdArgs);
+                    writer.Write(output);
+                }
+            });
+            t.Start();
         }
     }
 }
