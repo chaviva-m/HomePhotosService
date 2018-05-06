@@ -37,6 +37,7 @@ namespace ImageServiceProgram.Service
         private IImageServiceModal imageModal;
         private IImageController controller;
         private ILoggingService logger;
+        private IClientHandler clientHandler;
         private string[] directories;
         private int serverPort = 8000;
 
@@ -99,8 +100,10 @@ namespace ImageServiceProgram.Service
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
             //create controller
             controller = new ImageController(imageModal);
+            //create client handler
+            clientHandler = new ClientHandler(controller);
             //create server and handlers for each directory in app configuration
-            imageServer = new ImageServer(controller, logger, serverPort);
+            imageServer = new ImageServer(controller, logger, serverPort, clientHandler);
             directories = ConfigurationManager.AppSettings["Handler"].Split(';');
             foreach (string directory in directories)
             {
@@ -128,7 +131,7 @@ namespace ImageServiceProgram.Service
             string[] args = { "" };
             foreach (string directory in directories)
             {
-                imageServer.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
+                imageServer.SendHandlersCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
             }           
         }
 

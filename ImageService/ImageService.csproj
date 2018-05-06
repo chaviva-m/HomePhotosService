@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />
+    <Compile Include="ImageServiceProgram\Communication\ClientHandler.cs" />
     <Compile Include="ImageServiceProgram\Communication\IClientHandler.cs" />
     <Compile Include="ImageServiceProgram\Handlers\DirectoryHandler.cs" />
     <Compile Include="ImageServiceProgram\Handlers\IDirectoryHandler.cs" />

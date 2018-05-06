@@ -65,11 +65,11 @@ namespace GUI.Communication
         private void ReadCommands()
         {
             using (NetworkStream stream = client.GetStream())
-            using (BinaryReader reader = new BinaryReader(stream))
+            using (StreamReader reader = new StreamReader(stream))
             {
                 while(true) //use variable to stop the loop when exit GUI?
                 {
-                    string input = reader.ReadString();
+                    string input = reader.ReadLine();
                     CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
                     CommandReceived?.Invoke(this, cmdArgs);
                 }
@@ -80,7 +80,7 @@ namespace GUI.Communication
         {
             //might not work
             using (NetworkStream stream = client.GetStream())
-            using (BinaryWriter writer = new BinaryWriter(stream))
+            using (StreamWriter writer = new StreamWriter(stream))
             {
                 string output = JsonConvert.SerializeObject(cmdArgs);
                 writer.Write(output);

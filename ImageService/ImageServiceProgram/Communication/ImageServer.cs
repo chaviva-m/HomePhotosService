@@ -24,6 +24,8 @@ namespace ImageServiceProgram.Communication
         private TcpListener Listener;
         private IPAddress IP;
         private int Port;
+        private IClientHandler clientHandler;
+        private List<TcpClient> clients = new List<TcpClient>();
         #endregion
 
         #region Properties
@@ -35,11 +37,16 @@ namespace ImageServiceProgram.Communication
         /// </summary>
         /// <param name="controller"> the controller</param>
         /// <param name="logger"> the logger</param>
-        public ImageServer(IImageController controller, ILoggingService logger, int port)
+        public ImageServer(IImageController controller, ILoggingService logger, int port, IClientHandler ch)
         {
             this.Controller = controller;
             this.Logger = logger;
             this.Port = port;
+            this.clientHandler = ch;
+            ch.CommandReceivedForHandlers += delegate (object sender, CommandReceivedEventArgs cmdArgs)
+            {
+                SendHandlersCommand(cmdArgs);
+            };
         }
 
         public void StartServer()
@@ -55,6 +62,8 @@ namespace ImageServiceProgram.Communication
                     try
                     {
                         TcpClient client = Listener.AcceptTcpClient();
+                        clients.Add(client);
+                        clientHandler.HandleClient(client, Logger);
                     }
                     catch (SocketException)
                     {
@@ -86,7 +95,7 @@ namespace ImageServiceProgram.Communication
         /// send a command to all handlers
         /// </summary>
         /// <param name="commandArgs">command details</param>
-        public void SendCommand(CommandReceivedEventArgs commandArgs)               
+        public void SendHandlersCommand(CommandReceivedEventArgs commandArgs)               
         {
             CommandReceived?.Invoke(this, commandArgs);
         }
@@ -101,6 +110,7 @@ namespace ImageServiceProgram.Communication
             DirectoryHandler handler = (DirectoryHandler)sender;
             handler.DirectoryClose -= onHandlerClose;
             CommandReceived -= handler.OnCommandReceived;
+            //ADD: tell all clients that handler closed
         }      
     }
 }
