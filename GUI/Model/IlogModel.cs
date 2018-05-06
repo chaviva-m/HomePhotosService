@@ -9,7 +9,7 @@ using GUI.communication;
 
 namespace GUI.Model
 {
-    public interface ILogModel
+    interface ILogModel
     {
 
         ObservableCollection<Log> LogMessages { get; set; }

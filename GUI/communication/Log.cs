@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GUI.communication
 {
-    class Log
+    public class Log
     {
         private string type;
         public string Type { get { return type; } set { type = value; } }
