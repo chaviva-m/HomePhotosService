@@ -31,7 +31,9 @@ namespace GUI.Communication
 
         private ClientChannel()
         {
-            bool connect = Connect();
+            IPAddress ip = IPAddress.Parse("127.0.0.1");    //how does he know this?
+            int port = 8000;                                //how does he know this?
+            bool connect = Connect(ip, port);
             if (!connect)
             {
                 //do something if can't connect
@@ -45,9 +47,9 @@ namespace GUI.Communication
             }
         }
 
-        private bool Connect()
+        private bool Connect(IPAddress ip, int port)
         {
-            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+            ep = new IPEndPoint(ip, port);
             client = new TcpClient();
             try
             {
@@ -76,6 +78,7 @@ namespace GUI.Communication
 
         public void SendCommand(CommandReceivedEventArgs cmdArgs)
         {
+            //might not work
             using (NetworkStream stream = client.GetStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
             {

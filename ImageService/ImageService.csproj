@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />
+    <Compile Include="ImageServiceProgram\Communication\IClientHandler.cs" />
     <Compile Include="ImageServiceProgram\Handlers\DirectoryHandler.cs" />
     <Compile Include="ImageServiceProgram\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageServiceProgram\Controller\IImageController.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="ImageServiceProgram\Service\ImageService.Designer.cs">
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageServiceProgram\Server\ImageServer.cs" />
+    <Compile Include="ImageServiceProgram\Communication\ImageServer.cs" />
     <Compile Include="ImageServiceProgram\Logging\ILoggingService.cs" />
     <Compile Include="ImageServiceProgram\Logging\LoggingService.cs" />
     <Compile Include="ImageServiceProgram\Logging\Modal\MessageReceivedEventArgs.cs" />

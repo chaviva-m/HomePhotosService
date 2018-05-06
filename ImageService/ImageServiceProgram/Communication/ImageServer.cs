@@ -10,14 +10,20 @@ using System.Threading.Tasks;
 using ImageServiceProgram.Handlers;
 using ImageServiceProgram.Event;
 using Communication.Commands;
+using System.Net;
+using System.Net.Sockets;
 
-namespace ImageServiceProgram.Server
+namespace ImageServiceProgram.Communication
 {
     public class ImageServer
     {
         #region Members
         private IImageController Controller;
         private ILoggingService Logger;
+        private IPEndPoint EP;
+        private TcpListener Listener;
+        private IPAddress IP;
+        private int Port;
         #endregion
 
         #region Properties
@@ -29,10 +35,39 @@ namespace ImageServiceProgram.Server
         /// </summary>
         /// <param name="controller"> the controller</param>
         /// <param name="logger"> the logger</param>
-        public ImageServer(IImageController controller, ILoggingService logger)
+        public ImageServer(IImageController controller, ILoggingService logger, int port)
         {
             this.Controller = controller;
             this.Logger = logger;
+            this.Port = port;
+        }
+
+        public void StartServer()
+        {
+            this.IP = IPAddress.Parse("127.0.0.1");
+            EP = new IPEndPoint(IP, Port);
+            Listener = new TcpListener(EP);
+            Listener.Start();
+            Task task = new Task(() =>
+            {
+                while(true)
+                {
+                    try
+                    {
+                        TcpClient client = Listener.AcceptTcpClient();
+                    }
+                    catch (SocketException)
+                    {
+                        break;
+                    }
+                }
+            });
+            task.Start();
+        }
+
+        public void Stop()
+        {
+            Listener.Stop();
         }
 
         /// <summary>

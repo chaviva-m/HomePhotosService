@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageServiceProgram.Controller;
-using ImageServiceProgram.Server;
+using ImageServiceProgram.Communication;
 using Communication.Commands.Enums;
 using ImageServiceProgram.Event;
 using Communication.Commands;
@@ -38,6 +38,7 @@ namespace ImageServiceProgram.Service
         private IImageController controller;
         private ILoggingService logger;
         private string[] directories;
+        private int serverPort = 8000;
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
@@ -99,12 +100,13 @@ namespace ImageServiceProgram.Service
             //create controller
             controller = new ImageController(imageModal);
             //create server and handlers for each directory in app configuration
-            imageServer = new ImageServer(controller, logger);
+            imageServer = new ImageServer(controller, logger, serverPort);
             directories = ConfigurationManager.AppSettings["Handler"].Split(';');
             foreach (string directory in directories)
             {
                 imageServer.CreateHandler(directory);
             }
+            imageServer.StartServer();
         }
 
         /// <summary>
