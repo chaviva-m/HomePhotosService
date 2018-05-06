@@ -12,11 +12,16 @@ using ImageServiceProgram.Event;
 using Communication.Commands;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
+using Newtonsoft.Json;
+using ImageServiceProgram.Logging.Modal;
 
 namespace ImageServiceProgram.Communication
 {
-    public class ImageServer
+    public class ImageServer : IImageServer
     {
+        /*Add function to remove client*/
+
         #region Members
         private IImageController Controller;
         private ILoggingService Logger;
@@ -24,6 +29,8 @@ namespace ImageServiceProgram.Communication
         private TcpListener Listener;
         private IPAddress IP;
         private int Port;
+        private IClientHandler clientHandler;
+        private List<TcpClient> clients = new List<TcpClient>();
         #endregion
 
         #region Properties
@@ -35,11 +42,17 @@ namespace ImageServiceProgram.Communication
         /// </summary>
         /// <param name="controller"> the controller</param>
         /// <param name="logger"> the logger</param>
-        public ImageServer(IImageController controller, ILoggingService logger, int port)
+        public ImageServer(IImageController controller, ILoggingService logger, int port, IClientHandler ch)
         {
             this.Controller = controller;
             this.Logger = logger;
+            logger.MessageRecieved += SendClientsLog;
             this.Port = port;
+            this.clientHandler = ch;
+            ch.CommandReceivedForHandlers += delegate (object sender, CommandReceivedEventArgs cmdArgs)
+            {
+                SendHandlersCommand(cmdArgs);
+            };
         }
 
         public void StartServer()
@@ -55,6 +68,8 @@ namespace ImageServiceProgram.Communication
                     try
                     {
                         TcpClient client = Listener.AcceptTcpClient();
+                        clients.Add(client);
+                        clientHandler.HandleClient(client, Logger);
                     }
                     catch (SocketException)
                     {
@@ -68,6 +83,41 @@ namespace ImageServiceProgram.Communication
         public void Stop()
         {
             Listener.Stop();
+        }
+
+        public void SendClientsLog(object sender, MessageReceivedEventArgs message)
+        {
+            string[] args = { message.Status.ToString(), message.Message };
+            CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.LogUpdateCommand, args, "");
+            bool result;
+            foreach (TcpClient client in clients)
+            {
+                SendClientCommand(client, cmdArgs, out result);
+            }
+        }
+
+        public string SendClientCommand(TcpClient client, CommandReceivedEventArgs Args, out bool result)
+        {
+            //task??
+            string msg;
+            using (NetworkStream stream = client.GetStream())
+            using (StreamWriter writer = new StreamWriter(stream))
+            {
+                try
+                {
+                    string output = JsonConvert.SerializeObject(Args);
+                    writer.Write(output);
+                    result = true;
+                    msg = "Sent client command: " + Args.CommandID;
+                } catch (Exception e)
+                {
+                    result = false;
+                    //maybe indicates that we should remove client from list...?
+                    msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
+                    //or: msg = "Client disconnected from server.";
+                }
+            }
+            return msg;
         }
 
         /// <summary>
@@ -86,7 +136,7 @@ namespace ImageServiceProgram.Communication
         /// send a command to all handlers
         /// </summary>
         /// <param name="commandArgs">command details</param>
-        public void SendCommand(CommandReceivedEventArgs commandArgs)   //change to SendHandlerCommand, for directory oriented commands              
+        public void SendHandlersCommand(CommandReceivedEventArgs commandArgs)               
         {
             CommandReceived?.Invoke(this, commandArgs);
         }
@@ -101,7 +151,8 @@ namespace ImageServiceProgram.Communication
             DirectoryHandler handler = (DirectoryHandler)sender;
             handler.DirectoryClose -= onHandlerClose;
             CommandReceived -= handler.OnCommandReceived;
-        }
+            //ADD: tell all clients that handler closed
+        }      
     }
 }
 

@@ -11,6 +11,5 @@ namespace ImageServiceProgram.Communication
     interface IImageServer
     {
         string SendClientCommand(TcpClient client, CommandReceivedEventArgs Args, out bool result);
-
     }
 }
