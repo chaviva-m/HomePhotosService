@@ -5,16 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.View"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        Height="500" Width="650">
 
     <StackPanel>
-        <TextBlock HorizontalAlignment="Center"
-                    Width="Auto"
-                    Text="Logs"                     
-                    FontSize="20"
-                    FontFamily="Comic Sans MS"
-                    FontWeight="Bold"
-                    Foreground="Blue" />
-
+        <TextBlock x:Name="title" FontSize="20" Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Logs</TextBlock>
+        <DataGrid Name ="logs" AutoGenerateColumns="False" ItemsSource="{Binding VM_LogMessages}">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Type}" Value="INFO" >
+                            <Setter Property="Background" Value="Green" />
+                        </DataTrigger>
+                        
+                        <DataTrigger Binding="{Binding Type}" Value="ERROR">
+                            <Setter Property="Background" Value="Red"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Type}" Value="WARNING">
+                            <Setter Property="Background" Value="Yellow"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="Auto" />
+                <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </UserControl>

@@ -35,7 +35,7 @@ namespace ImageServiceProgram.Controller
         /// <param name="args">argument</param>
         /// <param name="result">true- if successful, false otherwise</param>
         /// <returns></returns>
-        public string ExecuteCommand(int commandID, string[] args,out bool result)
+        public string ExecuteCommand(int commandID, string[] args,out bool result) 
         {
 
             Task<Tuple<bool,string>> execution = new Task< Tuple < bool,string>> (() => {

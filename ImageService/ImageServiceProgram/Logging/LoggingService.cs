@@ -10,7 +10,7 @@ namespace ImageServiceProgram.Logging
 {
     public class LoggingService : ILoggingService
     {
-        public event EventHandler<MessageReceivedEventArgs> MessageRecieved;
+        public event EventHandler<MessageReceivedEventArgs> MessageRecieved;    //server subscribes with "sendToClient" method to send new logs to client
 
         public LoggingService() {}
 

@@ -1,4 +1,5 @@
-﻿using GUI.ViewModel;
+﻿using GUI.Model;
+using GUI.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace GUI.View
         public LogView()
         {
             InitializeComponent();
-
+            DataContext = new LogViewModel(new LogModel());
         }
     }
 }
