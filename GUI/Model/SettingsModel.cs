@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GUI.Model
 {
@@ -15,7 +17,7 @@ namespace GUI.Model
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         //output directory
@@ -64,6 +66,33 @@ namespace GUI.Model
                 thumbnailSize = value;
                 OnPropertyChanged("ThumbnailSize");
             }
+        }
+
+        //directory list
+        private string dirToRemove;
+        public string DirToRemove
+        {
+            get { return dirToRemove; }
+            set
+            {
+                dirToRemove = value;
+                OnPropertyChanged("DirToRemove");
+            }
+        }
+        private ObservableCollection<string>  directories = new ObservableCollection<string>();
+        public ObservableCollection<string> Directories {
+            get { return directories; }
+            set { directories = value; }
+        }
+        //add this function in delegate to client's event
+        public void DeleteDir(string dirToRemove)       //make this private
+        {
+            directories.Remove(dirToRemove);
+        }
+        //add this function in delegate to client's event
+        public void AddDir(string dirToAdd)       //make this private
+        {
+            directories.Add(dirToAdd);
         }
     }
 }

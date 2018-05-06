@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using GUI.Model;
 using Microsoft.Practices.Prism.Commands;
@@ -15,25 +18,50 @@ namespace GUI.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand RemoveCommand { get; private set; }
+        private ISettingsModel settingsModel;
+        public ISettingsModel SettingsModel { get; set; }
 
-        public SettingsViewModel(ISettingsModel settingsModel)
+        public string VM_OutputDirectory { get { return settingsModel.OutputDirectory; } }
+        public string VM_SourceName { get { return settingsModel.SourceName; } }
+        public string VM_LogName { get { return settingsModel.LogName; } }
+        public int VM_ThumbnailSize { get { return settingsModel.ThumbnailSize; } }
+        public string VM_DirToRemove {
+            get { return settingsModel.DirToRemove; } set { settingsModel.DirToRemove = value; } }
+        public ObservableCollection<string> VM_Directories { get { return settingsModel.Directories; } }
+
+        public SettingsViewModel(ISettingsModel model)
         {
-            this.RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove);
+            RemoveCommand = new DelegateCommand<object>(this.OnRemove, this.CanRemove);
+            settingsModel = model;
+            settingsModel.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                NotifyPropertyChanged("VM_" + e.PropertyName);
+            };
+            settingsModel.AddDir("dir one");  //take this out
+            settingsModel.AddDir("dir two");  //take this out
+            settingsModel.AddDir("dir three");  //take this out
         }
 
-        private void OnRemove(object obj)
+        private void OnRemove(object sender)
         {
-            //send command through model
+            //change this to send command through model
+            settingsModel.DeleteDir(VM_DirToRemove);
         }
 
-        private bool CanRemove(object obj)
+        private bool CanRemove(object sender)
         {
-            return true;
+            if (string.IsNullOrEmpty(VM_DirToRemove))
+             {
+                 return false;
+             }
+             return true;
         }
 
         protected void NotifyPropertyChanged(string name)
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(name));
+            var command = this.RemoveCommand as DelegateCommand<object>;
+            command.RaiseCanExecuteChanged();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
