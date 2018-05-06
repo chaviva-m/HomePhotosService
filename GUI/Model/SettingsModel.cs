@@ -14,7 +14,6 @@ namespace GUI.Model
 {
     public class SettingsModel : ISettingsModel
     {
-        //need to get values from client
 
         //notify change
         public event PropertyChangedEventHandler PropertyChanged;
@@ -99,13 +98,19 @@ namespace GUI.Model
             clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetConfigCommand, args, ""));
         }        
         
-        //add this function in delegate to client's event
         private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
         {
             //set all properties to values in args from client channel
-
+            OutputDirectory = cmdArgs.Args[0];
+            SourceName = cmdArgs.Args[1];
+            LogName = cmdArgs.Args[2];
+            ThumbnailSize = Int32.Parse(cmdArgs.Args[3]);
+            for (int i = 4; cmdArgs.Args[i] != null; i++)
+            {
+                AddDir(cmdArgs.Args[i]);
+            }
         }
-        //add this function in delegate to client's event
+
         private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
         {
             if (cmdArgs.CommandID == (int)CommandEnum.CloseCommand)
@@ -120,7 +125,6 @@ namespace GUI.Model
             directories.Remove(dirToRemove);
         }
 
-        /*probably don't need this*/
         public void AddDir(string dirToAdd)       //make this private
         {
             directories.Add(dirToAdd);
