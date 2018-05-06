@@ -48,7 +48,7 @@ namespace GUI.Model
             if (cmdArgs.CommandID == (int)CommandEnum.LogUpdateCommand)
             {
                 //update log
-                Log log = new Log(cmdArgs.Args[0], cmdArgs.Args[1]);
+                Log log = new Log(cmdArgs.Args[0], cmdArgs.Args[1]); //reminder fix enum
                 AddLog(log);
             }
         }
