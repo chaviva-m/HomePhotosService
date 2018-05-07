@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ImageServiceProgram\Commands\GetConfigCommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
+    <Compile Include="ImageServiceProgram\Commands\LogHistoryCommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />
     <Compile Include="ImageServiceProgram\Communication\ClientHandler.cs" />
     <Compile Include="ImageServiceProgram\Communication\IClientHandler.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="ImageServiceProgram\ImageModal\IImageServiceModal.cs" />
     <Compile Include="ImageServiceProgram\ImageModal\ImageServiceModal.cs" />
     <Compile Include="ImageServiceProgram\Service\AppConfigData.cs" />
+    <Compile Include="ImageServiceProgram\Service\LogTracker.cs" />
     <Compile Include="ImageServiceProgram\Service\ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
