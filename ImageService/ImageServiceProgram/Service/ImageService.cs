@@ -52,8 +52,9 @@ namespace ImageServiceProgram.Service
         public ImageService()
         {
             InitializeComponent();
-            string eventSourceName = ConfigurationManager.AppSettings["SourceName"];
-            string logName = ConfigurationManager.AppSettings["LogName"];
+            AppConfigData confData = AppConfigData.Instance;
+            string eventSourceName = confData.EventSourceName;
+            string logName = confData.LogName;
             eventLog = new System.Diagnostics.EventLog();
             if (!System.Diagnostics.EventLog.SourceExists(eventSourceName))
             {
@@ -93,13 +94,16 @@ namespace ImageServiceProgram.Service
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-
+            AppConfigData confData = AppConfigData.Instance;
+            LogTracker tracker = LogTracker.Instance;
             //create logger and add OnMessage to logging event
             logger = new LoggingService();
-            logger.MessageRecieved += OnMessage;          
+            logger.MessageRecieved += OnMessage;
+            //add log to singleton logTracker, which holds logs from service startup.
+            logger.MessageRecieved += tracker.OnLog;
             //create ImageModal
-            string outputDir = ConfigurationManager.AppSettings["OutputDir"];
-            int thumbnailSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
+            string outputDir = confData.OutputDir;
+            int thumbnailSize = confData.ThumbnailSize;
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
             //create controller
             Dictionary<int, ICommand> commandDictionary= new Dictionary<int, ICommand>()          
@@ -113,7 +117,7 @@ namespace ImageServiceProgram.Service
             clientHandler = new ClientHandler(controller);
             //create server and handlers for each directory in app configuration
             imageServer = new ImageServer(controller, logger, serverPort, clientHandler);
-            directories = ConfigurationManager.AppSettings["Handler"].Split(';');
+            directories = confData.Directories;
             foreach (string directory in directories)
             {
                 imageServer.CreateHandler(directory);
@@ -141,6 +145,11 @@ namespace ImageServiceProgram.Service
             foreach (string directory in directories)
             {
                 imageServer.SendHandlersCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
+            }
+
+            //clear list of logs from singleton to clear history
+            LogTracker tracker = LogTracker.Instance;
+            tracker.ClearLogTracker();
             }
             imageServer.Stop();
         }

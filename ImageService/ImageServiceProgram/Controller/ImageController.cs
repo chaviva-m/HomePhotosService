@@ -13,19 +13,14 @@ namespace ImageServiceProgram.Controller
 {
     public class ImageController : IImageController
     {
-        private IImageServiceModal Modal;                      // The Modal Object
         private Dictionary<int, ICommand> Commands;
         /// <summary>
         /// constructor
         /// </summary>
         /// <param name="modal">image service modal</param>
-        public ImageController(IImageServiceModal modal)
+        public ImageController(Dictionary<int, ICommand> commands)
         {
-            this.Modal = modal;                    // Storing the Modal Of The System
-            Commands = new Dictionary<int, ICommand>()
-            {
-                {(int)CommandEnum.NewFileCommand, new NewFileCommand(this.Modal) }
-            };
+            this.Commands = commands;
         }
 
         /// <summary>

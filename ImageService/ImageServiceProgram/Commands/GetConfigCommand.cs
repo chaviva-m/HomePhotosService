@@ -2,6 +2,7 @@
 using Communication.Commands.Enums;
 using ImageServiceProgram.TcpServer;
 using ImageServiceProgram.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
