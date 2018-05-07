@@ -1,8 +1,8 @@
 ﻿using Communication.Commands;
 using Communication.Commands.Enums;
-using ImageServiceProgram.Communication;
 using ImageServiceProgram.Logging.Modal;
 using ImageServiceProgram.Service;
+using ImageServiceProgram.TcpServer;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -150,7 +150,6 @@ namespace ImageServiceProgram.Service
             //clear list of logs from singleton to clear history
             LogTracker tracker = LogTracker.Instance;
             tracker.ClearLogTracker();
-            }
             imageServer.Stop();
         }
 
