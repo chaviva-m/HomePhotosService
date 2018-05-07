@@ -15,8 +15,9 @@ using System.Net.Sockets;
 using System.IO;
 using Newtonsoft.Json;
 using ImageServiceProgram.Logging.Modal;
+using System.Diagnostics;
 
-namespace ImageServiceProgram.Communication
+namespace ImageServiceProgram.TcpServer
 {
     public class ImageServer : IImageServer
     {
@@ -31,6 +32,7 @@ namespace ImageServiceProgram.Communication
         private int Port;
         private IClientHandler clientHandler;
         private List<TcpClient> clients = new List<TcpClient>();
+        private bool stop;
         #endregion
 
         #region Properties
@@ -46,7 +48,7 @@ namespace ImageServiceProgram.Communication
         {
             this.Controller = controller;
             this.Logger = logger;
-            logger.MessageRecieved += SendClientsLog;
+            Logger.MessageRecieved += SendClientsLog;
             this.Port = port;
             this.clientHandler = ch;
             ch.CommandReceivedForHandlers += delegate (object sender, CommandReceivedEventArgs cmdArgs)
@@ -57,13 +59,14 @@ namespace ImageServiceProgram.Communication
 
         public void StartServer()
         {
+            stop = false;
             this.IP = IPAddress.Parse("127.0.0.1");
             EP = new IPEndPoint(IP, Port);
             Listener = new TcpListener(EP);
             Listener.Start();
             Task task = new Task(() =>
             {
-                while(true)
+                while(!stop)
                 {
                     try
                     {
@@ -82,7 +85,9 @@ namespace ImageServiceProgram.Communication
 
         public void Stop()
         {
+            stop = true;
             Listener.Stop();
+            /*close reader and writer? (save them as members) / might be able to leave them inside using*/
         }
 
         public void SendClientsLog(object sender, MessageReceivedEventArgs message)
@@ -99,6 +104,9 @@ namespace ImageServiceProgram.Communication
         public string SendClientCommand(TcpClient client, CommandReceivedEventArgs Args, out bool result)
         {
             //task??
+
+            //take out of using?
+
             string msg;
             using (NetworkStream stream = client.GetStream())
             using (StreamWriter writer = new StreamWriter(stream))
@@ -106,7 +114,9 @@ namespace ImageServiceProgram.Communication
                 try
                 {
                     string output = JsonConvert.SerializeObject(Args);
+                    Debug.WriteLine("want to send client\n" + output);
                     writer.Write(output);
+                    Debug.WriteLine("sent client the output");
                     result = true;
                     msg = "Sent client command: " + Args.CommandID;
                 } catch (Exception e)

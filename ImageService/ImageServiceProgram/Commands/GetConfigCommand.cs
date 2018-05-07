@@ -1,6 +1,6 @@
 ﻿using Communication.Commands;
 using Communication.Commands.Enums;
-using ImageServiceProgram.Communication;
+using ImageServiceProgram.TcpServer;
 using ImageServiceProgram.Service;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ImageServiceProgram.Commands
 {

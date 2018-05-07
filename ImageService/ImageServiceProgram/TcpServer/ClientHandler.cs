@@ -5,13 +5,14 @@ using ImageServiceProgram.Logging.Modal;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageServiceProgram.Communication
+namespace ImageServiceProgram.TcpServer
 {
     public class ClientHandler : IClientHandler
     {
@@ -25,7 +26,7 @@ namespace ImageServiceProgram.Communication
 
         public void HandleClient(TcpClient client, ILoggingService logger)
         {
-            new Task(() =>
+            Task task = new Task(() =>
             {
                 using (NetworkStream stream = client.GetStream())
                 using (StreamReader reader = new StreamReader(stream))
@@ -33,7 +34,7 @@ namespace ImageServiceProgram.Communication
                     //read command input from client
                     string input = reader.ReadLine();
                     CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
-                    
+                    Debug.WriteLine("got fom client\n" + cmdArgs);
                     //add client (serialized) to end of args
                     string[] argsArr = cmdArgs.Args;
                     Array.Resize(ref argsArr, cmdArgs.Args.Length + 1);
@@ -64,6 +65,7 @@ namespace ImageServiceProgram.Communication
                     }
                 }
             });
+            task.Start();
         }
     }
 }

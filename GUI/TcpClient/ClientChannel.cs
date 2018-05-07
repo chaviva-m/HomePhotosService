@@ -11,7 +11,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUI.Communication
+namespace GUI.TcpClient
 {
     public sealed class ClientChannel
     {
@@ -21,7 +21,7 @@ namespace GUI.Communication
         public event EventHandler<CommandReceivedEventArgs> CommandReceived;
 
         private IPEndPoint ep;
-        private TcpClient client;
+        private System.Net.Sockets.TcpClient client;
 
         private static readonly ClientChannel instance = new ClientChannel();
         public static ClientChannel Instance
@@ -41,6 +41,7 @@ namespace GUI.Communication
             {
                 Task t = new Task(() =>
                 {
+                    Debug.WriteLine("will now read commands in infinite lopp");
                     ReadCommands();
                 });
                 t.Start();
@@ -50,10 +51,11 @@ namespace GUI.Communication
         private bool Connect(IPAddress ip, int port)
         {
             ep = new IPEndPoint(ip, port);
-            client = new TcpClient();
+            client = new System.Net.Sockets.TcpClient();
             try
             {
                 client.Connect(ep);
+                Debug.WriteLine("connected to server. ");
                 return true;
             } catch (Exception e)
             {
@@ -64,7 +66,20 @@ namespace GUI.Communication
        
         private void ReadCommands()
         {
-            using (NetworkStream stream = client.GetStream())
+            /*add try catch?*/
+
+            NetworkStream stream = client.GetStream();
+            StreamReader reader = new StreamReader(stream);
+            while (true) //use variable to stop the loop when exit GUI?
+            {
+                string input = reader.ReadLine();
+                CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+                CommandReceived?.Invoke(this, cmdArgs);
+            }
+
+            /*close client socket*/
+
+            /*using (NetworkStream stream = client.GetStream())
             using (StreamReader reader = new StreamReader(stream))
             {
                 while(true) //use variable to stop the loop when exit GUI?
@@ -73,20 +88,28 @@ namespace GUI.Communication
                     CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
                     CommandReceived?.Invoke(this, cmdArgs);
                 }
-            }
+            }*/
         }
 
         public void SendCommand(CommandReceivedEventArgs cmdArgs)
         {
-            //might not work
             Task t = new Task(() =>
             {
-                using (NetworkStream stream = client.GetStream())
+                /*try catch?*/
+
+                NetworkStream stream = client.GetStream();
+                StreamWriter writer = new StreamWriter(stream);
+                string output = JsonConvert.SerializeObject(cmdArgs);
+
+                Debug.WriteLine("sending server\n" + output);
+
+                writer.Write(output);
+                /*using (NetworkStream stream = client.GetStream())
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     string output = JsonConvert.SerializeObject(cmdArgs);
                     writer.Write(output);
-                }
+                }*/
             });
             t.Start();
         }

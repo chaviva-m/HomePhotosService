@@ -1,7 +1,7 @@
 ﻿using Communication.Commands;
 using Communication.Commands.Enums;
 using GUI.communication;
-using GUI.Communication;
+using GUI.TcpClient;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -13,10 +13,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageServiceProgram.Controller;
-using ImageServiceProgram.Communication;
+using ImageServiceProgram.TcpServer;
 using Communication.Commands.Enums;
 using ImageServiceProgram.Event;
 using Communication.Commands;
+using ImageServiceProgram.Commands;
 
 namespace ImageServiceProgram.Service
 {
@@ -81,6 +82,8 @@ namespace ImageServiceProgram.Service
         /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
+            //System.Diagnostics.Debugger.Launch();
+
             // Update the service state to Start Pending.   
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
@@ -99,7 +102,13 @@ namespace ImageServiceProgram.Service
             int thumbnailSize = Int32.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
             //create controller
-            controller = new ImageController(imageModal);
+            Dictionary<int, ICommand> commandDictionary= new Dictionary<int, ICommand>()          
+            {
+                { (int)CommandEnum.NewFileCommand, new NewFileCommand(imageModal)  },
+                { (int)CommandEnum.GetConfigCommand, new GetConfigCommand(imageServer)}
+                //log command
+            };
+            controller = new ImageController(commandDictionary);
             //create client handler
             clientHandler = new ClientHandler(controller);
             //create server and handlers for each directory in app configuration
@@ -132,7 +141,8 @@ namespace ImageServiceProgram.Service
             foreach (string directory in directories)
             {
                 imageServer.SendHandlersCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
-            }           
+            }
+            imageServer.Stop();
         }
 
 

@@ -1,10 +1,11 @@
 ﻿using Communication.Commands;
 using Communication.Commands.Enums;
-using GUI.Communication;
+using GUI.TcpClient;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace GUI.Model
         }
 
         //output directory
-        private string outputDirectory = "outputDir"; //change this
+        private string outputDirectory;// = "outputDir"; //change this
         public string OutputDirectory
         {
             get { return outputDirectory; }
@@ -35,7 +36,7 @@ namespace GUI.Model
         }
 
         //source name
-        private string sourceName = "src"; //change this
+        private string sourceName;// = "src"; //change this
         public string SourceName
         {
             get { return sourceName; }
@@ -47,7 +48,7 @@ namespace GUI.Model
         }
 
         //log name
-        private string logName = "log"; //change this
+        private string logName;// = "log"; //change this
         public string LogName
         {
             get { return logName; }
@@ -59,7 +60,7 @@ namespace GUI.Model
         }
 
         //thumbnail size
-        private int thumbnailSize = 120; //change this
+        private int thumbnailSize;// = 120; //change this
         public int ThumbnailSize
         {
             get { return thumbnailSize; }
@@ -94,12 +95,21 @@ namespace GUI.Model
             clientChannel.CommandReceived += GetAppConfig;
             clientChannel.CommandReceived += DeleteDir;
             //request app config settings
+
+            Debug.WriteLine("sending command to get app config args");
+
             string[] args = { "" };
             clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetConfigCommand, args, ""));
         }        
         
         private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
-        {
+        { 
+            if (cmdArgs.CommandID != (int)CommandEnum.GetConfigCommand)
+            {
+                Debug.WriteLine("in getAppConfig: not relevant command");
+                return;
+            }
+
             //set all properties to values in args from client channel
             OutputDirectory = cmdArgs.Args[0];
             SourceName = cmdArgs.Args[1];
@@ -109,6 +119,7 @@ namespace GUI.Model
             {
                 AddDir(cmdArgs.Args[i]);
             }
+            Debug.WriteLine("got config from server");
         }
 
         private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
