@@ -106,11 +106,11 @@ namespace ImageServiceProgram.Service
             int thumbnailSize = confData.ThumbnailSize;
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
             //create controller
-            Dictionary<int, ICommand> commandDictionary= new Dictionary<int, ICommand>()          
+            Dictionary<int, ICommand> commandDictionary = new Dictionary<int, ICommand>()
             {
                 { (int)CommandEnum.NewFileCommand, new NewFileCommand(imageModal)  },
-                { (int)CommandEnum.GetConfigCommand, new GetConfigCommand(imageServer)}
-                //log command
+                { (int)CommandEnum.GetConfigCommand, new GetConfigCommand(imageServer)},
+                { (int)CommandEnum.LogHistoryCommand, new LogHistoryCommand(imageServer)}
             };
             controller = new ImageController(commandDictionary);
             //create client handler
