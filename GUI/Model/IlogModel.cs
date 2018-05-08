@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using GUI.communication;
+using GUI.TcpClient;
 
 namespace GUI.Model
 {

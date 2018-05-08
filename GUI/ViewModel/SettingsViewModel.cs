@@ -37,9 +37,9 @@ namespace GUI.ViewModel
             {
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
-            settingsModel.AddDir("dir one");  //take this out
-            settingsModel.AddDir("dir two");  //take this out
-            settingsModel.AddDir("dir three");  //take this out
+            //settingsModel.AddDir("dir one");  //take this out
+            //settingsModel.AddDir("dir two");  //take this out
+            //settingsModel.AddDir("dir three");  //take this out
         }
 
         private void OnRemove(object sender)

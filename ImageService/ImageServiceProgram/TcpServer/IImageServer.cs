@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,6 @@ namespace ImageServiceProgram.TcpServer
 {
     interface IImageServer
     {
-        string SendClientCommand(TcpClient client, CommandReceivedEventArgs Args, out bool result);
+        string SendClientCommand(IPAddress clientIP, CommandReceivedEventArgs Args, out bool result);
     }
 }

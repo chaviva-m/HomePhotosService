@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,10 +44,9 @@ namespace ImageServiceProgram.Commands
                 data.Add(message);
 
             }
-            TcpClient client = JsonConvert.DeserializeObject<TcpClient>(args[0]);
             int id = (int)CommandEnum.LogHistoryCommand;
             CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, data.ToArray(), requestDirPath);
-            return server.SendClientCommand(client, arg, out result);
+            return server.SendClientCommand(IPAddress.Parse(args[1]), arg, out result);
 
         }
 

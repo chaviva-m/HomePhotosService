@@ -105,7 +105,9 @@ namespace ImageServiceProgram.Service
             string outputDir = confData.OutputDir;
             int thumbnailSize = confData.ThumbnailSize;
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
-            //create controller
+            //create controller and server and client handler
+            clientHandler = new ClientHandler();
+            imageServer = new ImageServer(logger, serverPort, clientHandler);
             Dictionary<int, ICommand> commandDictionary = new Dictionary<int, ICommand>()
             {
                 { (int)CommandEnum.NewFileCommand, new NewFileCommand(imageModal)  },
@@ -113,10 +115,9 @@ namespace ImageServiceProgram.Service
                 { (int)CommandEnum.LogHistoryCommand, new LogHistoryCommand(imageServer)}
             };
             controller = new ImageController(commandDictionary);
-            //create client handler
-            clientHandler = new ClientHandler(controller);
-            //create server and handlers for each directory in app configuration
-            imageServer = new ImageServer(controller, logger, serverPort, clientHandler);
+            imageServer.Controller = controller;
+            clientHandler.Controller = controller;
+            //add handlers for each directory in app configuration
             directories = confData.Directories;
             foreach (string directory in directories)
             {

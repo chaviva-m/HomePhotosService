@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using GUI.communication;
+using GUI.TcpClient;
 
 namespace GUI.ViewModel
 {
@@ -20,7 +20,7 @@ namespace GUI.ViewModel
         public LogViewModel(ILogModel model)
         {
             logModel = model;
-            model.AddLog(new Log("INFO", "opened new dir"));
+            //model.AddLog(new Log("INFO", "opened new dir"));
             
             
         }

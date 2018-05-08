@@ -115,7 +115,7 @@ namespace GUI.Model
             SourceName = cmdArgs.Args[1];
             LogName = cmdArgs.Args[2];
             ThumbnailSize = Int32.Parse(cmdArgs.Args[3]);
-            for (int i = 4; cmdArgs.Args[i] != null; i++)
+            for (int i = 4; i < cmdArgs.Args.Length; i++)
             {
                 AddDir(cmdArgs.Args[i]);
             }

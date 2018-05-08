@@ -41,8 +41,10 @@ namespace GUI.TcpClient
             {
                 Task t = new Task(() =>
                 {
+                    Debug.WriteLine("started task " + Task.CurrentId);
                     Debug.WriteLine("will now read commands in infinite lopp");
                     ReadCommands();
+                    Debug.WriteLine("exited read commands. finished task " + Task.CurrentId);
                 });
                 t.Start();
             }
@@ -69,14 +71,20 @@ namespace GUI.TcpClient
             /*add try catch?*/
 
             NetworkStream stream = client.GetStream();
-            StreamReader reader = new StreamReader(stream);
+            BinaryReader reader = new BinaryReader(stream);
             while (true) //use variable to stop the loop when exit GUI?
             {
-                string input = reader.ReadLine();
-                CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
-                CommandReceived?.Invoke(this, cmdArgs);
+                try
+                {
+                    string input = reader.ReadString();
+                    CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+                    CommandReceived?.Invoke(this, cmdArgs);
+                } catch(Exception e)
+                {
+                    Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
+                }
             }
-
+            //reader.Dispose();
             /*close client socket*/
 
             /*using (NetworkStream stream = client.GetStream())
@@ -96,20 +104,28 @@ namespace GUI.TcpClient
             Task t = new Task(() =>
             {
                 /*try catch?*/
+                Debug.WriteLine("started task " + Task.CurrentId);
 
                 NetworkStream stream = client.GetStream();
-                StreamWriter writer = new StreamWriter(stream);
+                BinaryWriter writer = new BinaryWriter(stream);
                 string output = JsonConvert.SerializeObject(cmdArgs);
 
                 Debug.WriteLine("sending server\n" + output);
-
-                writer.Write(output);
+                try
+                {
+                    writer.Write(output);
+                } catch(Exception e)
+                {
+                    Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
+                }
+                //writer.Dispose();
                 /*using (NetworkStream stream = client.GetStream())
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     string output = JsonConvert.SerializeObject(cmdArgs);
                     writer.Write(output);
                 }*/
+                Debug.WriteLine("finished task " + Task.CurrentId);
             });
             t.Start();
         }

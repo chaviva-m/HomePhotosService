@@ -24,14 +24,18 @@ namespace ImageServiceProgram.TcpServer
         /*Add function to remove client*/
 
         #region Members
-        private IImageController Controller;
+        private IImageController controller;
+        public IImageController Controller
+        {
+            set { controller = value; }
+        }
         private ILoggingService Logger;
         private IPEndPoint EP;
         private TcpListener Listener;
         private IPAddress IP;
         private int Port;
         private IClientHandler clientHandler;
-        private List<TcpClient> clients = new List<TcpClient>();
+        private Dictionary<IPAddress, TcpClient> clients = new Dictionary<IPAddress, TcpClient>();
         private bool stop;
         #endregion
 
@@ -44,9 +48,8 @@ namespace ImageServiceProgram.TcpServer
         /// </summary>
         /// <param name="controller"> the controller</param>
         /// <param name="logger"> the logger</param>
-        public ImageServer(IImageController controller, ILoggingService logger, int port, IClientHandler ch)
+        public ImageServer(ILoggingService logger, int port, IClientHandler ch)
         {
-            this.Controller = controller;
             this.Logger = logger;
             Logger.MessageRecieved += SendClientsLog;
             this.Port = port;
@@ -71,7 +74,9 @@ namespace ImageServiceProgram.TcpServer
                     try
                     {
                         TcpClient client = Listener.AcceptTcpClient();
-                        clients.Add(client);
+                        Debug.WriteLine("got a client");
+                        IPEndPoint ipend = client.Client.RemoteEndPoint as IPEndPoint;
+                        clients.Add(ipend.Address, client);
                         clientHandler.HandleClient(client, Logger);
                     }
                     catch (SocketException)
@@ -95,20 +100,41 @@ namespace ImageServiceProgram.TcpServer
             string[] args = { message.Status.ToString(), message.Message };
             CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.LogUpdateCommand, args, "");
             bool result;
-            foreach (TcpClient client in clients)
+            foreach (IPAddress ipadd in clients.Keys)
             {
-                SendClientCommand(client, cmdArgs, out result);
+                SendClientCommand(ipadd, cmdArgs, out result);
             }
         }
 
-        public string SendClientCommand(TcpClient client, CommandReceivedEventArgs Args, out bool result)
+        public string SendClientCommand(IPAddress clientIP, CommandReceivedEventArgs Args, out bool result)
         {
             //task??
 
             //take out of using?
 
             string msg;
-            using (NetworkStream stream = client.GetStream())
+
+                NetworkStream stream = clients[clientIP].GetStream();
+                BinaryWriter writer = new BinaryWriter(stream);
+
+                try
+                {
+                    string output = JsonConvert.SerializeObject(Args);
+                    Debug.WriteLine("want to send client\n" + output);
+                    writer.Write(output);
+                    Debug.WriteLine("sent client the output");
+                    result = true;
+                    msg = "Sent client command: " + Args.CommandID;
+                }
+                catch (Exception e)
+                {
+                    result = false;
+                    //maybe indicates that we should remove client from list...?
+                    msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
+                    //or: msg = "Client disconnected from server.";
+                }
+
+            /*using (NetworkStream stream = client.GetStream())
             using (StreamWriter writer = new StreamWriter(stream))
             {
                 try
@@ -126,7 +152,7 @@ namespace ImageServiceProgram.TcpServer
                     msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
                     //or: msg = "Client disconnected from server.";
                 }
-            }
+            }*/
             return msg;
         }
 
@@ -136,7 +162,7 @@ namespace ImageServiceProgram.TcpServer
         /// <param name="directory">the directory the handler will operate on</param>
         public void CreateHandler(string directory)
         {
-            IDirectoryHandler handler = new DirectoryHandler(Controller, Logger);
+            IDirectoryHandler handler = new DirectoryHandler(controller, Logger);
             CommandReceived += handler.OnCommandReceived;
             handler.DirectoryClose += onHandlerClose;
             handler.StartHandleDirectory(directory);

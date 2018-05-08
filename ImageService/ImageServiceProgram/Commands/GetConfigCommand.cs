@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Net;
 
 namespace ImageServiceProgram.Commands
 {
@@ -26,7 +26,6 @@ namespace ImageServiceProgram.Commands
         public string Execute(string[] args, out bool result)
         {
             AppConfigData confData = AppConfigData.Instance;
-            TcpClient client = JsonConvert.DeserializeObject<TcpClient>(args[0]);
             int id = (int)CommandEnum.GetConfigCommand;
             string RequestDirPath = "";
             List<string> data = new List<string>();
@@ -39,8 +38,7 @@ namespace ImageServiceProgram.Commands
             dat.CopyTo(conf, 0);
             confData.Directories.CopyTo(conf, dat.Length);
             CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, conf, RequestDirPath);
-            return server.SendClientCommand(client, arg,out result);
-
+            return server.SendClientCommand(IPAddress.Parse(args[1]), arg,out result);
 
         }
     }
