@@ -22,7 +22,8 @@ namespace GUI.Model
             //add methods to client channel's event
             clientChannel.CommandReceived += GetLogHistory;
             clientChannel.CommandReceived += GetLogUpdate;
-            //request app config settings
+            //request log history
+            Debug.WriteLine("sending command to get log history");
             string[] args = { "" };
             clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.LogHistoryCommand, args, ""));
         }

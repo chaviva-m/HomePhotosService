@@ -16,6 +16,7 @@ using System.IO;
 using Newtonsoft.Json;
 using ImageServiceProgram.Logging.Modal;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ImageServiceProgram.TcpServer
 {
@@ -35,8 +36,10 @@ namespace ImageServiceProgram.TcpServer
         private IPAddress IP;
         private int Port;
         private IClientHandler clientHandler;
-        private Dictionary<IPAddress, TcpClient> clients = new Dictionary<IPAddress, TcpClient>();
+        private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
         private bool stop;
+        private int lastClientID;
+        private static readonly Mutex mutex = new Mutex();
         #endregion
 
         #region Properties
@@ -63,6 +66,7 @@ namespace ImageServiceProgram.TcpServer
         public void StartServer()
         {
             stop = false;
+            lastClientID = 0;
             this.IP = IPAddress.Parse("127.0.0.1");
             EP = new IPEndPoint(IP, Port);
             Listener = new TcpListener(EP);
@@ -75,9 +79,9 @@ namespace ImageServiceProgram.TcpServer
                     {
                         TcpClient client = Listener.AcceptTcpClient();
                         Debug.WriteLine("got a client");
-                        IPEndPoint ipend = client.Client.RemoteEndPoint as IPEndPoint;
-                        clients.Add(ipend.Address, client);
-                        clientHandler.HandleClient(client, Logger);
+                        lastClientID += 1;
+                        clients.Add(lastClientID, client);
+                        clientHandler.HandleClient(client, lastClientID, Logger, mutex);
                     }
                     catch (SocketException)
                     {
@@ -92,7 +96,11 @@ namespace ImageServiceProgram.TcpServer
         {
             stop = true;
             Listener.Stop();
-            /*close reader and writer? (save them as members) / might be able to leave them inside using*/
+            //close all clients
+            foreach (TcpClient client in clients.Values)
+            {
+                client.Close();
+            }
         }
 
         public void SendClientsLog(object sender, MessageReceivedEventArgs message)
@@ -100,59 +108,39 @@ namespace ImageServiceProgram.TcpServer
             string[] args = { message.Status.ToString(), message.Message };
             CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.LogUpdateCommand, args, "");
             bool result;
-            foreach (IPAddress ipadd in clients.Keys)
+            foreach (int id in clients.Keys)
             {
-                SendClientCommand(ipadd, cmdArgs, out result);
+                SendClientCommand(id, cmdArgs, out result);
             }
         }
 
-        public string SendClientCommand(IPAddress clientIP, CommandReceivedEventArgs Args, out bool result)
+        public string SendClientCommand(int id, CommandReceivedEventArgs Args, out bool result)
         {
             //task??
-
-            //take out of using?
-
             string msg;
 
-                NetworkStream stream = clients[clientIP].GetStream();
+                NetworkStream stream = clients[id].GetStream();
                 BinaryWriter writer = new BinaryWriter(stream);
 
                 try
                 {
                     string output = JsonConvert.SerializeObject(Args);
                     Debug.WriteLine("want to send client\n" + output);
+                    mutex.WaitOne();
                     writer.Write(output);
+                    mutex.ReleaseMutex();
                     Debug.WriteLine("sent client the output");
                     result = true;
                     msg = "Sent client command: " + Args.CommandID;
                 }
                 catch (Exception e)
                 {
+                    mutex.ReleaseMutex();
                     result = false;
                     //maybe indicates that we should remove client from list...?
                     msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
                     //or: msg = "Client disconnected from server.";
                 }
-
-            /*using (NetworkStream stream = client.GetStream())
-            using (StreamWriter writer = new StreamWriter(stream))
-            {
-                try
-                {
-                    string output = JsonConvert.SerializeObject(Args);
-                    Debug.WriteLine("want to send client\n" + output);
-                    writer.Write(output);
-                    Debug.WriteLine("sent client the output");
-                    result = true;
-                    msg = "Sent client command: " + Args.CommandID;
-                } catch (Exception e)
-                {
-                    result = false;
-                    //maybe indicates that we should remove client from list...?
-                    msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
-                    //or: msg = "Client disconnected from server.";
-                }
-            }*/
             return msg;
         }
 

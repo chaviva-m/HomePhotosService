@@ -8,7 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Communication.Commands;
+using Communication.Commands.Enums;
 using GUI.Model;
+using GUI.TcpClient;
 using Microsoft.Practices.Prism.Commands;
 
 
@@ -44,8 +47,9 @@ namespace GUI.ViewModel
 
         private void OnRemove(object sender)
         {
-            //change this to send command through model
-            settingsModel.DeleteDir(VM_DirToRemove);
+            ClientChannel channel = ClientChannel.Instance;
+            string[] args = { "" };
+            channel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, VM_DirToRemove));
         }
 
         private bool CanRemove(object sender)

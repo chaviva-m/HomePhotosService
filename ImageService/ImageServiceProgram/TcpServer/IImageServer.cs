@@ -11,6 +11,6 @@ namespace ImageServiceProgram.TcpServer
 {
     interface IImageServer
     {
-        string SendClientCommand(IPAddress clientIP, CommandReceivedEventArgs Args, out bool result);
+        string SendClientCommand(int id, CommandReceivedEventArgs Args, out bool result);
     }
 }

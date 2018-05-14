@@ -38,7 +38,7 @@ namespace ImageServiceProgram.Commands
             dat.CopyTo(conf, 0);
             confData.Directories.CopyTo(conf, dat.Length);
             CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, conf, RequestDirPath);
-            return server.SendClientCommand(IPAddress.Parse(args[1]), arg,out result);
+            return server.SendClientCommand(int.Parse(args[1]), arg,out result);
 
         }
     }

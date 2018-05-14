@@ -46,7 +46,7 @@ namespace ImageServiceProgram.Commands
             }
             int id = (int)CommandEnum.LogHistoryCommand;
             CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, data.ToArray(), requestDirPath);
-            return server.SendClientCommand(IPAddress.Parse(args[1]), arg, out result);
+            return server.SendClientCommand(int.Parse(args[1]), arg, out result);
 
         }
 

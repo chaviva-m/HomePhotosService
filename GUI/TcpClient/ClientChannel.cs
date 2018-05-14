@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GUI.TcpClient
@@ -22,6 +23,13 @@ namespace GUI.TcpClient
 
         private IPEndPoint ep;
         private System.Net.Sockets.TcpClient client;
+        private bool stop;
+        private NetworkStream streamReader;
+        private BinaryReader reader;
+        private NetworkStream streamWriter;
+        private BinaryWriter writer;
+        private static readonly Mutex mutex = new Mutex();
+
 
         private static readonly ClientChannel instance = new ClientChannel();
         public static ClientChannel Instance
@@ -39,12 +47,15 @@ namespace GUI.TcpClient
                 //do something if can't connect
             } else
             {
+                //open writer stream
+                streamWriter = client.GetStream();
+                writer = new BinaryWriter(streamWriter);
+                //read commands
                 Task t = new Task(() =>
                 {
-                    Debug.WriteLine("started task " + Task.CurrentId);
                     Debug.WriteLine("will now read commands in infinite lopp");
                     ReadCommands();
-                    Debug.WriteLine("exited read commands. finished task " + Task.CurrentId);
+                    Debug.WriteLine("exited read command");
                 });
                 t.Start();
             }
@@ -69,65 +80,67 @@ namespace GUI.TcpClient
         private void ReadCommands()
         {
             /*add try catch?*/
-
-            NetworkStream stream = client.GetStream();
-            BinaryReader reader = new BinaryReader(stream);
-            while (true) //use variable to stop the loop when exit GUI?
+            stop = false;
+            streamReader = client.GetStream();
+            reader = new BinaryReader(streamReader);
+            while (!stop) //use variable to stop the loop when exit GUI?
             {
                 try
                 {
+                    mutex.WaitOne();
                     string input = reader.ReadString();
-                    CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
-                    CommandReceived?.Invoke(this, cmdArgs);
+                    mutex.ReleaseMutex();
+                    DispatchCommand(input);
                 } catch(Exception e)
                 {
+                    mutex.ReleaseMutex();
+                    OnStop();
                     Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
                 }
             }
-            //reader.Dispose();
-            /*close client socket*/
-
-            /*using (NetworkStream stream = client.GetStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                while(true) //use variable to stop the loop when exit GUI?
-                {
-                    string input = reader.ReadLine();
-                    CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
-                    CommandReceived?.Invoke(this, cmdArgs);
-                }
-            }*/
         }
 
         public void SendCommand(CommandReceivedEventArgs cmdArgs)
         {
             Task t = new Task(() =>
             {
-                /*try catch?*/
-                Debug.WriteLine("started task " + Task.CurrentId);
+                Debug.WriteLine("Client channel: SendCommand. Started task " + Task.CurrentId);
 
-                NetworkStream stream = client.GetStream();
-                BinaryWriter writer = new BinaryWriter(stream);
                 string output = JsonConvert.SerializeObject(cmdArgs);
-
                 Debug.WriteLine("sending server\n" + output);
                 try
                 {
+                    mutex.WaitOne();
                     writer.Write(output);
+                    mutex.ReleaseMutex();
                 } catch(Exception e)
                 {
+                    mutex.ReleaseMutex();
                     Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
                 }
-                //writer.Dispose();
-                /*using (NetworkStream stream = client.GetStream())
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    string output = JsonConvert.SerializeObject(cmdArgs);
-                    writer.Write(output);
-                }*/
-                Debug.WriteLine("finished task " + Task.CurrentId);
+                Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
             });
             t.Start();
+        }
+
+        private void DispatchCommand(string input)
+        {
+            //the data in the view is created on UI thread, therefore we can only modify it from the UI thread.
+            //we put the delegate on UI Dispatcher and that will do work for us delegating it to UI thread.
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+                CommandReceived?.Invoke(this, cmdArgs);
+            });
+        }
+
+        private void OnStop()
+        {
+            stop = true;
+            reader.Close();
+            streamReader.Close();
+            writer.Close();
+            streamWriter.Close();
         }
     }
 }

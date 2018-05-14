@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ImageServiceProgram.TcpServer
@@ -14,6 +15,6 @@ namespace ImageServiceProgram.TcpServer
     {
         IImageController Controller { set; }
         event EventHandler<CommandReceivedEventArgs> CommandReceivedForHandlers;
-        void HandleClient(TcpClient client, ILoggingService logger);
+        void HandleClient(TcpClient client, int clientID, ILoggingService logger, Mutex mutex);
     }
 }

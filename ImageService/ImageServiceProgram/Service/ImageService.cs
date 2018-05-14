@@ -90,7 +90,6 @@ namespace ImageServiceProgram.Service
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-            eventLog.WriteEntry("In OnStart");
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
@@ -101,6 +100,7 @@ namespace ImageServiceProgram.Service
             logger.MessageRecieved += OnMessage;
             //add log to singleton logTracker, which holds logs from service startup.
             logger.MessageRecieved += tracker.OnLog;
+            logger.Log("In OnStart", MessageTypeEnum.INFO);
             //create ImageModal
             string outputDir = confData.OutputDir;
             int thumbnailSize = confData.ThumbnailSize;
@@ -137,7 +137,7 @@ namespace ImageServiceProgram.Service
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            eventLog.WriteEntry("In OnStop.");
+            logger.Log("In OnStop.", MessageTypeEnum.INFO);
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
