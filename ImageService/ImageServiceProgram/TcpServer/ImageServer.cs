@@ -39,7 +39,7 @@ namespace ImageServiceProgram.TcpServer
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
         private bool stop;
         private int lastClientID;
-        private static readonly Mutex mutex = new Mutex();
+        private static readonly Mutex mutex = new Mutex(true,"mutex");
         #endregion
 
         #region Properties
@@ -126,20 +126,23 @@ namespace ImageServiceProgram.TcpServer
                 {
                     string output = JsonConvert.SerializeObject(Args);
                     Debug.WriteLine("want to send client\n" + output);
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     writer.Write(output);
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     Debug.WriteLine("sent client the output");
                     result = true;
                     msg = "Sent client command: " + Args.CommandID;
                 }
                 catch (Exception e)
                 {
-                    mutex.ReleaseMutex();
+                    
                     result = false;
                     //maybe indicates that we should remove client from list...?
                     msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
                     //or: msg = "Client disconnected from server.";
+                } finally
+                {
+                //mutex.ReleaseMutex();
                 }
             return msg;
         }
@@ -180,27 +183,3 @@ namespace ImageServiceProgram.TcpServer
     }
 }
 
-    //PASS CommandReceivedEventArgs to new project and make serialiazable
-    //open thread always listening to clients(connect/listen)
-    //if client connects-add to client list and open new thread to carry out client request (CommandReceivedEventArgs)
-    //for all commands received by server: check if has path- if yes:  invoke sendHandlerCommand (pass to handlers) , if not - to controller via new method sendControllerCommand
-    //make SendCLientLog(object sender, messageReceivedEventArgs mr) translates it into CommandReceivedEventArgs and send to generic SendClientCommand(int clientid,CommandReceivedEventArgs cr) .
-    //service makes dictionary with:
-    //new file commandCommand(ImageModal)
-
-    //logCommand (hold server) -gets  list of log history from the singelton which holds a list of
-    //MessageReceivedEventArgs and iterates over list sending each one to sendClientLog by invoking 
-    //SendCLientLog from server (extracts client id from the end of the list)
-    //
-    //SendCLientsLog(object sender, messageReceivedEventArgs mr) subscribes to singelton, iterates over all clients and sends mr
-    //SendCLientLog(object sender, messageReceivedEventArgs mr, int clientid)
-
-    //when server received command it will add client id as last elemnt in args[] by using:
-    //Array.Resize(ref array, newsize);
-    //array[newsize - 1] = "newvalue"
-    //app config and logComand will remember this and extract client from the end of args and send data to
-    //relevant client only
-
-    //(singelton appConfigSingelton which holds all data from appConfig in shape of CommandReceivedEventArgs)
-    //config command gets data from singleton and hold server -invokes sendClienCommand in server
-    //(get the id from args [] - it will be the only string in the array

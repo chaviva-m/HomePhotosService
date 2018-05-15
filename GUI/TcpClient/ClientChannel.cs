@@ -28,7 +28,7 @@ namespace GUI.TcpClient
         private BinaryReader reader;
         private NetworkStream streamWriter;
         private BinaryWriter writer;
-        private static readonly Mutex mutex = new Mutex();
+        private static readonly Mutex mutex = new Mutex(true,"mutex");
 
 
         private static readonly ClientChannel instance = new ClientChannel();
@@ -87,15 +87,18 @@ namespace GUI.TcpClient
             {
                 try
                 {
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     string input = reader.ReadString();
-                    mutex.ReleaseMutex();
+                    
                     DispatchCommand(input);
-                } catch(Exception e)
+                } catch (Exception e)
                 {
                     mutex.ReleaseMutex();
                     OnStop();
                     Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
+                } finally
+                {
+                    //mutex.ReleaseMutex();
                 }
             }
         }
@@ -112,11 +115,15 @@ namespace GUI.TcpClient
                 {
                     mutex.WaitOne();
                     writer.Write(output);
-                    mutex.ReleaseMutex();
+                    
                 } catch(Exception e)
                 {
                     mutex.ReleaseMutex();
                     Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
                 }
                 Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
             });
