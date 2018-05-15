@@ -27,7 +27,8 @@ namespace GUI.TcpClient
         private NetworkStream stream;
         private BinaryReader reader;
         private BinaryWriter writer;
-        //private static readonly Mutex mutex = new Mutex();
+        public static readonly IPAddress IP  = IPAddress.Parse("127.0.0.1");
+        public static readonly int Port = 8000;
 
 
         private static readonly ClientChannel instance = new ClientChannel();
@@ -37,10 +38,8 @@ namespace GUI.TcpClient
         }
 
         private ClientChannel()
-        {
-            IPAddress ip = IPAddress.Parse("127.0.0.1");    //how does he know this?
-            int port = 8000;                                //how does he know this?
-            bool connect = Connect(ip, port);
+        {        
+            bool connect = Connect(IP, Port);
             if (!connect)
             {
                 //do something if can't connect
@@ -81,17 +80,14 @@ namespace GUI.TcpClient
             /*add try catch?*/
             stop = false;
             reader = new BinaryReader(stream);
-            while (!stop) //use variable to stop the loop when exit GUI?
+            while (!stop) //use variable to stop the loop when server closes?
             {
                 try
                 {
-                    //mutex.WaitOne();
                     string input = reader.ReadString();
-                    //mutex.ReleaseMutex();
                     DispatchCommand(input);
                 } catch(Exception e)
                 {
-                    //mutex.ReleaseMutex();
                     OnStop();
                     Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
                 }
@@ -108,12 +104,9 @@ namespace GUI.TcpClient
                 Debug.WriteLine("sending server\n" + output);
                 try
                 {
-                    //mutex.WaitOne();
                     writer.Write(output);
-                    //mutex.ReleaseMutex();
                 } catch(Exception e)
                 {
-                    //mutex.ReleaseMutex();
                     Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
                 }
                 Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
