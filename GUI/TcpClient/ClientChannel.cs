@@ -27,6 +27,8 @@ namespace GUI.TcpClient
         private NetworkStream stream;
         private BinaryReader reader;
         private BinaryWriter writer;
+        public static readonly IPAddress IP  = IPAddress.Parse("127.0.0.1");
+        public static readonly int Port = 8000;
 
 
         private static readonly ClientChannel instance = new ClientChannel();
@@ -36,10 +38,8 @@ namespace GUI.TcpClient
         }
 
         private ClientChannel()
-        {
-            IPAddress ip = IPAddress.Parse("127.0.0.1");    //how does he know this?
-            int port = 8000;                                //how does he know this?
-            bool connect = Connect(ip, port);
+        {        
+            bool connect = Connect(IP, Port);
             if (!connect)
             {
                 //do something if can't connect
@@ -80,12 +80,11 @@ namespace GUI.TcpClient
             /*add try catch?*/
             stop = false;
             reader = new BinaryReader(stream);
-            while (!stop) //use variable to stop the loop when exit GUI?
+            while (!stop) //use variable to stop the loop when server closes?
             {
                 try
                 {
                     string input = reader.ReadString();
-                    
                     DispatchCommand(input);
                 } catch (Exception e)
                 {
@@ -106,7 +105,6 @@ namespace GUI.TcpClient
                 try
                 {
                     writer.Write(output);
-                    
                 } catch(Exception e)
                 {
                     Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
