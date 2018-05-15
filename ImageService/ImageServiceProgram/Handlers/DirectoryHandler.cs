@@ -115,8 +115,16 @@ namespace ImageServiceProgram.Handlers
             }
             //a command was passed that was not to close directory
             else
-            {                
-                msg = controller.ExecuteCommand(e.CommandID,e.Args, out result);
+            {
+                Task<Tuple<bool, string>> execution = new Task<Tuple<bool, string>>(() => {
+                    bool res;
+                    string str = controller.ExecuteCommand(e.CommandID,e.Args, out res);
+                    return new Tuple<bool, string>(res, str);
+                });
+                execution.Start();
+                var tuple = execution.Result;
+                result = tuple.Item1;
+                msg = tuple.Item2;
             }
             MessageTypeEnum mte;
 

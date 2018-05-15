@@ -27,7 +27,7 @@ namespace ImageServiceProgram.TcpServer
 
         public ClientHandler() { }
 
-        public void HandleClient(TcpClient client, int clientID, ILoggingService logger, Mutex mutex)
+        public void HandleClient(TcpClient client, int clientID, ILoggingService logger)//, Mutex mutex)
         {
             Task task = new Task(() =>
             {

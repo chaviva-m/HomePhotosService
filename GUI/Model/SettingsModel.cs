@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -95,7 +96,6 @@ namespace GUI.Model
             clientChannel.CommandReceived += GetAppConfig;
             clientChannel.CommandReceived += DeleteDir;
             //request app config settings
-
             Debug.WriteLine("sending command to get app config args");
 
             string[] args = { "" };

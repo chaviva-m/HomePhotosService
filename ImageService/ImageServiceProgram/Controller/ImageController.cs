@@ -33,28 +33,29 @@ namespace ImageServiceProgram.Controller
         public string ExecuteCommand(int commandID, string[] args,out bool result) 
         {
 
-            Task<Tuple<bool,string>> execution = new Task< Tuple < bool,string>> (() => {
-
-                bool res;
+            //Task<Tuple<bool,string>> execution = new Task< Tuple < bool,string>> (() => {
+            string str;
+                //bool res;
                 if (Commands.ContainsKey(commandID))
                 {
-                    res = true;
-                    string str = Commands[commandID].Execute(args, out res);
-                    return new Tuple<bool, string>(res,str);
+                    result = true;
+                    str = Commands[commandID].Execute(args, out result);
+                    //return new Tuple<bool, string>(res,str);
                 }
                 else
                 {
 
-                    res = false;
-                    string str = "command not found";
-                    return new Tuple<bool, string>(res, str);
+                    result = false;
+                    str = "command not found";
+                    //return new Tuple<bool, string>(res, str);
                 }
-                
-            });
-            execution.Start();
-            var tuple = execution.Result;
-            result = tuple.Item1;
-            return tuple.Item2;
+
+            //});
+            //execution.Start();
+            //var tuple = execution.Result;
+            //result = tuple.Item1;
+            //return tuple.Item2;
+            return str;
         }
 
     }
