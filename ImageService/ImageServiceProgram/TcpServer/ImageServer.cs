@@ -99,6 +99,7 @@ namespace ImageServiceProgram.TcpServer
             //close all clients
             foreach (TcpClient client in clients.Values)
             {
+                //notify clients?
                 client.Close();
             }
         }

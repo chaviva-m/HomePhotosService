@@ -26,7 +26,7 @@ namespace GUI.Model
             //request log history
             Debug.WriteLine("sending command to get log history");
             string[] args = { "" };
-            //clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.LogHistoryCommand, args, ""));
+            clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.LogHistoryCommand, args, ""));
         }
 
         private void GetLogHistory(object sender, CommandReceivedEventArgs cmdArgs)
