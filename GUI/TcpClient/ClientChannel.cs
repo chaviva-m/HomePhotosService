@@ -24,11 +24,10 @@ namespace GUI.TcpClient
         private IPEndPoint ep;
         private System.Net.Sockets.TcpClient client;
         private bool stop;
-        private NetworkStream streamReader;
+        private NetworkStream stream;
         private BinaryReader reader;
-        private NetworkStream streamWriter;
         private BinaryWriter writer;
-        private static readonly Mutex mutex = new Mutex();
+        //private static readonly Mutex mutex = new Mutex();
 
 
         private static readonly ClientChannel instance = new ClientChannel();
@@ -47,9 +46,9 @@ namespace GUI.TcpClient
                 //do something if can't connect
             } else
             {
-                //open writer stream
-                streamWriter = client.GetStream();
-                writer = new BinaryWriter(streamWriter);
+                //open stream
+                stream = client.GetStream();
+                writer = new BinaryWriter(stream);
                 //read commands
                 Task t = new Task(() =>
                 {
@@ -72,7 +71,7 @@ namespace GUI.TcpClient
                 return true;
             } catch (Exception e)
             {
-                Debug.WriteLine("couldn't connect to server. " + e.Message); //CHANGE
+                Debug.WriteLine("couldn't connect to server. " + e.Message);
                 return false;
             }
         }
@@ -81,19 +80,18 @@ namespace GUI.TcpClient
         {
             /*add try catch?*/
             stop = false;
-            streamReader = client.GetStream();
-            reader = new BinaryReader(streamReader);
+            reader = new BinaryReader(stream);
             while (!stop) //use variable to stop the loop when exit GUI?
             {
                 try
                 {
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     string input = reader.ReadString();
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     DispatchCommand(input);
                 } catch(Exception e)
                 {
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     OnStop();
                     Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
                 }
@@ -110,12 +108,12 @@ namespace GUI.TcpClient
                 Debug.WriteLine("sending server\n" + output);
                 try
                 {
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     writer.Write(output);
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                 } catch(Exception e)
                 {
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
                 }
                 Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
@@ -138,9 +136,8 @@ namespace GUI.TcpClient
         {
             stop = true;
             reader.Close();
-            streamReader.Close();
             writer.Close();
-            streamWriter.Close();
+            stream.Close();
         }
     }
 }

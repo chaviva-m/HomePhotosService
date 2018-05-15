@@ -27,7 +27,7 @@ namespace ImageServiceProgram.TcpServer
 
         public ClientHandler() { }
 
-        public void HandleClient(TcpClient client, int clientID, ILoggingService logger, Mutex mutex)
+        public void HandleClient(TcpClient client, int clientID, ILoggingService logger)//, Mutex mutex)
         {
             Task task = new Task(() =>
             {
@@ -38,12 +38,12 @@ namespace ImageServiceProgram.TcpServer
                 //read command input from client
                 try
                 {
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     input = reader.ReadString();
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                 } catch(Exception e)
                 {
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     Debug.WriteLine("in Client handler, handle client. read line failed\n" + e.Message);
                     return;
                 }

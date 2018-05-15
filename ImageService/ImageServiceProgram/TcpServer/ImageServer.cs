@@ -39,7 +39,7 @@ namespace ImageServiceProgram.TcpServer
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
         private bool stop;
         private int lastClientID;
-        private static readonly Mutex mutex = new Mutex();
+        //private static readonly Mutex mutex = new Mutex();
         #endregion
 
         #region Properties
@@ -81,7 +81,7 @@ namespace ImageServiceProgram.TcpServer
                         Debug.WriteLine("got a client");
                         lastClientID += 1;
                         clients.Add(lastClientID, client);
-                        clientHandler.HandleClient(client, lastClientID, Logger, mutex);
+                        clientHandler.HandleClient(client, lastClientID, Logger);//, mutex);
                     }
                     catch (SocketException)
                     {
@@ -126,16 +126,16 @@ namespace ImageServiceProgram.TcpServer
                 {
                     string output = JsonConvert.SerializeObject(Args);
                     Debug.WriteLine("want to send client\n" + output);
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     writer.Write(output);
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     Debug.WriteLine("sent client the output");
                     result = true;
                     msg = "Sent client command: " + Args.CommandID;
                 }
                 catch (Exception e)
                 {
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                     result = false;
                     //maybe indicates that we should remove client from list...?
                     msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
@@ -175,7 +175,14 @@ namespace ImageServiceProgram.TcpServer
             DirectoryHandler handler = (DirectoryHandler)sender;
             handler.DirectoryClose -= onHandlerClose;
             CommandReceived -= handler.OnCommandReceived;
+            string[] arr = { "" };
             //ADD: tell all clients that handler closed
+            CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, arr, args.DirectoryPath);
+            bool result;
+            foreach (int id in clients.Keys)
+            {
+                SendClientCommand(id, cmdArgs, out result);
+            }
         }      
     }
 }

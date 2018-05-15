@@ -15,6 +15,6 @@ namespace ImageServiceProgram.TcpServer
     {
         IImageController Controller { set; }
         event EventHandler<CommandReceivedEventArgs> CommandReceivedForHandlers;
-        void HandleClient(TcpClient client, int clientID, ILoggingService logger, Mutex mutex);
+        void HandleClient(TcpClient client, int clientID, ILoggingService logger);//, Mutex mutex);
     }
 }
