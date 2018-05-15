@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2005
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageService", "ImageService\ImageService.csproj", "{3B493FD1-08E2-4046-A9BD-FDFFEFE1358A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{734886D7-049B-4E2E-B2C9-0B815AC2FD8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Communication", "communication\Communication.csproj", "{83360EA3-8EEB-45C7-8A54-1D9680D200DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandInfrastructure", "communication\CommandInfrastructure.csproj", "{83360EA3-8EEB-45C7-8A54-1D9680D200DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,7 +32,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {57FD2805-96A7-4D52-B6C6-0B66E58DA1B0}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
+		SolutionGuid = {57FD2805-96A7-4D52-B6C6-0B66E58DA1B0}
 	EndGlobalSection
 EndGlobal

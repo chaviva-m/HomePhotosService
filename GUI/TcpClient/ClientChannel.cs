@@ -1,5 +1,5 @@
-﻿using Communication.Commands;
-using Communication.Commands.Enums;
+﻿using CommandInfrastructure.Commands;
+using CommandInfrastructure.Commands.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,6 @@ namespace GUI.TcpClient
         private NetworkStream stream;
         private BinaryReader reader;
         private BinaryWriter writer;
-        //private static readonly Mutex mutex = new Mutex();
 
 
         private static readonly ClientChannel instance = new ClientChannel();
@@ -85,18 +84,13 @@ namespace GUI.TcpClient
             {
                 try
                 {
-                    //mutex.WaitOne();
                     string input = reader.ReadString();
                     
                     DispatchCommand(input);
                 } catch (Exception e)
                 {
-                    //mutex.ReleaseMutex();
                     OnStop();
                     Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
-                } finally
-                {
-                    //mutex.ReleaseMutex();
                 }
             }
         }
@@ -111,17 +105,11 @@ namespace GUI.TcpClient
                 Debug.WriteLine("sending server\n" + output);
                 try
                 {
-                    //mutex.WaitOne();
                     writer.Write(output);
                     
                 } catch(Exception e)
                 {
-                    //mutex.ReleaseMutex();
                     Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
-                }
-                finally
-                {
-                    //mutex.ReleaseMutex();
                 }
                 Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
             });

@@ -1,5 +1,5 @@
-﻿using Communication.Commands;
-using Communication.Commands.Enums;
+﻿using CommandInfrastructure.Commands;
+using CommandInfrastructure.Commands.Enums;
 using GUI.TcpClient;
 using System;
 using System.Collections.Generic;
@@ -124,7 +124,7 @@ namespace GUI.Model
 
         private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
         {
-            if (cmdArgs.CommandID == (int)CommandEnum.CloseCommand)
+            if (cmdArgs.CommandID == (int)CommandEnum.CloseDirectoryCommand)
             {
                 directories.Remove(cmdArgs.RequestDirPath);
             }

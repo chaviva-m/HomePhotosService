@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Communication.Commands.Enums
+namespace CommandInfrastructure.Commands.Enums
 {
     public enum CommandEnum : int
     {
@@ -12,6 +12,8 @@ namespace Communication.Commands.Enums
         GetConfigCommand,   //get settings in app config
         LogHistoryCommand,  //get all logs from start of service
         LogUpdateCommand,   //get most recent log 
-        CloseCommand        //close directory
+        CloseDirectoryCommand,        //close directory
+        CloseServerCommand,  //server closed
+        CloseClientCommand  //client (GUI) closed
     }
 }

@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using ImageServiceProgram.Controller;
 using ImageServiceProgram.TcpServer;
-using Communication.Commands.Enums;
+using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.Event;
-using Communication.Commands;
+using CommandInfrastructure.Commands;
 using ImageServiceProgram.Commands;
 
 namespace ImageServiceProgram.Service
@@ -145,7 +145,7 @@ namespace ImageServiceProgram.Service
             string[] args = { "" };
             foreach (string directory in directories)
             {
-                imageServer.SendHandlersCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, args, directory));
+                imageServer.SendHandlersCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseDirectoryCommand, args, directory));
             }
 
             //clear list of logs from singleton to clear history

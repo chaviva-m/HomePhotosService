@@ -162,9 +162,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\communication\Communication.csproj">
+    <ProjectReference Include="..\communication\CommandInfrastructure.csproj">
       <Project>{83360ea3-8eeb-45c7-8a54-1d9680d200de}</Project>
-      <Name>Communication</Name>
+      <Name>CommandInfrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

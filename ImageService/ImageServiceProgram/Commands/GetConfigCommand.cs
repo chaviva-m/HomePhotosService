@@ -1,5 +1,5 @@
-﻿using Communication.Commands;
-using Communication.Commands.Enums;
+﻿using CommandInfrastructure.Commands;
+using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.TcpServer;
 using ImageServiceProgram.Service;
 using Newtonsoft.Json;

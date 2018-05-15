@@ -1,5 +1,5 @@
-﻿using Communication.Commands;
-using Communication.Commands.Enums;
+﻿using CommandInfrastructure.Commands;
+using CommandInfrastructure.Commands.Enums;
 using GUI.TcpClient;
 using System;
 using System.Collections.Generic;

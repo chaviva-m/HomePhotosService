@@ -1,4 +1,4 @@
-﻿using Communication.Commands;
+﻿using CommandInfrastructure.Commands;
 using ImageServiceProgram.Controller;
 using ImageServiceProgram.Logging;
 using ImageServiceProgram.Logging.Modal;

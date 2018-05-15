@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Communication.Commands;
-using Communication.Commands.Enums;
+using CommandInfrastructure.Commands;
+using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.Logging;
 using ImageServiceProgram.Logging.Modal;
 using System.Text.RegularExpressions;
@@ -107,7 +107,7 @@ namespace ImageServiceProgram.Handlers
                 return;
             }
 
-            if (e.CommandID == (int)CommandEnum.CloseCommand)
+            if (e.CommandID == (int)CommandEnum.CloseDirectoryCommand)
             {
                 //close the handler
                 msg = closeHandler(out result);

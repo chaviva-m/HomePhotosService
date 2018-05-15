@@ -1,5 +1,5 @@
-﻿using Communication.Commands;
-using Communication.Commands.Enums;
+﻿using CommandInfrastructure.Commands;
+using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.Logging.Modal;
 using ImageServiceProgram.Service;
 using ImageServiceProgram.TcpServer;

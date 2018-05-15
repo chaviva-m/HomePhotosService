@@ -1,5 +1,5 @@
 ﻿
-using Communication.Commands;
+using CommandInfrastructure.Commands;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Communication
+namespace CommandInfrastructure
 {
     class Program
     {

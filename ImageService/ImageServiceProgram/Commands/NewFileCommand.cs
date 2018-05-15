@@ -1,4 +1,4 @@
-﻿using Communication.Commands;
+﻿using CommandInfrastructure.Commands;
 using ImageServiceProgram.ImageModal;
 using System;
 using System.Collections.Generic;

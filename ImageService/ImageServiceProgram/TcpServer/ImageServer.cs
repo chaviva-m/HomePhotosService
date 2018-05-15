@@ -1,6 +1,6 @@
 ﻿using ImageServiceProgram.Commands;
 using ImageServiceProgram.Controller;
-using Communication.Commands.Enums;
+using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ImageServiceProgram.Handlers;
 using ImageServiceProgram.Event;
-using Communication.Commands;
+using CommandInfrastructure.Commands;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
@@ -39,7 +39,6 @@ namespace ImageServiceProgram.TcpServer
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
         private bool stop;
         private int lastClientID;
-        //private static readonly Mutex mutex = new Mutex();
         #endregion
 
         #region Properties
@@ -127,9 +126,7 @@ namespace ImageServiceProgram.TcpServer
                 {
                     string output = JsonConvert.SerializeObject(Args);
                     Debug.WriteLine("want to send client\n" + output);
-                    //mutex.WaitOne();
                     writer.Write(output);
-                    //mutex.ReleaseMutex();
                     Debug.WriteLine("sent client the output");
                     result = true;
                     msg = "Sent client command: " + Args.CommandID;
@@ -141,9 +138,6 @@ namespace ImageServiceProgram.TcpServer
                     //maybe indicates that we should remove client from list...?
                     msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
                     //or: msg = "Client disconnected from server.";
-                } finally
-                {
-                //mutex.ReleaseMutex();
                 }
             return msg;
         }
@@ -181,7 +175,7 @@ namespace ImageServiceProgram.TcpServer
             CommandReceived -= handler.OnCommandReceived;
             string[] arr = { "" };
             //ADD: tell all clients that handler closed
-            CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.CloseCommand, arr, args.DirectoryPath);
+            CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.CloseDirectoryCommand, arr, args.DirectoryPath);
             bool result;
             foreach (int id in clients.Keys)
             {
