@@ -31,33 +31,33 @@ namespace ImageServiceProgram.TcpServer
         {
             Task task = new Task(() =>
             {
-                /*need to close stream*/
+                
                 string input = "";
                 NetworkStream stream = client.GetStream();
                 BinaryReader reader = new BinaryReader(stream);
-                //read command input from client
-                try
+                while (client.Connected) //change - while client is open
                 {
-                    //mutex.WaitOne();
-                    input = reader.ReadString();
-                    
-                } catch(Exception e)
-                {
-                    //mutex.ReleaseMutex();
-                    Debug.WriteLine("in Client handler, handle client. read line failed\n" + e.Message);
-                    return;
-                } finally
-                {
-                    //mutex.ReleaseMutex();
-                }
-                //reader.Dispose();
-                CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
-                Debug.WriteLine("got fom client\n" + cmdArgs);
-                //add client (serialized) to end of args
-                string[] argsArr = cmdArgs.Args;
-                Array.Resize(ref argsArr, cmdArgs.Args.Length + 1);
-                argsArr[argsArr.Length - 1] = clientID.ToString();
-                cmdArgs.Args = argsArr;
+                    //read command input from client
+                    try
+                    {
+                        //mutex.WaitOne();
+                        input = reader.ReadString();
+                        //mutex.ReleaseMutex();
+                    }
+                    catch (Exception e)
+                    {
+                        //mutex.ReleaseMutex();
+                        Debug.WriteLine("in Client handler, handle client. read line failed\n" + e.Message);
+                        return;
+                    }
+                    //reader.Dispose();
+                    CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+                    Debug.WriteLine("got from client\n" + cmdArgs);
+                    //add client (serialized) to end of args
+                    string[] argsArr = cmdArgs.Args;
+                    Array.Resize(ref argsArr, cmdArgs.Args.Length + 1);
+                    argsArr[argsArr.Length - 1] = clientID.ToString();
+                    cmdArgs.Args = argsArr;
 
                     //execute command
                     bool result;
@@ -82,6 +82,7 @@ namespace ImageServiceProgram.TcpServer
                         //inform logger
                         logger.Log(msg, mte);
                     }
+                }
             });
             task.Start();
         }
