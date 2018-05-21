@@ -1,6 +1,7 @@
 ﻿using CommandInfrastructure.Commands;
 using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.Logging.Modal;
+using ImageServiceProgram.Logging;
 using ImageServiceProgram.Service;
 using ImageServiceProgram.TcpServer;
 using Newtonsoft.Json;

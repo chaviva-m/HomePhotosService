@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ImageServiceProgram.Event;
+using ImageServiceProgram.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -45,5 +47,15 @@ namespace ImageServiceProgram.Service
         {
             get { return directories; }
         }
+
+		public void DeleteDirectory(object sender, DirectoryCloseEventArgs args)
+		{
+			DirectoryHandler handler = (DirectoryHandler)sender;
+			handler.DirectoryClose -= DeleteDirectory;
+			//remove directory from list of directories
+			List<string> dirList = Directories.ToList();
+			dirList.Remove(args.DirectoryPath);
+			directories = dirList.ToArray();
+		}
     }
 }

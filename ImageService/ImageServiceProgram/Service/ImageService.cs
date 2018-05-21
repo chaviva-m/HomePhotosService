@@ -20,6 +20,7 @@ using CommandInfrastructure.Commands;
 using ImageServiceProgram.Commands;
 
 namespace ImageServiceProgram.Service
+
 {
     public enum ServiceState
     {

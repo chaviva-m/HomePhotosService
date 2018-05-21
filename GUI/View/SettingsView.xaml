@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.View"
-        mc:Ignorable="d"
-        Height="500" Width="650">
+        mc:Ignorable="d">
     <StackPanel>
         <TextBlock x:Name="title" FontSize="20" Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Settings</TextBlock>
         <Grid HorizontalAlignment="Left" Width="650">

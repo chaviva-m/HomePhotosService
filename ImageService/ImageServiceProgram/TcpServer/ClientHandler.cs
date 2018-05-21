@@ -35,7 +35,7 @@ namespace ImageServiceProgram.TcpServer
                 string input = "";
                 NetworkStream stream = client.GetStream();
                 BinaryReader reader = new BinaryReader(stream);
-                while (client.Connected) //change - while client is open
+                while (client.Connected)
                 {
                     //read command input from client
                     try
@@ -48,10 +48,11 @@ namespace ImageServiceProgram.TcpServer
                     {
                         //mutex.ReleaseMutex();
                         Debug.WriteLine("in Client handler, handle client. read line failed\n" + e.Message);
-                        return;
-                    }
-                    //reader.Dispose();
-                    CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+						//client disconnected
+						return;
+					}
+					//reader.Dispose();
+					CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
                     Debug.WriteLine("got from client\n" + cmdArgs);
                     //add client (serialized) to end of args
                     string[] argsArr = cmdArgs.Args;

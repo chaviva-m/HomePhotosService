@@ -69,7 +69,7 @@
     <Compile Include="ImageServiceProgram\ImageModal\IImageServiceModal.cs" />
     <Compile Include="ImageServiceProgram\ImageModal\ImageServiceModal.cs" />
     <Compile Include="ImageServiceProgram\Service\AppConfigData.cs" />
-    <Compile Include="ImageServiceProgram\Service\LogTracker.cs" />
+    <Compile Include="ImageServiceProgram\Logging\LogTracker.cs" />
     <Compile Include="ImageServiceProgram\Service\ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

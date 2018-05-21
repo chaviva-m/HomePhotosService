@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using ImageServiceProgram.Logging.Modal;
 using System.Diagnostics;
 using System.Threading;
+using ImageServiceProgram.Service;
 
 namespace ImageServiceProgram.TcpServer
 {
@@ -95,12 +96,12 @@ namespace ImageServiceProgram.TcpServer
         {
             stop = true;
             Listener.Stop();
-            //close all clients
-            foreach (TcpClient client in clients.Values)
+			//close all clients
+			foreach (TcpClient client in clients.Values)
             {
-                //notify clients?
                 client.Close();
             }
+			clients.Clear();
         }
 
         public void SendClientsLog(object sender, MessageReceivedEventArgs message)
@@ -108,7 +109,8 @@ namespace ImageServiceProgram.TcpServer
             string[] args = { message.Status.ToString(), message.Message };
             CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.LogUpdateCommand, args, "");
             bool result;
-            foreach (int id in clients.Keys)
+			Dictionary<int, TcpClient> clientsCopy = new Dictionary<int, TcpClient>(clients);
+			foreach (int id in clientsCopy.Keys)
             {
                 SendClientCommand(id, cmdArgs, out result);
             }
@@ -119,27 +121,33 @@ namespace ImageServiceProgram.TcpServer
             //task??
             string msg;
 
-                NetworkStream stream = clients[id].GetStream();
-                BinaryWriter writer = new BinaryWriter(stream);
+			if(!clients[id].Connected)
+			{
+				clients.Remove(id);
+				result = false;
+				return "Client disconnected from server.";
+			}
 
-                try
-                {
-                    string output = JsonConvert.SerializeObject(Args);
-                    Debug.WriteLine("want to send client\n" + output);
-                    writer.Write(output);
-                    Debug.WriteLine("sent client the output");
-                    result = true;
-                    msg = "Sent client command: " + Args.CommandID;
-                }
-                catch (Exception e)
-                {
-                    
-                    result = false;
-                    //maybe indicates that we should remove client from list...?
-                    msg = "Couldn't send client command " + Args.CommandID + ". " + e.Message;
-                    //or: msg = "Client disconnected from server.";
-                }
-            return msg;
+            NetworkStream stream = clients[id].GetStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            try
+            {
+				string output = JsonConvert.SerializeObject(Args);
+                Debug.WriteLine("want to send client\n" + output);
+                writer.Write(output);
+                Debug.WriteLine("sent client the output");
+                result = true;
+                msg = "Sent client command: " + Args.CommandID;
+            }
+            catch (Exception e)
+            {
+                //indicates that we should remove client from list...?			
+				clients.Remove(id);
+				result = false;
+				msg = "Client disconnected from server.";
+			}
+			return msg;
         }
 
         /// <summary>
@@ -151,7 +159,8 @@ namespace ImageServiceProgram.TcpServer
             IDirectoryHandler handler = new DirectoryHandler(controller, Logger);
             CommandReceived += handler.OnCommandReceived;
             handler.DirectoryClose += onHandlerClose;
-            handler.StartHandleDirectory(directory);
+			handler.DirectoryClose += AppConfigData.Instance.DeleteDirectory;
+			handler.StartHandleDirectory(directory);
         }
 
         /// <summary>
@@ -174,10 +183,11 @@ namespace ImageServiceProgram.TcpServer
             handler.DirectoryClose -= onHandlerClose;
             CommandReceived -= handler.OnCommandReceived;
             string[] arr = { "" };
-            //ADD: tell all clients that handler closed
+            //tell all clients that handler closed
             CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.CloseDirectoryCommand, arr, args.DirectoryPath);
             bool result;
-            foreach (int id in clients.Keys)
+			Dictionary<int, TcpClient> clientsCopy = new Dictionary<int, TcpClient>(clients);
+			foreach (int id in clientsCopy.Keys)
             {
                 SendClientCommand(id, cmdArgs, out result);
             }

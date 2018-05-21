@@ -4,20 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.View"
-        mc:Ignorable="d"
-        Height="500" Width="650">
+        mc:Ignorable="d">
 
     <StackPanel>
         <TextBlock x:Name="title" FontSize="20" Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Logs</TextBlock>
         <DataGrid Name ="logs" AutoGenerateColumns="False" ItemsSource="{Binding VM_LogMessages}">
             <DataGrid.Resources>
-                <Style TargetType="DataGridCell">
+                <Style x:Key="TypeStyle" TargetType="DataGridCell">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Type}" Value="INFO" >
                             <Setter Property="Background" Value="Green" />
                         </DataTrigger>
-                        
-                        <DataTrigger Binding="{Binding Type}" Value="ERROR">
+                        <DataTrigger Binding="{Binding Type}" Value="FAIL">
                             <Setter Property="Background" Value="Red"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="WARNING">
@@ -27,8 +25,8 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="Auto" />
-                <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
+                <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=OneWay}" Width="Auto" CellStyle="{StaticResource TypeStyle}"/>
+                <DataGridTextColumn Header="Message" Binding="{Binding Message, Mode=OneWay}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>
