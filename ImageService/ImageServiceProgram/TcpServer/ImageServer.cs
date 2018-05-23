@@ -151,7 +151,7 @@ namespace ImageServiceProgram.TcpServer
 					string output = JsonConvert.SerializeObject(Args);
 					writer.Write(output);
 					result = true;
-					msg = "Sent client command: " + Args.CommandID;
+					msg = "Sent client " + CommandEnumName.CommandName(Args.CommandID);
 				}
 				catch (Exception)
 				{

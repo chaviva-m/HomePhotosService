@@ -14,9 +14,6 @@ namespace CommandInfrastructure
     {
         static void Main(string[] args)
         {
-            string[] args1 = { "yes", "no" };
-            CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs(1, args1, "path");
-            cmdArgs.practice(cmdArgs);
         }
     }
 }
