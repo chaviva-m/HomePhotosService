@@ -35,6 +35,7 @@ namespace ImageServiceProgram.TcpServer
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
 		private int lastClientID;
 		private bool stop;
+		private Object thisLock = new Object();
 		#endregion
 
 		#region Properties

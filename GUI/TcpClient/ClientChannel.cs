@@ -29,6 +29,8 @@ namespace GUI.TcpClient
         private BinaryWriter writer;
 		private bool stop;
 
+		private Object thisLock = new Object();
+
 		private bool isConnected = false;
 		public bool IsConnected { get { return isConnected; } private set { isConnected = value; } }
 
@@ -113,13 +115,17 @@ namespace GUI.TcpClient
             Task t = new Task(() =>
             {
                 string output = JsonConvert.SerializeObject(cmdArgs);
-                try
-                {
-                    writer.Write(output);
-                } catch(Exception)
-                {
-					//connection with server was disconnected
-					OnStop();
+				lock(thisLock)
+				{
+					try
+					{
+						writer.Write(output);
+					}
+					catch (Exception)
+					{
+						//connection with server was disconnected
+						OnStop();
+					}
 				}
             });
             t.Start();
