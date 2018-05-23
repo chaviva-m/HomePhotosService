@@ -115,6 +115,7 @@ namespace ImageServiceProgram.TcpServer
 			Dictionary<int, TcpClient> clientsCopy = new Dictionary<int, TcpClient>(clients);
 			foreach (int id in clientsCopy.Keys)
             {
+
                 SendClientCommand(id, cmdArgs, out result);
             }
         }
@@ -137,24 +138,27 @@ namespace ImageServiceProgram.TcpServer
 				result = false;
 				return "Client disconnected from server.";
 			}
+			lock (thisLock)
+			{
 
-            NetworkStream stream = clients[id].GetStream();
-            BinaryWriter writer = new BinaryWriter(stream);
+				NetworkStream stream = clients[id].GetStream();
+				BinaryWriter writer = new BinaryWriter(stream);
 
-			//send client the command
-            try
-            {
-				string output = JsonConvert.SerializeObject(Args);
-                writer.Write(output);
-                result = true;
-                msg = "Sent client command: " + Args.CommandID;
-            }
-            catch (Exception)
-            {
-				//client disconnected
-				clients.Remove(id);
-				result = false;
-				msg = "Client disconnected from server.";
+				//send client the command
+				try
+				{
+					string output = JsonConvert.SerializeObject(Args);
+					writer.Write(output);
+					result = true;
+					msg = "Sent client command: " + Args.CommandID;
+				}
+				catch (Exception)
+				{
+					//client disconnected
+					clients.Remove(id);
+					result = false;
+					msg = "Client disconnected from server.";
+				}
 			}
 			return msg;
         }
