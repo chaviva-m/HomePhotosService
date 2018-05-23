@@ -18,6 +18,7 @@ namespace ImageServiceProgram.TcpServer
 {
     public class ClientHandler : IClientHandler
     {
+
         private IImageController controller;
         public IImageController Controller
         {
@@ -40,18 +41,13 @@ namespace ImageServiceProgram.TcpServer
                     //read command input from client
                     try
                     {
-                        //mutex.WaitOne();
                         input = reader.ReadString();
-                        //mutex.ReleaseMutex();
                     }
                     catch (Exception e)
                     {
-                        //mutex.ReleaseMutex();
                         Debug.WriteLine("in Client handler, handle client. read line failed\n" + e.Message);
-						//client disconnected
 						return;
 					}
-					//reader.Dispose();
 					CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
                     Debug.WriteLine("got from client\n" + cmdArgs);
                     //add client (serialized) to end of args

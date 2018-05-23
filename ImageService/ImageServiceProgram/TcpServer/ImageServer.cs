@@ -40,6 +40,7 @@ namespace ImageServiceProgram.TcpServer
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
         private bool stop;
         private int lastClientID;
+        private Object thisLock = new Object();
         #endregion
 
         #region Properties
@@ -112,6 +113,7 @@ namespace ImageServiceProgram.TcpServer
 			Dictionary<int, TcpClient> clientsCopy = new Dictionary<int, TcpClient>(clients);
 			foreach (int id in clientsCopy.Keys)
             {
+
                 SendClientCommand(id, cmdArgs, out result);
             }
         }
@@ -127,26 +129,31 @@ namespace ImageServiceProgram.TcpServer
 				result = false;
 				return "Client disconnected from server.";
 			}
-
-            NetworkStream stream = clients[id].GetStream();
-            BinaryWriter writer = new BinaryWriter(stream);
-
-            try
+            lock (thisLock)
             {
-				string output = JsonConvert.SerializeObject(Args);
-                Debug.WriteLine("want to send client\n" + output);
-                writer.Write(output);
-                Debug.WriteLine("sent client the output");
-                result = true;
-                msg = "Sent client command: " + Args.CommandID;
+
+                NetworkStream stream = clients[id].GetStream();
+                BinaryWriter writer = new BinaryWriter(stream);
+                try
+                {
+                    string output = JsonConvert.SerializeObject(Args);
+                    Debug.WriteLine("want to send client\n" + output);
+
+                    writer.Write(output);
+
+
+                    Debug.WriteLine("sent client the output");
+                    result = true;
+                    msg = "Sent client command: " + Args.CommandID;
+                }
+                catch (Exception e)
+                {
+                    //indicates that we should remove client from list...?			
+                    clients.Remove(id);
+                    result = false;
+                    msg = "Client disconnected from server.";
+                }
             }
-            catch (Exception e)
-            {
-                //indicates that we should remove client from list...?			
-				clients.Remove(id);
-				result = false;
-				msg = "Client disconnected from server.";
-			}
 			return msg;
         }
 

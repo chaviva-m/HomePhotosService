@@ -7,7 +7,7 @@
         mc:Ignorable="d">
     <StackPanel>
         <TextBlock x:Name="title" FontSize="20" Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Settings</TextBlock>
-        <Grid HorizontalAlignment="Left" Width="650">
+        <Grid HorizontalAlignment="Left" Width="1250">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Margin" Value="0,5"></Setter>

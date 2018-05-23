@@ -29,8 +29,7 @@ namespace GUI.TcpClient
         private BinaryWriter writer;
         public static readonly IPAddress IP  = IPAddress.Parse("127.0.0.1");
         public static readonly int Port = 8000;
-
-
+        private Object thisLock = new Object();
         private static readonly ClientChannel instance = new ClientChannel();
         public static ClientChannel Instance
         {
@@ -52,7 +51,7 @@ namespace GUI.TcpClient
                 Task t = new Task(() =>
                 {
                     Debug.WriteLine("will now read commands in infinite lopp");
-                    ReadCommands();
+                        ReadCommands();
                     Debug.WriteLine("exited read command");
                 });
                 t.Start();
@@ -82,15 +81,19 @@ namespace GUI.TcpClient
             reader = new BinaryReader(stream);
             while (!stop) //use variable to stop the loop when server closes?
             {
-                try
-                {
-                    string input = reader.ReadString();
-                    DispatchCommand(input);
-                } catch (Exception e)
-                {
-                    OnStop();
-                    Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
-                }
+                
+                    try
+                    {
+                        string input = reader.ReadString();
+                        DispatchCommand(input);
+                    }
+                    catch (Exception e)
+                    {
+                        OnStop();
+                        Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
+                    }
+                
+                
             }
         }
 
@@ -102,13 +105,21 @@ namespace GUI.TcpClient
 
                 string output = JsonConvert.SerializeObject(cmdArgs);
                 Debug.WriteLine("sending server\n" + output);
-                try
+                lock (thisLock)
                 {
-                    writer.Write(output);
-                } catch(Exception e)
-                {
-                    Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
+                    try
+                    {
+
+                        writer.Write(output);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
+                    }
                 }
+                
+                
                 Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
             });
             t.Start();
