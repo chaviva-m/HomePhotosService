@@ -13,9 +13,13 @@ namespace GUI.ViewModel
 {
     public class LogViewModel
     {
-
         private ILogModel logModel;
         public ObservableCollection<Log> VM_LogMessages { get { return logModel.LogMessages; } }
+		
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="model">ILogModel</param>
         public LogViewModel(ILogModel model)
         {
             logModel = model;           

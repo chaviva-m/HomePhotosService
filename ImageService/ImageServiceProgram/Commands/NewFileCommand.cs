@@ -21,12 +21,13 @@ namespace ImageServiceProgram.Commands
             Modal = modal;            // Storing the Modal
         }
 
-        /// <summary>
-        /// execute command 
-        /// </summary>
-        /// <param name="args: args[0] holds path of file to add"></param>
-        /// <param name="result of command"></param>
-        public string Execute(string[] args, out bool result)
+		/// <summary>
+		/// execute newFileCommand
+		/// </summary>
+		/// <param name="args"> args[0] holds path of file to add</param>
+		/// <param name="result">result of command</param>
+		/// <returns>return string indicating if command was successful</returns>
+		public string Execute(string[] args, out bool result)
         {
             // The String Will Return the message with new Path if result = true, else will return the error message     
             return Modal.AddFile(args[0], out result);

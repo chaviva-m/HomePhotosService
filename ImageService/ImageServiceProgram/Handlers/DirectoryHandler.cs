@@ -151,7 +151,7 @@ namespace ImageServiceProgram.Handlers
                 dirWatcher.EnableRaisingEvents = false;
                 msg = "stopped monitoring path " + path;
                 result = true;
-            } catch (Exception e)
+            } catch (Exception)
             {
                 result = false;
                 msg = "could not quit monitoring path " + path;

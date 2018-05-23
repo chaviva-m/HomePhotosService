@@ -16,7 +16,5 @@ namespace GUI.Model
         string ThumbnailSize { get; set; }
         ObservableCollection<string> Directories { get; set; }
         string DirToRemove { get; set; }
-        void AddDir(string dirToAdd); 
-
     }
 }

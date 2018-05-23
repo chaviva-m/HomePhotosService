@@ -17,6 +17,7 @@ namespace GUI.Model
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 		}
 
+		//background color of main window
 		private string backgroundColor;
 		public string BackgroundColor
 		{
@@ -27,11 +28,18 @@ namespace GUI.Model
 			}
 		}
 
+		/// <summary>
+		/// constructor
+		/// </summary>
 		public MainWindowModel()
 		{
 			BackgroundColor = ChooseBackgroundColor();
 		}
 
+		/// <summary>
+		/// chooses background color according to connection state of client.
+		/// </summary>
+		/// <returns>white if client is connected, otherwise gray</returns>
 		private string ChooseBackgroundColor()
 		{
 			ClientChannel client = ClientChannel.Instance;

@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:GUI.View"
         mc:Ignorable="d"
         Title="Image Service" Height="500" Width="700" Background="{Binding VM_BackgroundColor}">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
         <TabControl Margin="5"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TabItem Header="Settings">
             <views:SettingsView/>
@@ -16,5 +16,5 @@
             <views:LogView/>
         </TabItem>
     </TabControl>
-    </ScrollViewer>
+
 </Window>

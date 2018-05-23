@@ -39,11 +39,19 @@ namespace ImageServiceProgram.Logging
 			}
         }
 
+		/// <summary>
+		/// add log to list
+		/// </summary>
+		/// <param name="sender">the object sender</param>
+		/// <param name="args">the log to add</param>
         public void OnLog(object sender, MessageReceivedEventArgs args)
         {
             logList.Add(args);
         }
 
+		/// <summary>
+		/// clear log list
+		/// </summary>
         public void ClearLogTracker()
         {
             logList.Clear();

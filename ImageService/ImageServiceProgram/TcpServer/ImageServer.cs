@@ -23,14 +23,9 @@ namespace ImageServiceProgram.TcpServer
 {
     public class ImageServer : IImageServer
     {
-        /*Add function to remove client*/
-
         #region Members
         private IImageController controller;
-        public IImageController Controller
-        {
-            set { controller = value; }
-        }
+        public IImageController Controller {  set { controller = value; }  }
         private ILoggingService Logger;
         private IPEndPoint EP;
         private TcpListener Listener;
@@ -38,36 +33,42 @@ namespace ImageServiceProgram.TcpServer
         private int Port;
         private IClientHandler clientHandler;
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
-        private bool stop;
-        private int lastClientID;
-        #endregion
+		private int lastClientID;
+		private bool stop;
+		#endregion
 
-        #region Properties
-        public event EventHandler<CommandReceivedEventArgs> CommandReceived;          // The event that notifies about a new Command being recieved
-        #endregion
+		#region Properties
+		//The event that notifies about a new Command being recieved
+		public event EventHandler<CommandReceivedEventArgs> CommandReceived;
+		#endregion
 
-        /// <summary>
-        /// constructor
-        /// </summary>
-        /// <param name="controller"> the controller</param>
-        /// <param name="logger"> the logger</param>
-        public ImageServer(ILoggingService logger, int port, IClientHandler ch)
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="controller"> the controller</param>
+		/// <param name="logger"> the logger</param>
+		/// <param name="ch">IClientHandler</param>
+		public ImageServer(ILoggingService logger, int port, IClientHandler ch)
         {
             this.Logger = logger;
             Logger.MessageRecieved += SendClientsLog;
             this.Port = port;
-            this.clientHandler = ch;
+			this.IP = IPAddress.Parse("127.0.0.1");
+			this.clientHandler = ch;
             ch.CommandReceivedForHandlers += delegate (object sender, CommandReceivedEventArgs cmdArgs)
             {
                 SendHandlersCommand(cmdArgs);
             };
         }
 
+		/// <summary>
+		/// start server
+		/// listen to clients in loop until server is stopped
+		/// </summary>
         public void StartServer()
         {
             stop = false;
             lastClientID = 0;
-            this.IP = IPAddress.Parse("127.0.0.1");
             EP = new IPEndPoint(IP, Port);
             Listener = new TcpListener(EP);
             Listener.Start();
@@ -78,10 +79,9 @@ namespace ImageServiceProgram.TcpServer
                     try
                     {
                         TcpClient client = Listener.AcceptTcpClient();
-                        Debug.WriteLine("got a client");
                         lastClientID += 1;
                         clients.Add(lastClientID, client);
-                        clientHandler.HandleClient(client, lastClientID, Logger);//, mutex);
+                        clientHandler.HandleClient(client, lastClientID, Logger);
                     }
                     catch (SocketException)
                     {
@@ -92,6 +92,9 @@ namespace ImageServiceProgram.TcpServer
             task.Start();
         }
 
+		/// <summary>
+		/// stop server
+		/// </summary>
         public void Stop()
         {
             stop = true;
@@ -116,11 +119,18 @@ namespace ImageServiceProgram.TcpServer
             }
         }
 
+		/// <summary>
+		/// send client a command
+		/// </summary>
+		/// <param name="id">client id</param>
+		/// <param name="Args">command to send client</param>
+		/// <param name="result">result of action</param>
+		/// <returns>return string indicating if command was successful</returns>
         public string SendClientCommand(int id, CommandReceivedEventArgs Args, out bool result)
         {
-            //task??
             string msg;
 
+			//check if client disconnected
 			if(!clients[id].Connected)
 			{
 				clients.Remove(id);
@@ -131,18 +141,17 @@ namespace ImageServiceProgram.TcpServer
             NetworkStream stream = clients[id].GetStream();
             BinaryWriter writer = new BinaryWriter(stream);
 
+			//send client the command
             try
             {
 				string output = JsonConvert.SerializeObject(Args);
-                Debug.WriteLine("want to send client\n" + output);
                 writer.Write(output);
-                Debug.WriteLine("sent client the output");
                 result = true;
                 msg = "Sent client command: " + Args.CommandID;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //indicates that we should remove client from list...?			
+				//client disconnected
 				clients.Remove(id);
 				result = false;
 				msg = "Client disconnected from server.";
@@ -172,18 +181,18 @@ namespace ImageServiceProgram.TcpServer
             CommandReceived?.Invoke(this, commandArgs);
         }
 
-        /// <summary>
-        /// when server closes
-        /// </summary>
-        /// <param name="sender">the sender object</param>
-        /// <param name="args">arguments relevant to server shut down</param>
-        public void onHandlerClose(object sender, DirectoryCloseEventArgs args)
+		/// <summary>
+		/// handle directory closing
+		/// </summary>
+		/// <param name="sender">the sender object</param>
+		/// <param name="args">args.DirectoryPath is directory to close</param>
+		public void onHandlerClose(object sender, DirectoryCloseEventArgs args)
         {
             DirectoryHandler handler = (DirectoryHandler)sender;
             handler.DirectoryClose -= onHandlerClose;
             CommandReceived -= handler.OnCommandReceived;
             string[] arr = { "" };
-            //tell all clients that handler closed
+            //inform all clients that handler closed
             CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.CloseDirectoryCommand, arr, args.DirectoryPath);
             bool result;
 			Dictionary<int, TcpClient> clientsCopy = new Dictionary<int, TcpClient>(clients);
@@ -194,4 +203,3 @@ namespace ImageServiceProgram.TcpServer
         }      
     }
 }
-
