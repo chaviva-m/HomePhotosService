@@ -15,13 +15,10 @@ namespace GUI.ViewModel
     {
 
         private ILogModel logModel;
-        public ILogModel LogModel { get; set; }
         public ObservableCollection<Log> VM_LogMessages { get { return logModel.LogMessages; } }
         public LogViewModel(ILogModel model)
         {
-            logModel = model;
-            //model.AddLog(new Log("INFO", "opened new dir"));
-            
+            logModel = model;           
             
         }
     }

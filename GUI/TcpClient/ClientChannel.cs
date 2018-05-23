@@ -30,6 +30,9 @@ namespace GUI.TcpClient
         public static readonly IPAddress IP  = IPAddress.Parse("127.0.0.1");
         public static readonly int Port = 8000;
 
+		private bool isConnected = false;
+		public bool IsConnected { get { return isConnected; } private set { isConnected = value; } }
+
 
         private static readonly ClientChannel instance = new ClientChannel();
         public static ClientChannel Instance
@@ -42,11 +45,13 @@ namespace GUI.TcpClient
             bool connect = Connect(IP, Port);
             if (!connect)
             {
-                //do something if can't connect
+				IsConnected = false;
             } else
             {
-                //open stream
-                stream = client.GetStream();
+				IsConnected = true;
+
+				//open stream
+				stream = client.GetStream();
                 writer = new BinaryWriter(stream);
                 //read commands
                 Task t = new Task(() =>

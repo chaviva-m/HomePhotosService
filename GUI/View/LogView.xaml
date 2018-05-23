@@ -16,10 +16,10 @@
                             <Setter Property="Background" Value="Green" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="FAIL">
-                            <Setter Property="Background" Value="Red"></Setter>
+                            <Setter Property="Background" Value="Red"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="WARNING">
-                            <Setter Property="Background" Value="Yellow"></Setter>
+                            <Setter Property="Background" Value="Yellow"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

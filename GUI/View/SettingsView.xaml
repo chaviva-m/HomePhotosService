@@ -38,7 +38,7 @@
             <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding VM_ThumbnailSize}"/>
         </Grid>
         <Button x:Name="btnRemove" Content="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding ElementName=directoryList}"/>
-        <ListBox x:Name="directoryList" ItemsSource="{Binding VM_Directories}" SelectedItem="{Binding VM_DirToRemove, Mode=TwoWay}"/>
+        <ListBox x:Name="directoryList" IsTabStop="False" ItemsSource="{Binding VM_Directories}" SelectedItem="{Binding VM_DirToRemove, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>
     

@@ -22,12 +22,11 @@ namespace GUI.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand RemoveCommand { get; private set; }
         private ISettingsModel settingsModel;
-        public ISettingsModel SettingsModel { get; set; }
 
         public string VM_OutputDirectory { get { return settingsModel.OutputDirectory; } }
         public string VM_SourceName { get { return settingsModel.SourceName; } }
         public string VM_LogName { get { return settingsModel.LogName; } }
-        public int VM_ThumbnailSize { get { return settingsModel.ThumbnailSize; } }
+        public string VM_ThumbnailSize { get { return settingsModel.ThumbnailSize; } }
         public string VM_DirToRemove {
             get { return settingsModel.DirToRemove; } set { settingsModel.DirToRemove = value; } }
         public ObservableCollection<string> VM_Directories { get { return settingsModel.Directories; } }
@@ -40,9 +39,6 @@ namespace GUI.ViewModel
             {
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
-            //settingsModel.AddDir("dir one");  //take this out
-            //settingsModel.AddDir("dir two");  //take this out
-            //settingsModel.AddDir("dir three");  //take this out
         }
 
         private void OnRemove(object sender)
