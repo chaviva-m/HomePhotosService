@@ -12,14 +12,14 @@
             <ColumnDefinition Width="{Binding ElementName=Col2, Path=ActualWidth}"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="title" Grid.Column="0" Grid.ColumnSpan="2" FontSize="20" Grid.Row="0" HorizontalAlignment="Center"  Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Logs</TextBlock>
-        <DataGrid Name ="logs"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" HorizontalAlignment="Stretch" ItemsSource="{Binding VM_LogMessages}"  
-                  ScrollViewer.CanContentScroll="True" 
-                    ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <DataGrid Name ="logs"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding VM_LogMessages}"  
+                  ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Resources>
                 <Style x:Key="TypeStyle" TargetType="DataGridCell">
                     <Style.Triggers>
@@ -37,7 +37,7 @@
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="col1" Header="Type"  Binding="{Binding Type, Mode=OneWay}" CellStyle="{StaticResource TypeStyle}"/>
-                <DataGridTextColumn x:Name="col2" Header="Message"  Binding="{Binding Message, Mode=OneWay}"  />
+                <DataGridTextColumn x:Name="col2" Header="Message" Binding="{Binding Message, Mode=OneWay}"  />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -20,21 +20,6 @@ namespace ImageServiceProgram.Logging
         {
             get
 			{
-				/*string msg = " I once wrote an incredible story. Everyone wanted to read it. It became a best seller. I got rich. It was amazing. I will be forever grateful to those who stood by my side.";
-				List<MessageReceivedEventArgs> temp = new List<MessageReceivedEventArgs>();
-				for(int i = 0; i < 10; i++)
-				{
-					temp.Add(new MessageReceivedEventArgs(MessageTypeEnum.INFO, "num: " + i + msg));
-				}
-				for (int i = 0; i < 10; i++)
-				{
-					temp.Add(new MessageReceivedEventArgs(MessageTypeEnum.FAIL, "num: " + i));
-				}
-				for (int i = 0; i < 10; i++)
-				{
-					temp.Add(new MessageReceivedEventArgs(MessageTypeEnum.WARNING, "num: " + i));
-				}
-				return temp;*/
 				return logList;
 			}
         }
