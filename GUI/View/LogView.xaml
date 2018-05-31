@@ -8,14 +8,14 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="title" Grid.Column="0" Grid.ColumnSpan="2" FontSize="20" Grid.Row="0" HorizontalAlignment="Center"  Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Logs</TextBlock>
-        <DataGrid Name ="logs"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" HorizontalAlignment="Stretch" ItemsSource="{Binding VM_LogMessages}"  
-                  ScrollViewer.CanContentScroll="True" 
-                    ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <DataGrid Name ="logs"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding VM_LogMessages}"  
+                  ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Resources>
                 <Style x:Key="TypeStyle" TargetType="DataGridCell">
                     <Style.Triggers>
@@ -23,10 +23,10 @@
                             <Setter Property="Background" Value="Green" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="FAIL">
-                            <Setter Property="Background" Value="Red"></Setter>
+                            <Setter Property="Background" Value="Red"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="WARNING">
-                            <Setter Property="Background" Value="Yellow"></Setter>
+                            <Setter Property="Background" Value="Yellow"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

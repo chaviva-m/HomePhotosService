@@ -18,6 +18,7 @@ using CommandInfrastructure.Commands.Enums;
 using ImageServiceProgram.Event;
 using CommandInfrastructure.Commands;
 using ImageServiceProgram.Commands;
+using ImageServiceProgram.Handlers;
 
 namespace ImageServiceProgram.Service
 
@@ -84,8 +85,6 @@ namespace ImageServiceProgram.Service
         /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
-            //System.Diagnostics.Debugger.Launch();
-
             // Update the service state to Start Pending.   
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
@@ -124,6 +123,7 @@ namespace ImageServiceProgram.Service
             {
                 imageServer.CreateHandler(directory);
             }
+			//start server
             imageServer.StartServer();
         }
 

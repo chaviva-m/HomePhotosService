@@ -16,129 +16,143 @@ namespace GUI.TcpClient
 {
     public sealed class ClientChannel
     {
-        /*update server to close client when we exit GUI*/
-
-        //make event that will pass command from server
+		//event that will be invoked when client receives command from server
         public event EventHandler<CommandReceivedEventArgs> CommandReceived;
 
-        private IPEndPoint ep;
+		public static readonly IPAddress IP = IPAddress.Parse("127.0.0.1");
+		public static readonly int Port = 8000;
+
+		private IPEndPoint ep;
         private System.Net.Sockets.TcpClient client;
-        private bool stop;
         private NetworkStream stream;
         private BinaryReader reader;
         private BinaryWriter writer;
-        public static readonly IPAddress IP  = IPAddress.Parse("127.0.0.1");
-        public static readonly int Port = 8000;
-        private Object thisLock = new Object();
+		private bool stop;
+
+		private Object thisLock = new Object();
+
+		private bool isConnected = false;
+		public bool IsConnected { get { return isConnected; } private set { isConnected = value; } }
+
+
         private static readonly ClientChannel instance = new ClientChannel();
         public static ClientChannel Instance
         {
             get { return instance; }
         }
 
+		/// <summary>
+		/// private constructor of singleton. Only called once.
+		/// connects to server.
+		/// </summary>
         private ClientChannel()
-        {        
-            bool connect = Connect(IP, Port);
+        {   
+            bool connect = Connect();
             if (!connect)
             {
-                //do something if can't connect
+				IsConnected = false;
             } else
             {
-                //open stream
-                stream = client.GetStream();
+				IsConnected = true;
+				//open stream
+				stream = client.GetStream();
                 writer = new BinaryWriter(stream);
                 //read commands
                 Task t = new Task(() =>
                 {
-                    Debug.WriteLine("will now read commands in infinite lopp");
-                        ReadCommands();
-                    Debug.WriteLine("exited read command");
+                    ReadCommands();
                 });
                 t.Start();
             }
         }
 
-        private bool Connect(IPAddress ip, int port)
+		/// <summary>
+		/// connect to server
+		/// </summary>
+		/// <returns>true if connection succeeded, otherwise false</returns>
+        private bool Connect()
         {
-            ep = new IPEndPoint(ip, port);
+            ep = new IPEndPoint(IP, Port);
             client = new System.Net.Sockets.TcpClient();
             try
             {
                 client.Connect(ep);
-                Debug.WriteLine("connected to server. ");
                 return true;
-            } catch (Exception e)
+            } catch (Exception)
             {
-                Debug.WriteLine("couldn't connect to server. " + e.Message);
                 return false;
             }
         }
        
+		/// <summary>
+		/// read commands from server in infinite loop as long as connected to server
+		/// </summary>
         private void ReadCommands()
         {
-            /*add try catch?*/
             stop = false;
             reader = new BinaryReader(stream);
-            while (!stop) //use variable to stop the loop when server closes?
+            while (!stop)
             {
-                
-                    try
-                    {
-                        string input = reader.ReadString();
-                        DispatchCommand(input);
-                    }
-                    catch (Exception e)
-                    {
-                        OnStop();
-                        Debug.WriteLine("client channel, in ReadCommands. Couldn't read from server\n" + e.Message);
-                    }
-                
-                
+                try
+                {
+                    string input = reader.ReadString();
+					//execute input command in main thread
+                    DispatchCommand(input);
+                } catch (Exception)
+                {
+					//connection with server was disconnected
+                    OnStop();
+               }
             }
         }
 
+		/// <summary>
+		/// send server command
+		/// </summary>
+		/// <param name="cmdArgs">the command to send to server</param>
         public void SendCommand(CommandReceivedEventArgs cmdArgs)
         {
             Task t = new Task(() =>
             {
-                Debug.WriteLine("Client channel: SendCommand. Started task " + Task.CurrentId);
-
                 string output = JsonConvert.SerializeObject(cmdArgs);
-                Debug.WriteLine("sending server\n" + output);
-                lock (thisLock)
-                {
-                    try
-                    {
-
-                        writer.Write(output);
-
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("in client channel, send command. couldn't send message.\n" + e.Message);
-                    }
-                }
-                
-                
-                Debug.WriteLine("Exiting client channel, send command. finished task " + Task.CurrentId);
+				lock(thisLock)
+				{
+					try
+					{
+						writer.Write(output);
+					}
+					catch (Exception)
+					{
+						//connection with server was disconnected
+						OnStop();
+					}
+				}
             });
             t.Start();
         }
 
+		/// <summary>
+		/// dispatch command to UI thread and execute there.
+		/// </summary>
+		/// <param name="input">the command to dispatch</param>
         private void DispatchCommand(string input)
         {
-            //the data in the view is created on UI thread, therefore we can only modify it from the UI thread.
-            //we put the delegate on UI Dispatcher and that will do work for us delegating it to UI thread.
-            App.Current.Dispatcher.Invoke((Action)delegate
+			//the data in the view is created on UI thread, therefore we can only modify it from the UI thread.
+			//we put the delegate on UI Dispatcher and that will do work for us delegating it to UI thread.
+			App.Current.Dispatcher.Invoke((Action)delegate
             {
                 CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
                 CommandReceived?.Invoke(this, cmdArgs);
             });
         }
 
+		/// <summary>
+		/// stop connection, close streams
+		/// </summary>
         private void OnStop()
         {
             stop = true;
+			isConnected = false;
             reader.Close();
             writer.Close();
             stream.Close();

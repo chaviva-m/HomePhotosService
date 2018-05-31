@@ -14,6 +14,5 @@ namespace GUI.Model
 
         ObservableCollection<Log> LogMessages { get; set; }
 
-        void AddLog(Log l);
-    }
+	}
 }

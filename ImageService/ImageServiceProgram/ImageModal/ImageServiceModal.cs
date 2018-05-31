@@ -194,7 +194,7 @@ namespace ImageServiceProgram.ImageModal
                     }
                 }
             }
-            catch (Exception e)                                                       
+            catch (Exception)                                                       
             {
                 //returning current date time
                 dateTime = DateTime.Now;

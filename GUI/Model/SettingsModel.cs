@@ -25,7 +25,7 @@ namespace GUI.Model
         }
 
         //output directory
-        private string outputDirectory;// = "outputDir"; //change this
+        private string outputDirectory;
         public string OutputDirectory
         {
             get { return outputDirectory; }
@@ -37,7 +37,7 @@ namespace GUI.Model
         }
 
         //source name
-        private string sourceName;// = "src"; //change this
+        private string sourceName;
         public string SourceName
         {
             get { return sourceName; }
@@ -49,7 +49,7 @@ namespace GUI.Model
         }
 
         //log name
-        private string logName;// = "log"; //change this
+        private string logName;
         public string LogName
         {
             get { return logName; }
@@ -61,8 +61,8 @@ namespace GUI.Model
         }
 
         //thumbnail size
-        private int thumbnailSize;// = 120; //change this
-        public int ThumbnailSize
+        private string thumbnailSize;
+        public string ThumbnailSize
         {
             get { return thumbnailSize; }
             set
@@ -89,6 +89,9 @@ namespace GUI.Model
             set { directories = value; }
         }
        
+		/// <summary>
+		/// constructor
+		/// </summary>
         public SettingsModel()
         {
             ClientChannel clientChannel = ClientChannel.Instance;
@@ -96,33 +99,37 @@ namespace GUI.Model
             clientChannel.CommandReceived += GetAppConfig;
             clientChannel.CommandReceived += DeleteDir;
             //request app config settings
-            Debug.WriteLine("sending command to get app config args");
-
             string[] args = { "" };
             clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetConfigCommand, args, ""));
-        }        
-        
-        private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
-        { 
-            if (cmdArgs.CommandID != (int)CommandEnum.GetConfigCommand)
-            {
-                Debug.WriteLine("in getAppConfig: not relevant command");
-                return;
-            }
-
-            //set all properties to values in args from client channel
-            OutputDirectory = cmdArgs.Args[0];
-            SourceName = cmdArgs.Args[1];
-            LogName = cmdArgs.Args[2];
-            ThumbnailSize = Int32.Parse(cmdArgs.Args[3]);
-            for (int i = 4; i < cmdArgs.Args.Length; i++)
-            {
-                AddDir(cmdArgs.Args[i]);
-            }
-            Debug.WriteLine("got config from server");
         }
 
-        private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
+		/// <summary>
+		/// if command is GetConfigCommand, sets all values of settings according to cmdArgs
+		/// </summary>
+		/// <param name="sender">the sender object</param>
+		/// <param name="cmdArgs">commmand args</param>
+		private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
+        { 
+            if (cmdArgs.CommandID == (int)CommandEnum.GetConfigCommand)
+            {
+				//set all properties to values in args from client channel
+				OutputDirectory = cmdArgs.Args[0];
+				SourceName = cmdArgs.Args[1];
+				LogName = cmdArgs.Args[2];
+				ThumbnailSize = cmdArgs.Args[3];
+				for (int i = 4; i < cmdArgs.Args.Length; i++)
+				{
+					AddDir(cmdArgs.Args[i]);
+				}
+			}
+        }
+
+		/// <summary>
+		/// if command is CloseDirectoryCommand, delets relevant directory from directories
+		/// </summary>
+		/// <param name="sender">the sender object</param>
+		/// <param name="cmdArgs">commmand args</param>
+		private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
         {
             if (cmdArgs.CommandID == (int)CommandEnum.CloseDirectoryCommand)
             {
@@ -130,13 +137,11 @@ namespace GUI.Model
             }
         }
 
-        //erase
-        public void DeleteDir(string dirToRemove)       //make this private
-        {
-            directories.Remove(dirToRemove);
-        }
-
-        public void AddDir(string dirToAdd)       //make this private
+		/// <summary>
+		/// add directory to directories
+		/// </summary>
+		/// <param name="dirToAdd">the name of the directory to add</param>
+        private void AddDir(string dirToAdd)
         {
             directories.Add(dirToAdd);
         }

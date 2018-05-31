@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.View"
         mc:Ignorable="d">
-    <StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
         <TextBlock x:Name="title" FontSize="20" Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Settings</TextBlock>
-        <Grid HorizontalAlignment="Left" Width="1250">
+        <Grid HorizontalAlignment="Left">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Margin" Value="0,5"></Setter>
@@ -38,7 +39,8 @@
             <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding VM_ThumbnailSize}"/>
         </Grid>
         <Button x:Name="btnRemove" Content="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding ElementName=directoryList}"/>
-        <ListBox x:Name="directoryList" ItemsSource="{Binding VM_Directories}" SelectedItem="{Binding VM_DirToRemove, Mode=TwoWay}"/>
+        <ListBox x:Name="directoryList" IsTabStop="False" ItemsSource="{Binding VM_Directories}" SelectedItem="{Binding VM_DirToRemove, Mode=TwoWay}"/>
     </StackPanel>
+    </ScrollViewer>
 </UserControl>
     

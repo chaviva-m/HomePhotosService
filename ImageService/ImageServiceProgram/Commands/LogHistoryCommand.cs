@@ -20,18 +20,28 @@ namespace ImageServiceProgram.Commands
 
         private IImageServer server;
 
-
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="server"></param>
         public LogHistoryCommand(IImageServer server)
         {
             this.server = server;
         }
 
-        public string Execute(string[] args, out bool result)
+		/// <summary>
+		/// execute log history command
+		/// send client the log history
+		/// </summary>
+		/// <param name="args">args[1]=client id</param>
+		/// <param name="result">result of command</param>
+		/// <returns>return string indicating if command was successful</returns>
+		public string Execute(string[] args, out bool result)
         {
-            LogTracker tracker = LogTracker.Instance;
-
+			//get log history from log tracker
+			LogTracker tracker = LogTracker.Instance;
             MessageReceivedEventArgs[] logList = tracker.LogList.ToArray();
-            string requestDirPath = "";
+			//add log messages as strings to list: type, message, type, message etc.
             List<string> data = new List<string>();
             MessageReceivedEventArgs msg;
             string type;
@@ -45,12 +55,12 @@ namespace ImageServiceProgram.Commands
                 data.Add(message);
 
             }
+			//rest of args for commandReceivedEventArgs
             int id = (int)CommandEnum.LogHistoryCommand;
-            CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, data.ToArray(), requestDirPath);
+			string requestDirPath = "";
+			CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, data.ToArray(), requestDirPath);
+			//send client the log history command and return result
             return server.SendClientCommand(int.Parse(args[1]), arg, out result);
-
         }
-
-
     }
 }

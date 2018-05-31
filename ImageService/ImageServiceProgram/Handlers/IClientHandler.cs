@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImageServiceProgram.TcpServer
+namespace ImageServiceProgram.Handlers
 {
     public interface IClientHandler
     {
