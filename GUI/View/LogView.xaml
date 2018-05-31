@@ -11,7 +11,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="title" Grid.Column="0" Grid.ColumnSpan="2" FontSize="20" Grid.Row="0" HorizontalAlignment="Center"  Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Logs</TextBlock>
+        <TextBlock x:Name="title" Grid.Column="0" Grid.ColumnSpan="2" FontFamily="Algerian" FontSize="20" Grid.Row="0" HorizontalAlignment="Center"  Foreground="Blue" FontWeight="Bold" TextAlignment="Center">Logs</TextBlock>
         <DataGrid Name ="logs"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding VM_LogMessages}"  
                   ScrollViewer.CanContentScroll="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
