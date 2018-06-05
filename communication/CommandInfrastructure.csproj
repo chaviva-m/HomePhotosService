@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{83360EA3-8EEB-45C7-8A54-1D9680D200DE}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>communication</RootNamespace>
-    <AssemblyName>communication</AssemblyName>
+    <RootNamespace>CommandInfrastructure</RootNamespace>
+    <AssemblyName>CommandInfrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
