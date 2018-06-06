@@ -15,16 +15,8 @@ namespace WebApp.Models
 	
 		public ThumbnailsModel(string outputDir)
 		{
-			//string relativePath = AbsolutePath.Replace(HttpContext.Current.Server.MapPath("~/"), "~/").Replace(@"\", "/");
-			//string relativePath = HttpContext.Current.Request.Url.AbsolutePath.Replace(HttpContext.Current.Server.MapPath("~/"), "~/").Replace(@"\", "/");
-			//this.outputDir = Path.Combine(relativePath, Path.GetFileName(outputDir));
-			//this.outputDir = Path.Combine("~", Path.GetFileName(outputDir)).Replace(@"\", "/");
-			//this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails").Replace(@"\", "/");
 			this.outputDir = outputDir;
-			this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails");
-			//this.outputDir = Path.Combine("~", Path.GetFileName(outputDir));
-			//this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails");
-			
+			this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails");			
 		}
 
 		private Dictionary<string, string> ThumbnailsList()
