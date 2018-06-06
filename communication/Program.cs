@@ -14,6 +14,14 @@ namespace CommandInfrastructure
     {
         static void Main(string[] args)
         {
+			ThumbnailsModel tm = new ThumbnailsModel(@"C: \Users\Acer\Pictures\outputDirectory");
+			Dictionary<string, string> all_tn = tm.Thumbnails;
+			foreach(string file in all_tn.Keys)
+			{
+				Console.WriteLine(all_tn[file]);
+			}
+			int c = all_tn.Count();
+			Console.WriteLine(c);
         }
     }
 }

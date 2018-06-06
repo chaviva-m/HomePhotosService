@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Commands\CommandReceivedEventArgs.cs" />
     <Compile Include="Commands\Enums\CommandEnum.cs" />
+    <Compile Include="Commands\ThumbnailsModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

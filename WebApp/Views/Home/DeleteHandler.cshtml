@@ -1,0 +1,34 @@
+﻿@model WebApp.Models.ConfigModel
+
+@{
+	ViewBag.Title = "DeleteHandler";
+}
+
+<h2>Delete Handler</h2>
+
+<div>
+	<h4>Are you sure you want to close the handler for directory @Html.DisplayFor(model=>model.DirToRemove)?</h4>
+	<table>
+		<tr>
+			<td>
+				<button type="button" id="btnCancel" onclick="onCancel()">Cancel</button>
+			</td>
+			<td>
+				<button type="button" id="btnOK" onclick="onOK()">OK</button>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script type="text/javascript">
+	function onOK() {
+		$("#btnCancel").attr('disabled', !this.checked);
+		$("#btnOK").attr('disabled', !this.checked);
+		window.location.href = '@Url.Action("DeleteHandlerExecution")';
+	}
+	function onCancel() {
+		$("#btnCancel").attr('disabled', !this.checked);
+		$("#btnOK").attr('disabled', !this.checked);
+		window.location.href = '@Url.Action("Config")';
+	}
+</script>

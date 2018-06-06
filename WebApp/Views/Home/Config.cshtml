@@ -1,0 +1,44 @@
+﻿@model WebApp.Models.ConfigModel
+
+@{
+	ViewBag.Title = "Config";
+}
+
+<h2>Settings</h2>
+
+<table class="table">
+	<tr>
+		<td>@Html.DisplayNameFor(model => model.OutputDirectory):</td>
+		<td>@Html.DisplayFor(model => model.OutputDirectory)</td>
+	</tr>
+	<tr>
+		<td>@Html.DisplayNameFor(model => model.SourceName):</td>
+		<td>@Html.DisplayFor(model => model.SourceName)</td>
+	</tr>
+	<tr>
+		<td>@Html.DisplayNameFor(model => model.LogName):</td>
+		<td>@Html.DisplayFor(model => model.LogName)</td>
+	</tr>
+	<tr>
+		<td>@Html.DisplayNameFor(model => model.ThumbnailSize):</td>
+		<td>@Html.DisplayFor(model => model.ThumbnailSize)</td>
+	</tr>
+	<tr>
+		<td>@Html.DisplayNameFor(model => model.Directories):</td>
+		<td>
+			<ul>
+				@{foreach (var directory in Model.Directories)
+					{
+						<li>
+							@Html.ActionLink(directory, "DeleteHandler", new { handler=directory}) 
+						</li>
+					}
+				}
+			</ul>
+		</td>
+	</tr>
+</table>
+
+
+
+
