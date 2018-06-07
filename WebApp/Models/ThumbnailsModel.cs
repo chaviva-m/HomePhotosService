@@ -15,8 +15,16 @@ namespace WebApp.Models
 	
 		public ThumbnailsModel(string outputDir)
 		{
-			this.outputDir = Path.Combine("~", Path.GetFileName(outputDir));
+			//string relativePath = AbsolutePath.Replace(HttpContext.Current.Server.MapPath("~/"), "~/").Replace(@"\", "/");
+			//string relativePath = HttpContext.Current.Request.Url.AbsolutePath.Replace(HttpContext.Current.Server.MapPath("~/"), "~/").Replace(@"\", "/");
+			//this.outputDir = Path.Combine(relativePath, Path.GetFileName(outputDir));
+			//this.outputDir = Path.Combine("~", Path.GetFileName(outputDir)).Replace(@"\", "/");
+			//this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails").Replace(@"\", "/");
+			this.outputDir = outputDir;
 			this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails");
+			//this.outputDir = Path.Combine("~", Path.GetFileName(outputDir));
+			//this.thumbnailsDir = Path.Combine(this.outputDir, "Thumbnails");
+			
 		}
 
 		private Dictionary<string, string> ThumbnailsList()
@@ -25,13 +33,21 @@ namespace WebApp.Models
 			Dictionary<string, string> allThumbnailsMap = new Dictionary<string, string>();
 			foreach (string thumbnail in allThumbnails)
 			{
-				string httpPath = HttpContext.Current.Server.MapPath(thumbnail);
-				string month = Directory.GetParent(thumbnail).Name;
-				string year = Directory.GetParent(thumbnail).Parent.Name;
-				string date = Path.Combine(month, year);
-				allThumbnailsMap.Add(httpPath, date);
+				string relativePath = RelativePath(thumbnail);
+				string month = Directory.GetParent(relativePath).Name;
+				string year = Directory.GetParent(relativePath).Parent.Name;
+				string date = Path.Combine(year, month);
+				allThumbnailsMap.Add(relativePath, date);
 			}
 			return allThumbnailsMap;
+		}
+
+		private string RelativePath(string absolutePath)
+		{
+			string currentDir = HttpContext.Current.Server.MapPath("~");
+			string solutionDir = Directory.GetParent(currentDir).Parent.FullName;
+			string relativePath = absolutePath.Replace(solutionDir, "");
+			return relativePath;
 		}
 	}
 }
