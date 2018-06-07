@@ -1,25 +1,30 @@
 ﻿@model WebApp.Models.ThumbnailsModel
 
-	@{
-		ViewBag.Title = "Thumbnails";
-	}
+@{
+	ViewBag.Title = "Thumbnails";
+}
 
-	<h2>Photos</h2>
+<h2>Photos</h2>
 
-@{var thumbnails = Model.Thumbnails; }
+@{var thumbnails = Model.Thumbnails;}
 @foreach (var thumbnail in thumbnails.Keys)
 {
-	<div class="row">
-		<div class="col-sm-6 col-md-4">
-			<div class="thumbnail">
-				<img src=@thumbnail
-					 class="img-rounded" alt="Cinque Terre">
-				<div class="caption">
-					<h5>@Path.GetFileName(thumbnail)</h5>
-					<p>@thumbnails[thumbnail]</p>
-					<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-				</div>
+<div class="col">
+	<div class="col-sm-4">
+		<div class="thumbnail">
+			<img src=@thumbnail class="img-circle" alt="Cinque Terre">
+			<div class="caption">
+				<p>@thumbnail</p>
+				<h5>@Path.GetFileName(thumbnail)</h5>
+				<p>@thumbnails[thumbnail]</p>
+				<p>
+					<a href="#" id="btnView" class="btn btn-primary" role="button" onclick="window.location.href = '@Url.Action("Photo", new { path = thumbnail, date = thumbnails[thumbnail] })'">View</a>
+					<a href="#" id="btnDelete" class="btn btn-danger" role="button" onclick="window.location.href = '@Url.Action("DeletePhoto", new { thumbnailPath = thumbnail, date = thumbnails[thumbnail] })'">Delete</a>
+				</p>
 			</div>
 		</div>
 	</div>
+</div>
+}
+
 }

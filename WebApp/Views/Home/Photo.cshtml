@@ -1,0 +1,19 @@
+﻿@model WebApp.Models.PhotoModel
+
+@{
+	ViewBag.Title = "Photo";
+}
+
+<div style="margin-top:10px">
+	<img alt="Cinque Terre" src=@Model.PhotoPath>
+	<div class="caption">
+		<h5>@Path.GetFileName(@Model.PhotoPath)</h5>
+		<p>@Model.Date</p>
+		<p>
+			<a href="#" id="btnDelete" class="btn btn-danger" role="button" onclick="window.location.href = '@Url.Action("DeletePhoto", new { thumbnailPath = Model.ThumbnailPath, date = Model.Date})'">Delete</a>
+		</p>
+	</div>
+</div>
+
+
+

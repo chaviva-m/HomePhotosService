@@ -1,13 +1,19 @@
-﻿@model WebApp.Models.ConfigModel
+﻿@model WebApp.Models.PhotoModel
 
 @{
-	ViewBag.Title = "DeleteHandler";
+	ViewBag.Title = "DeletePhoto";
 }
 
-<h2>Delete Handler</h2>
+<h2>Delete Photo</h2>
 
 <div>
-	<h4>Are you sure you want to close the handler for directory @Html.DisplayFor(model=>model.DirToRemove)?</h4>
+	<h4>Are you sure you want to delete this photo?</h4>
+	<div style="margin-top:10px">
+		<img alt="Cinque Terre" src=@Model.ThumbnailPath>
+		<div class="caption">
+			<h5>@Path.GetFileName(@Model.PhotoPath)</h5>
+		</div>
+	</div>
 	<table>
 		<tr>
 			<td>
@@ -24,11 +30,11 @@
 	function onOK() {
 		$("#btnCancel").attr('disabled', !this.checked);
 		$("#btnOK").attr('disabled', !this.checked);
-		window.location.href = '@Url.Action("DeleteHandlerExecution")';
+		window.location.href = '@Url.Action("DeletePhotoExecution", new {thumbnailPath = Model.ThumbnailPath, date = Model.Date})';
 	}
 	function onCancel() {
 		$("#btnCancel").attr('disabled', !this.checked);
 		$("#btnOK").attr('disabled', !this.checked);
-		window.location.href = '@Url.Action("Config")';
+		window.location.href = '@Url.Action("CancelDeletePhoto")';
 	}
 </script>
