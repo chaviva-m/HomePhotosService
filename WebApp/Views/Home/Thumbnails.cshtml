@@ -1,0 +1,25 @@
+﻿@model WebApp.Models.ThumbnailsModel
+
+	@{
+		ViewBag.Title = "Thumbnails";
+	}
+
+	<h2>Photos</h2>
+
+@{var thumbnails = Model.Thumbnails; }
+@foreach (var thumbnail in thumbnails.Keys)
+{
+	<div class="row">
+		<div class="col-sm-6 col-md-4">
+			<div class="thumbnail">
+				<img src=thumbnail 
+					 class="img-rounded" alt="Cinque Terre">
+				<div class="caption">
+					<h4>@Path.GetFileName(thumbnail)</h4>
+					<p>@thumbnails[thumbnail]</p>
+					<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+}

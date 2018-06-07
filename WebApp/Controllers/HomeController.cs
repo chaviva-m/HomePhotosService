@@ -1,17 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.CommandInfrastructure;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
-        public ActionResult Logs()
+		static ConfigModel configModel = new ConfigModel();
+		
+		[HttpGet]
+		public ActionResult Config()
+		{
+			return View(configModel);
+		}
+
+		[HttpGet]
+		public ActionResult DeleteHandler(string handler)
+		{
+			//IS THIS A GOOD IDEA TO PUT IT IN configModel?
+			configModel.DirToRemove = handler;
+			return View(configModel);
+		}
+
+		[HttpGet]
+		public ActionResult DeleteHandlerExecution()
+		{
+			configModel.DeleteDirRequest();
+			//HOW DO WE KNOW WHEN IT HAS BEEN DELETED??
+			//SHOULD I USE FUTURE?
+			//SHOULD THIS FUNCTION REDIRECT?
+			return RedirectToAction("Config", configModel);
+
+		}
+
+		public ActionResult Thumbnails()
+		{
+			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
+			return View(thumbnailsModel);
+		}
+
+		// GET: Home
+		public ActionResult Logs()
         {
             return View();
         }
+		
     }
 }

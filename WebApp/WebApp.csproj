@@ -99,6 +99,68 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="outputDirectory\2015\נובמבר\0d588ed2-5dd1-4c5d-94b4-55998b5e59a0 - Copy%281%29.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\0d588ed2-5dd1-4c5d-94b4-55998b5e59a0 - Copy.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\1c287625-0eca-4cbc-9c54-6d5eec13fb31 - Copy.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\1c287625-0eca-4cbc-9c54-6d5eec13fb31%281%29.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\1c287625-0eca-4cbc-9c54-6d5eec13fb31.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\bd8f51e1-3a6e-4cfa-873a-5effb1ad7e33 - Copy.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\bd8f51e1-3a6e-4cfa-873a-5effb1ad7e33.jpg" />
+    <Content Include="outputDirectory\2015\נובמבר\collage for present.png" />
+    <Content Include="outputDirectory\2015\נובמבר\fe7effd6-a699-4ca2-8c70-013a6dd42755 - Copy.jpg" />
+    <Content Include="outputDirectory\2017\אוגוסט\20170830_182035 %282%29 - Copy.jpg" />
+    <Content Include="outputDirectory\2017\יוני\mobaXterm.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\ball.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\best-picturse-of-horses-battle-on-green-field-stock-photo-picture-and-royalty %281%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\cat.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\dog%281%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\dog.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\face.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\grass.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\igloo1.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\igloo2%281%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\igloo2%282%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\igloo2.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\igloo3%281%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\igloo3.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\steps%281%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\steps.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\tiger.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\train.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\water%281%29.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\water.jpg" />
+    <Content Include="outputDirectory\2018\אפריל\waterr.jpg" />
+    <Content Include="outputDirectory\2018\מאי\tziona_pic_4.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\0d588ed2-5dd1-4c5d-94b4-55998b5e59a0 - Copy%281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\0d588ed2-5dd1-4c5d-94b4-55998b5e59a0 - Copy.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\1c287625-0eca-4cbc-9c54-6d5eec13fb31 - Copy.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\1c287625-0eca-4cbc-9c54-6d5eec13fb31%281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\1c287625-0eca-4cbc-9c54-6d5eec13fb31.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\bd8f51e1-3a6e-4cfa-873a-5effb1ad7e33 - Copy.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\bd8f51e1-3a6e-4cfa-873a-5effb1ad7e33.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\collage for present.png" />
+    <Content Include="outputDirectory\Thumbnails\2015\נובמבר\fe7effd6-a699-4ca2-8c70-013a6dd42755 - Copy.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2017\אוגוסט\20170830_182035 %282%29 - Copy.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2017\יוני\mobaXterm.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\best-picturse-of-horses-battle-on-green-field-stock-photo-picture-and-royalty %281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\cat.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\dog%281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\dog.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\face.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\grass.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\igloo1.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\igloo2%281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\igloo2%282%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\igloo2.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\igloo3%281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\igloo3.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\steps.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\tiger.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\train.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\water%281%29.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\water.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\אפריל\waterr.jpg" />
+    <Content Include="outputDirectory\Thumbnails\2018\מאי\tziona_pic_4.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -107,6 +169,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Home\Logs.cshtml" />
+    <Content Include="Views\Home\Config.cshtml" />
+    <Content Include="Views\Home\DeleteHandler.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -119,6 +183,8 @@
     <Compile Include="Models\ClientChannel.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\LogModel.cs" />
+    <Compile Include="Models\ConfigModel.cs" />
+    <Compile Include="Models\ThumbnailsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +196,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\Thumbnails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
