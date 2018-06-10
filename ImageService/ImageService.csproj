@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageServiceProgram\Commands\GetConfigCommand.cs" />
+    <Compile Include="ImageServiceProgram\Commands\GetStatusCommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\LogHistoryCommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />

@@ -44,6 +44,7 @@ namespace WebApp.CommandInfrastructure
 		LogUpdateCommand,       //get most recent log 
 		CloseDirectoryCommand,  //close directory
 		CloseServerCommand,     //server closed
-		CloseClientCommand      //client (GUI) closed
+		CloseClientCommand,      //client (GUI) closed
+        GetStatusCommand        //get service status    
 	}
 }

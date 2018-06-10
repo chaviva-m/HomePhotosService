@@ -1,0 +1,30 @@
+﻿@model WebApp.Models.HomePageModel
+
+@{
+    ViewBag.Title = "HomePage";
+}
+
+<h2>Home Page</h2>
+
+
+<div>
+    <p> service status: @Html.DisplayFor(model=>model.Status)</p>
+    <p>number of pics in directory: @Html.DisplayFor(model => model.NumPics)</p>
+
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+        </tr>
+        @foreach (var student in Model.Names)
+            {
+            <tr>
+                <td>@Html.DisplayFor(model => student.FullName)</td>
+                <td>@Html.DisplayFor(model => student.Id)</td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+

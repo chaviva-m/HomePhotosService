@@ -93,6 +93,7 @@ namespace ImageServiceProgram.Service
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+
             AppConfigData confData = AppConfigData.Instance;
             LogTracker tracker = LogTracker.Instance;
             //create logger and add OnMessage to logging event

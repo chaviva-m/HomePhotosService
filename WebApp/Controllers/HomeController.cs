@@ -13,6 +13,8 @@ namespace WebApp.Controllers
     {
 		static ConfigModel configModel = new ConfigModel();
 		//static ThumbnailsModel thumbnailsModel = new ThumbnailsModel();
+        static LogModel logModel = new LogModel();
+        static HomePageModel homePageModel = new HomePageModel(configModel.OutputDirectory);
 		
 		[HttpGet]
 		public ActionResult Config()
@@ -20,7 +22,27 @@ namespace WebApp.Controllers
 			return View(configModel);
 		}
 
-		[HttpGet]
+        [HttpGet]
+        public ActionResult Logs()
+        {
+            return View(logModel);
+        }
+
+        [HttpGet]
+        public ActionResult HomePage()
+        {
+            return View(homePageModel);
+        }
+
+        /*[HttpGet]
+        public ActionResult FilterLog(string type)
+        {
+            
+            logModel.LeaveLogType(type);
+            return RedirectToAction("Logs");
+        }*/
+
+        [HttpGet]
 		public ActionResult DeleteHandler(string handler)
 		{
 			//IS THIS A GOOD IDEA TO PUT IT IN configModel?
