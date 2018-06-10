@@ -17,11 +17,6 @@ namespace WebApp.Models
 			this.thumbnailsDir = Path.Combine(outputDir, "Thumbnails");			
 		}
 
-		/*private void setThumbnailsDir(object sender, )
-		{
-
-		}*/
-
 		private Dictionary<string, string> ThumbnailsList()
 		{
 			string[] allThumbnails = Directory.GetFiles(thumbnailsDir, "*.*", SearchOption.AllDirectories);

@@ -23,14 +23,12 @@ namespace WebApp.Models
 
 		public ConfigModel()
 		{
+			CommandReceivedEventArgs cmdArgs;
 			clientChannel clientChannel = clientChannel.Instance;
-			//add methods to client channel's event
-			//clientChannel.CommandReceived += GetAppConfig;
-			//clientChannel.CommandReceived += DeleteDir;
 			//request app config settings
 			string[] args = { "" };
 			clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetConfigCommand, args, ""));
-			CommandReceivedEventArgs cmdArgs = clientChannel.ReadCommand();
+			cmdArgs = clientChannel.ReadCommand();
 			if (cmdArgs != null)
 			{
 				GetAppConfig(cmdArgs);
@@ -45,18 +43,15 @@ namespace WebApp.Models
 		//private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
 		private void GetAppConfig(CommandReceivedEventArgs cmdArgs)
 		{
-			//if (cmdArgs.CommandID == (int)CommandEnum.GetConfigCommand)
-			//{
-				//set all properties to values in args from client channel
-				OutputDirectory = cmdArgs.Args[0];
-				SourceName = cmdArgs.Args[1];
-				LogName = cmdArgs.Args[2];
-				ThumbnailSize = cmdArgs.Args[3];
-				for (int i = 4; i < cmdArgs.Args.Length; i++)
-				{
-					directories.Add(cmdArgs.Args[i]);
-				}
-			//}
+			//set all properties to values in args from client channel
+			OutputDirectory = cmdArgs.Args[0];
+			SourceName = cmdArgs.Args[1];
+			LogName = cmdArgs.Args[2];
+			ThumbnailSize = cmdArgs.Args[3];
+			for (int i = 4; i < cmdArgs.Args.Length; i++)
+			{
+				directories.Add(cmdArgs.Args[i]);
+			}
 		}
 
 		/// <summary>
@@ -64,18 +59,11 @@ namespace WebApp.Models
 		/// </summary>
 		/// <param name="sender">the sender object</param>
 		/// <param name="cmdArgs">commmand args</param>
-		//private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
 		private void DeleteDir(CommandReceivedEventArgs cmdArgs)
 		{
-			//if (cmdArgs.CommandID == (int)CommandEnum.CloseDirectoryCommand)
-			//{
-				directories.Remove(cmdArgs.RequestDirPath);
-				//return true;
-			//}
-			//return false;
+			directories.Remove(cmdArgs.RequestDirPath);
 		}
 
-		//public void DeleteDirRequest()
 		public string DeleteDirRequest(out bool result)
 		{
 			clientChannel channel = clientChannel.Instance;

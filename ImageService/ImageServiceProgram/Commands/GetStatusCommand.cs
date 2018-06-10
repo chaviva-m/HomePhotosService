@@ -24,7 +24,6 @@ namespace ImageServiceProgram.Commands
         public string Execute(string[] args, out bool result)
         {
             string stat = "";
-            string[] stats = { stat };
             try
             {
                 {
@@ -44,8 +43,9 @@ namespace ImageServiceProgram.Commands
                             stat = "default";
                             break;
                     }
-                    //rest of args for commandReceivedEventArgs
-                    int id = (int)CommandEnum.GetStatusCommand;
+					string[] stats = { stat };
+					//rest of args for commandReceivedEventArgs
+					int id = (int)CommandEnum.GetStatusCommand;
                     string requestDirPath = "";
                     CommandReceivedEventArgs arg = new CommandReceivedEventArgs(id, stats, requestDirPath);
                     //send client the log history command and return result

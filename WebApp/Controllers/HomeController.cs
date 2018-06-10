@@ -11,10 +11,11 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
+		//static Object thisLock = new Object();
 		static ConfigModel configModel = new ConfigModel();
 		//static ThumbnailsModel thumbnailsModel = new ThumbnailsModel();
         static LogModel logModel = new LogModel();
-        static HomePageModel homePageModel = new HomePageModel(configModel.OutputDirectory);
+        static HomePageModel homePageModel = new HomePageModel();
 		
 		[HttpGet]
 		public ActionResult Config()
@@ -31,6 +32,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public ActionResult HomePage()
         {
+			homePageModel.Refresh(configModel.OutputDirectory);
             return View(homePageModel);
         }
 

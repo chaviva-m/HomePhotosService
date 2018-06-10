@@ -20,33 +20,24 @@ namespace WebApp.Models
         public List<Name> Names { get { return names; } set { names = value; } }
         string outputDir;
 
-        public HomePageModel(string dir)
-        {
-			//add methods to client channel's event
-			//clientChannel.CommandReceived += getStatus;
+        public HomePageModel()
+		{
+            getDetails();
+        }
+
+		public void Refresh(string outputDir)
+		{
+			CommandReceivedEventArgs cmdArgs;
 			string[] args = { "" };
 			clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetStatusCommand, args, ""));
-			CommandReceivedEventArgs cmdArgs = clientChannel.ReadCommand();
+			cmdArgs = clientChannel.ReadCommand();
 			if (cmdArgs != null)
 			{
-				GetStatus(cmdArgs);
+				Status = cmdArgs.Args[0];
 			}
+			this.outputDir = outputDir;
 			getNumPics();
-            getDetails();
-            this.outputDir = dir;
-
-        }
-
-        //private void getStatus(object sender, CommandInfrastructure.CommandReceivedEventArgs cmdArgs)
-		private void GetStatus(CommandInfrastructure.CommandReceivedEventArgs cmdArgs)
-		{
-            //if (cmdArgs.CommandID == (int)CommandEnum.LogHistoryCommand)
-            //{
-                //iterate over array and add logs to LogMessages type, message
-                Status = cmdArgs.Args[0];
-
-            //}
-        }
+		}
 
         private void getNumPics()
         {
