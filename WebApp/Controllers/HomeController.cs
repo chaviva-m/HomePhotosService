@@ -105,11 +105,6 @@ namespace WebApp.Controllers
 			return RedirectToAction("Thumbnails", thumbnailsModel);
 		}
 
-		// GET: Home
-		public ActionResult Logs()
-        {
-            return View();
-        }
 		
 		[HttpGet]
 		public ActionResult Error(ErrorModel errorModel)

@@ -16,7 +16,7 @@ namespace WebApp.Models
         public string Status { get { return status; } set { status = value; } }
         private int numPics;
         public int NumPics { get { return numPics; } set { numPics = value; } }
-        private List<Name> names;
+        private List<Name> names = new List<Name>();
         public List<Name> Names { get { return names; } set { names = value; } }
         string outputDir;
 
@@ -62,13 +62,13 @@ namespace WebApp.Models
             int id;
             Name n;
             string line;
-            System.IO.StreamReader file = new System.IO.StreamReader(@"c:\test.txt");
-            try
+            names.Add(new Models.Name("chaviva", 99));
+            /*try
             {   // Open the text file using a stream reader.
                 StreamReader sr = new StreamReader("details.txt");
                 {
                         // Read the stream to a string, and write the string to the console.
-                        while ((line = file.ReadLine()) != null)
+                        while ((line = sr.ReadLine()) != null)
                         {
                             words = line.Split(' ');
                             name = words[0] += words[1];
@@ -81,7 +81,7 @@ namespace WebApp.Models
             {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
-            }
+            }*/
         }
 
     }
