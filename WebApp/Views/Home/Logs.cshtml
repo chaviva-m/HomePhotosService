@@ -1,19 +1,20 @@
 ﻿@model WebApp.Models.LogModel
 
 @{
-	ViewBag.Title = "Logs";
+    ViewBag.Title = "Logs";
 }
 
 <h2>Logs</h2>
 
 
-<div>
+<div id="myDiv">
     <table class="table">
         <tr>
             <th>Type</th>
             <th>Message</th>
         </tr>
-        @foreach (var log in Model.LogMessages)
+        @{var logs = Model.LogMessages; }
+        @foreach (var log in logs)
             {
                 <tr>
                     <td>@Html.DisplayFor(model => log.Type)</td>
@@ -26,19 +27,15 @@
     <table>
         <tr>
             <td>filter:  </td>
-            <td><input type="text" id="logType" size="8" /></td>
+            <td><input type="text" runat="server" id="logType" size="8" /></td>
         </tr>
     </table>
-    <input type="button" id="btnFilter" style="margin:10px" value ="filter" />
+    <button type="button" id="btnFilter" style="margin:10px" onclick="onFilter()">filter</button>
+    <script type="text/javascript">
+    function onFilter() {
+        var st = $("#logType");
+        @Model.LogMessages.RemoveAll(log => (!String.Equals(log.Type, "#logType", StringComparison.OrdinalIgnoreCase)));
+        }
+    </script>
 </div>
-
-<script>
-
-    $("#btnFilter").click(function () {
-        alert("in func");
-        @Model.LogMessages.RemoveAll(log => (log.Type.CompareTo("#logType") != 0));
-    });
-</script>
-  
-
  

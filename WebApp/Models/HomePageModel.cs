@@ -45,7 +45,10 @@ namespace WebApp.Models
             try
             {
                 string currentDir = HttpContext.Current.Server.MapPath("~");
-                numPics = System.IO.Directory.GetFiles(currentDir, "*.jpg", SearchOption.AllDirectories).Count() / 2;
+                numPics = System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.jpg", SearchOption.AllDirectories).Count() +
+                    System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.png", SearchOption.AllDirectories).Count()  +
+                    System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.gif", SearchOption.AllDirectories).Count() +
+                    System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.bmp", SearchOption.AllDirectories).Count();
             }
             //what to do in case of exception??
             catch (Exception e)
@@ -62,16 +65,18 @@ namespace WebApp.Models
             int id;
             Name n;
             string line;
-            names.Add(new Models.Name("chaviva", 99));
-            /*try
+            string currentDir = HttpContext.Current.Server.MapPath("~");
+            string addr = Path.Combine(currentDir, "details.txt");
+            try
             {   // Open the text file using a stream reader.
-                StreamReader sr = new StreamReader("details.txt");
+                StreamReader sr = new StreamReader(@addr);
                 {
-                        // Read the stream to a string, and write the string to the console.
-                        while ((line = sr.ReadLine()) != null)
+                    
+                    // Read the stream to a string, and write the string to the console.
+                    while ((line = sr.ReadLine()) != null)
                         {
                             words = line.Split(' ');
-                            name = words[0] += words[1];
+                            name = words[0] + " " + words[1];
                             id = int.Parse(words[2]);
                             this.names.Add(new Name(name, id));
                         }
@@ -81,7 +86,7 @@ namespace WebApp.Models
             {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
-            }*/
+            }
         }
 
     }
