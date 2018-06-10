@@ -45,10 +45,11 @@ namespace WebApp.Models
             try
             {
                 string currentDir = HttpContext.Current.Server.MapPath("~");
-                numPics = System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.jpg", SearchOption.AllDirectories).Count() +
-                    System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.png", SearchOption.AllDirectories).Count()  +
-                    System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.gif", SearchOption.AllDirectories).Count() +
-                    System.IO.Directory.GetFiles(Path.Combine(outputDir, "Thumbnails"), "*.bmp", SearchOption.AllDirectories).Count();
+                string thumbnailsDir = Path.Combine(outputDir, "Thumbnails");
+                numPics = System.IO.Directory.GetFiles(thumbnailsDir, "*.jpg", SearchOption.AllDirectories).Count() +
+                    System.IO.Directory.GetFiles(thumbnailsDir, "*.png", SearchOption.AllDirectories).Count()  +
+                    System.IO.Directory.GetFiles(thumbnailsDir, "*.gif", SearchOption.AllDirectories).Count() +
+                    System.IO.Directory.GetFiles(thumbnailsDir, "*.bmp", SearchOption.AllDirectories).Count();
             }
             //what to do in case of exception??
             catch (Exception e)
