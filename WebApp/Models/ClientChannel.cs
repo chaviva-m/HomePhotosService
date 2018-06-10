@@ -83,7 +83,7 @@ namespace WebApp.Models
 			{
 				//connection with server was disconnected
 				OnStop();
-				return null; //should I return null?
+				return null;
 			}
 		}
 
@@ -117,7 +117,6 @@ namespace WebApp.Models
 		/// </summary>
 		private void OnStop()
 		{
-			//stop = true;
 			if (isConnected == true)
 			{
 				isConnected = false;
