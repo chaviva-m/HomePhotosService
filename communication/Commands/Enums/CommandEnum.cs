@@ -31,6 +31,8 @@ namespace CommandInfrastructure.Commands.Enums
 					return "CloseServerCommand";
 				case (int)CommandEnum.CloseClientCommand:
 					return "CloseClientCommand";
+                case (int)CommandEnum.GetStatusCommand:
+                    return "GetStatusCommand";
 				default:
 					return "";
 			}
@@ -45,6 +47,7 @@ namespace CommandInfrastructure.Commands.Enums
         LogUpdateCommand,		//get most recent log 
         CloseDirectoryCommand,  //close directory
         CloseServerCommand,		//server closed
-        CloseClientCommand		//client (GUI) closed
+        CloseClientCommand,		//client (GUI) closed
+        GetStatusCommand        //get service status
     }
 }

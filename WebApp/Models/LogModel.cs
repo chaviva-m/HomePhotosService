@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApp.CommandInfrastructure;
+using WebApp.Models;
 
 namespace WebApp.Models
 {
@@ -13,13 +14,14 @@ namespace WebApp.Models
         /// </summary>
         public LogModel()
         {
-            ClientChannel clientChannel = ClientChannel.Instance;
+            clientChannel clientChannel = clientChannel.Instance;
             //add methods to client channel's event
             clientChannel.CommandReceived += GetLogHistory;
             clientChannel.CommandReceived += GetLogUpdate;
             //request log history
             string[] args = { "" };
-            clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.LogHistoryCommand, args, ""));
+            AddLog(new Log("hi", "It's workin"));
+        clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.LogHistoryCommand, args, ""));
         }
 
         /// <summary>
@@ -59,6 +61,8 @@ namespace WebApp.Models
 
         //log messages
         private List<Log> logMessages = new List<Log>();
+        //lock
+        private Object thisLock = new Object();
         public List<Log> LogMessages
         {
             get { return logMessages; }
@@ -73,5 +77,22 @@ namespace WebApp.Models
         {
             LogMessages.Add(log);
         }
+
+        public void LeaveLogType(string type)
+        {
+            lock(thisLock)
+            {
+                for (int i = LogMessages.Count - 1; i >= 0; i--)
+                {   
+                    if (LogMessages[i].Type.CompareTo(type) != 0)
+                    {
+                        LogMessages.Remove(LogMessages[i]);
+                    }
+                }
+            }
+            
+
+        }
+
     }
 }

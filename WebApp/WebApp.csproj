@@ -97,6 +97,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="details.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="outputDirectory\2015\נובמבר\0d588ed2-5dd1-4c5d-94b4-55998b5e59a0 - Copy%281%29.jpg" />
@@ -181,9 +182,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ClientChannel.cs" />
+    <Compile Include="Models\HomePageModel.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\ConfigModel.cs" />
+    <Compile Include="Models\Name.cs" />
     <Compile Include="Models\ThumbnailsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -197,6 +200,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Thumbnails.cshtml" />
+    <Content Include="Views\Home\ImageService.cshtml" />
+    <Content Include="Views\Home\HomePage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

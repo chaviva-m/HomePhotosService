@@ -23,7 +23,7 @@ namespace WebApp.Models
 
 		public ConfigModel()
 		{
-			ClientChannel clientChannel = ClientChannel.Instance;
+			clientChannel clientChannel = clientChannel.Instance;
 			//add methods to client channel's event
 			clientChannel.CommandReceived += GetAppConfig;
 			clientChannel.CommandReceived += DeleteDir;
@@ -68,7 +68,7 @@ namespace WebApp.Models
 
 		public void DeleteDirRequest()
 		{
-			ClientChannel channel = ClientChannel.Instance;
+			clientChannel channel = clientChannel.Instance;
 			string[] args = { "" };
 			channel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseDirectoryCommand, args, DirToRemove));
 

@@ -8,7 +8,7 @@ using WebApp.CommandInfrastructure;
 
 namespace WebApp.Models
 {
-	public sealed class ClientChannel
+	public sealed class clientChannel
 	{
 		//event that will be invoked when client receives command from server
 		public event EventHandler<CommandReceivedEventArgs> CommandReceived;
@@ -29,8 +29,8 @@ namespace WebApp.Models
 		public bool IsConnected { get { return isConnected; } private set { isConnected = value; } }
 
 
-		private static readonly ClientChannel instance = new ClientChannel();
-		public static ClientChannel Instance
+		private static readonly clientChannel instance = new clientChannel();
+		public static clientChannel Instance
 		{
 			get { return instance; }
 		}
@@ -39,7 +39,7 @@ namespace WebApp.Models
 		/// private constructor of singleton. Only called once.
 		/// connects to server.
 		/// </summary>
-		private ClientChannel()
+		private clientChannel()
 		{
 			bool connect = Connect();
 			if (!connect)
