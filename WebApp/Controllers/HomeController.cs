@@ -25,7 +25,7 @@ namespace WebApp.Controllers
 
         [HttpGet]
         public ActionResult Logs()
-        {  
+		{  
             return View(logModel);
         }
 

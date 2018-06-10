@@ -36,7 +36,7 @@ namespace WebApp.Models
         private List<Log> logMessages = new List<Log>();
         public List<Log> LogMessages
         {
-            get { getLogMessagesFromServer(); return logMessages; }
+            get { return logMessages; }
             set { logMessages = value; }
         }
 

@@ -8,7 +8,7 @@
 
 
 <div id="myDiv">
-    <table class="table">
+    <table class="table" id="myTable">
         <tr>
             <th>Type</th>
             <th>Message</th>
@@ -16,28 +16,36 @@
         @{var logs = Model.LogMessages; }
         @foreach (var log in logs)
         {
-                <tr>
-                    <td>@Html.DisplayFor(model => log.Type)</td>
-                    <td>@Html.DisplayFor(model => log.Message)</td>
-                </tr>
+            <tr>
+                <td>@Html.DisplayFor(model => log.Type)</td>
+                <td>@Html.DisplayFor(model => log.Message)</td>
+            </tr>
         }
-        
-    </table>
 
-    <table>
-        <tr>
-            <td>filter:  </td>
-            <td><input type="text" id="logType" size="8" /></td>
-        </tr>
     </table>
-    <button type="button" id="btnFilter" style="margin:10px" onclick="onFilter()">filter</button>
-    <script type="text/javascript">
-		function onFilter() {
-			var st = document.getElementById('logType').value;
-			function filter(logType) {
-				@Model.Filter = logType;
-			}
-        }
-    </script>
+    <input type="text" id="myInput"/>
+    <button type="button" id="btnFilter" style="margin:10px" onclick="myFilter()">filter</button>
+    
 </div>
- 
+
+<script>
+
+    function myFilter() {
+        var inut, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        //loop through the ttable rows and filter those that don't match
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
