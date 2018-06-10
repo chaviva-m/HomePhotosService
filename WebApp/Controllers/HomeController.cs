@@ -11,9 +11,11 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
+		//static Object thisLock = new Object();
 		static ConfigModel configModel = new ConfigModel();
+		//static ThumbnailsModel thumbnailsModel = new ThumbnailsModel();
         static LogModel logModel = new LogModel();
-        static HomePageModel homePageModel = new HomePageModel(configModel.OutputDirectory);
+        static HomePageModel homePageModel = new HomePageModel();
 		
 		[HttpGet]
 		public ActionResult Config()
@@ -30,6 +32,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public ActionResult HomePage()
         {
+			homePageModel.Refresh(configModel.OutputDirectory);
             return View(homePageModel);
         }
 
@@ -52,18 +55,18 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult DeleteHandlerExecution()
 		{
-			//bool result;
-			//string msg = configModel.DeleteDirRequest(out result);
-			//if (result  == true)
-			//{
-			//	return RedirectToAction("Config", configModel);
-			//} else
-			//{
-			//	ErrorModel errorModel = new ErrorModel(msg);
-			//	return RedirectToAction("Error", errorModel);
-			//}
-			configModel.DeleteDirRequest();
-			return RedirectToAction("Config", configModel);
+			bool result;
+			string msg = configModel.DeleteDirRequest(out result);
+			if (result  == true)
+			{
+				return RedirectToAction("Config", configModel);
+			} else
+			{
+				ErrorModel errorModel = new ErrorModel(msg);
+				return RedirectToAction("Error", errorModel);
+			}
+			//configModel.DeleteDirRequest();
+			//return RedirectToAction("Config", configModel);
 
 		}
 
@@ -104,7 +107,6 @@ namespace WebApp.Controllers
 			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
 			return RedirectToAction("Thumbnails", thumbnailsModel);
 		}
-
 		
 		[HttpGet]
 		public ActionResult Error(ErrorModel errorModel)

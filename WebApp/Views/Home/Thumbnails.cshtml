@@ -7,24 +7,23 @@
 <h2>Photos</h2>
 
 @{var thumbnails = Model.Thumbnails;}
-@foreach (var thumbnail in thumbnails.Keys)
-{
-<div class="col">
-	<div class="col-sm-4">
-		<div class="thumbnail">
-			<img src=@thumbnail class="img-circle" alt="Cinque Terre">
-			<div class="caption">
-				<p>@thumbnail</p>
-				<h5>@Path.GetFileName(thumbnail)</h5>
-				<p>@thumbnails[thumbnail]</p>
-				<p>
-					<a href="#" id="btnView" class="btn btn-primary" role="button" onclick="window.location.href = '@Url.Action("Photo", new { path = thumbnail, date = thumbnails[thumbnail] })'">View</a>
-					<a href="#" id="btnDelete" class="btn btn-danger" role="button" onclick="window.location.href = '@Url.Action("DeletePhoto", new { thumbnailPath = thumbnail, date = thumbnails[thumbnail] })'">Delete</a>
-				</p>
+<div class="container-fluid">
+	<div class="row row-eq-height">
+		@foreach (var thumbnail in thumbnails.Keys)
+		{
+			<div class="col-sm-4" style="margin-top:10px">
+				<div class="thumbnail" style="height:250px">
+					<img src=@thumbnail class="img-circle" alt="Cinque Terre">
+					<div class="caption">
+						<h5>@Path.GetFileName(thumbnail)</h5>
+						<p>@thumbnails[thumbnail]</p>
+					</div>
+					<p>
+						<a href="#" id="btnView" class="btn btn-primary" role="button" onclick="window.location.href = '@Url.Action("Photo", new { path = thumbnail, date = thumbnails[thumbnail] })'">View</a>
+						<a href="#" id="btnDelete" class="btn btn-danger" role="button" onclick="window.location.href = '@Url.Action("DeletePhoto", new { thumbnailPath = thumbnail, date = thumbnails[thumbnail] })'">Delete</a>
+					</p>
+				</div>
 			</div>
-		</div>
+		}
 	</div>
 </div>
-}
-
-}

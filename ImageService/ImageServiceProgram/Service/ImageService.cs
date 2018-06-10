@@ -113,8 +113,9 @@ namespace ImageServiceProgram.Service
             {
                 { (int)CommandEnum.NewFileCommand, new NewFileCommand(imageModal)  },
                 { (int)CommandEnum.GetConfigCommand, new GetConfigCommand(imageServer)},
-                { (int)CommandEnum.LogHistoryCommand, new LogHistoryCommand(imageServer)}
-            };
+                { (int)CommandEnum.LogHistoryCommand, new LogHistoryCommand(imageServer)},
+				{ (int)CommandEnum.GetStatusCommand, new GetStatusCommand(imageServer)}
+			};
             controller = new ImageController(commandDictionary);
             imageServer.Controller = controller;
             clientHandler.Controller = controller;

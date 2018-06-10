@@ -35,7 +35,6 @@ namespace WebApp.Models
 		private string RelativePath(string absolutePath)
 		{
 			string currentDir = HttpContext.Current.Server.MapPath("~");
-			//string solutionDir = Directory.GetParent(currentDir).Parent.FullName;
 			string solutionDir = Directory.GetParent(currentDir).FullName;
 			string relativePath = absolutePath.Replace(solutionDir, "");
 			return relativePath;

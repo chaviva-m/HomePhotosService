@@ -223,8 +223,9 @@ namespace ImageServiceProgram.ImageModal
             {
                 using (Image image = Image.FromFile(imagePath))
                 {
-                    Size ThumbWidthHeight = GetThumbnailSize(image);
-                    using (Image thumbnail = image.GetThumbnailImage(ThumbWidthHeight.Width, ThumbWidthHeight.Height, null, IntPtr.Zero))
+					//Size ThumbWidthHeight = GetThumbnailSize(image);
+					Size ThumbWidthHeight = new Size(ThumbnailSize, ThumbnailSize);
+					using (Image thumbnail = image.GetThumbnailImage(ThumbWidthHeight.Width, ThumbWidthHeight.Height, null, IntPtr.Zero))
                     {
                         string thumbPath = Path.Combine(thumbnailLocation, Path.GetFileName(imagePath));
                         thumbnail.Save(thumbPath);
@@ -263,9 +264,9 @@ namespace ImageServiceProgram.ImageModal
             {
                 thumbnailHeight = ThumbnailSize;
                 //scale width by same factor as height
-                scalingFactor = (double)image.Width / thumbnailHeight;
-                thumbnailWidth = (int)(image.Height / scalingFactor);
-            }
+				scalingFactor = (double)image.Height / thumbnailHeight;
+				thumbnailWidth = (int)(image.Width / scalingFactor);
+			}
             return new Size(thumbnailWidth, thumbnailHeight);
         }
      }
