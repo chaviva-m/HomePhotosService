@@ -11,9 +11,7 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-		//static Object thisLock = new Object();
 		static ConfigModel configModel = new ConfigModel();
-		//static ThumbnailsModel thumbnailsModel = new ThumbnailsModel();
         static LogModel logModel = new LogModel();
         static HomePageModel homePageModel = new HomePageModel();
 		
@@ -25,7 +23,7 @@ namespace WebApp.Controllers
 
         [HttpGet]
         public ActionResult Logs()
-		{  
+		{ 
             return View(logModel);
         }
 
@@ -39,7 +37,6 @@ namespace WebApp.Controllers
         [HttpGet]
 		public ActionResult DeleteHandler(string handler)
 		{
-			//IS THIS A GOOD IDEA TO PUT IT IN configModel?
 			configModel.DirToRemove = handler;
 			return View(configModel);
 		}
@@ -99,7 +96,6 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult Error(ErrorModel errorModel)
 		{
-			//add model with error message
 			return View(errorModel);
 		}
     }

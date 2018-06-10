@@ -32,13 +32,6 @@ namespace WebApp.Models
 			}
 			LogMessages = logsList;
 		}
-        //log messages
-        private List<Log> logMessages = new List<Log>();
-        public List<Log> LogMessages
-        {
-            get { return logMessages; }
-            set { logMessages = value; }
-        }
 
 		private void getLogMessagesFromServer()
 		{
@@ -52,5 +45,14 @@ namespace WebApp.Models
 				GetLogHistory(cmdArgs);
 			}
 		}
-    }
+
+		//log messages
+		private List<Log> logMessages = new List<Log>();
+		public List<Log> LogMessages
+		{
+			get { getLogMessagesFromServer(); return logMessages; }
+			set { logMessages = value; }
+		}
+
+	}
 }
