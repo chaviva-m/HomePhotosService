@@ -25,7 +25,7 @@ namespace WebApp.Controllers
 
         [HttpGet]
         public ActionResult Logs()
-        {
+        {  
             return View(logModel);
         }
 
@@ -35,14 +35,6 @@ namespace WebApp.Controllers
 			homePageModel.Refresh(configModel.OutputDirectory);
             return View(homePageModel);
         }
-
-        /*[HttpGet]
-        public ActionResult FilterLog(string type)
-        {
-            
-            logModel.LeaveLogType(type);
-            return RedirectToAction("Logs");
-        }*/
 
         [HttpGet]
 		public ActionResult DeleteHandler(string handler)
@@ -65,15 +57,11 @@ namespace WebApp.Controllers
 				ErrorModel errorModel = new ErrorModel(msg);
 				return RedirectToAction("Error", errorModel);
 			}
-			//configModel.DeleteDirRequest();
-			//return RedirectToAction("Config", configModel);
-
 		}
 
 		[HttpGet]
 		public ActionResult Thumbnails()
 		{
-			//make thumbnails Model static member of controller?
 			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
 			return View(thumbnailsModel);
 		}

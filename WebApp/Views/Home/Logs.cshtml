@@ -27,14 +27,16 @@
     <table>
         <tr>
             <td>filter:  </td>
-            <td><input type="text" runat="server" id="logType" size="8" /></td>
+            <td><input type="text" id="logType" size="8" /></td>
         </tr>
     </table>
     <button type="button" id="btnFilter" style="margin:10px" onclick="onFilter()">filter</button>
     <script type="text/javascript">
-        function onFilter() {
-         var st = $("#logType");
-        @Model.LogMessages.RemoveAll(log => (!String.Equals(log.Type, st, StringComparison.OrdinalIgnoreCase)));
+		function onFilter() {
+			var st = document.getElementById('logType').value;
+			function filter(logType) {
+				@Model.Filter = logType;
+			}
         }
     </script>
 </div>
