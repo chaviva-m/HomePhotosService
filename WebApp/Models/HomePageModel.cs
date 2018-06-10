@@ -16,28 +16,36 @@ namespace WebApp.Models
         public string Status { get { return status; } set { status = value; } }
         private int numPics;
         public int NumPics { get { return numPics; } set { numPics = value; } }
-        private List<Name> names;
+        private List<Name> names = new List<Name>();
         public List<Name> Names { get { return names; } set { names = value; } }
         string outputDir;
 
         public HomePageModel(string dir)
         {
-            //add methods to client channel's event
-            clientChannel.CommandReceived += getStatus;
-            getNumPics();
+			//add methods to client channel's event
+			//clientChannel.CommandReceived += getStatus;
+			string[] args = { "" };
+			clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetStatusCommand, args, ""));
+			CommandReceivedEventArgs cmdArgs = clientChannel.ReadCommand();
+			if (cmdArgs != null)
+			{
+				GetStatus(cmdArgs);
+			}
+			getNumPics();
             getDetails();
             this.outputDir = dir;
 
         }
 
-        private void getStatus(object sender, CommandInfrastructure.CommandReceivedEventArgs cmdArgs)
-        {
-            if (cmdArgs.CommandID == (int)CommandEnum.LogHistoryCommand)
-            {
+        //private void getStatus(object sender, CommandInfrastructure.CommandReceivedEventArgs cmdArgs)
+		private void GetStatus(CommandInfrastructure.CommandReceivedEventArgs cmdArgs)
+		{
+            //if (cmdArgs.CommandID == (int)CommandEnum.LogHistoryCommand)
+            //{
                 //iterate over array and add logs to LogMessages type, message
                 Status = cmdArgs.Args[0];
 
-            }
+            //}
         }
 
         private void getNumPics()
@@ -55,7 +63,6 @@ namespace WebApp.Models
         }
 
         private void getDetails()
-
         {
             string[] words;
             string name;

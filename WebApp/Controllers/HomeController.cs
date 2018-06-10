@@ -105,12 +105,6 @@ namespace WebApp.Controllers
 			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
 			return RedirectToAction("Thumbnails", thumbnailsModel);
 		}
-
-		// GET: Home
-		public ActionResult Logs()
-        {
-            return View();
-        }
 		
 		[HttpGet]
 		public ActionResult Error(ErrorModel errorModel)

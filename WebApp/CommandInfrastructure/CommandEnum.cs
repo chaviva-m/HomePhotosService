@@ -30,6 +30,8 @@ namespace WebApp.CommandInfrastructure
 					return "CloseServerCommand";
 				case (int)CommandEnum.CloseClientCommand:
 					return "CloseClientCommand";
+				case (int)CommandEnum.GetStatusCommand:
+					return "GetStatusCommand";
 				default:
 					return "";
 			}
