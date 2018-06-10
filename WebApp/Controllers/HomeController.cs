@@ -26,6 +26,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public ActionResult Logs()
         {
+            logModel.Refresh();
             return View(logModel);
         }
 
@@ -36,13 +37,14 @@ namespace WebApp.Controllers
             return View(homePageModel);
         }
 
-        /*[HttpGet]
+        [HttpPost]
         public ActionResult FilterLog(string type)
         {
-            
+            logModel.Refresh();
+            logModel.Refreshed = true;
             logModel.LeaveLogType(type);
             return RedirectToAction("Logs");
-        }*/
+        }
 
         [HttpGet]
 		public ActionResult DeleteHandler(string handler)

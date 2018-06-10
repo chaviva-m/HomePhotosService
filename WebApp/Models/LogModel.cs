@@ -33,11 +33,21 @@ namespace WebApp.Models
 			LogMessages = logsList;
         }
 
+        public void Refresh()
+        {
+            getLogMessagesFromServer();
+        }
+        //refresh boolean
+        private bool refreshed;
+        public bool Refreshed { get { return refreshed; } set { refreshed = value; } }
+        // log filter
+        private string filter;
+        public string Filter { get { return filter; } set { filter = value; } }
         //log messages
         private List<Log> logMessages = new List<Log>();
         public List<Log> LogMessages
         {
-            get { getLogMessagesFromServer(); return logMessages; }
+            get { return logMessages; }
             set { logMessages = value; }
         }
 
