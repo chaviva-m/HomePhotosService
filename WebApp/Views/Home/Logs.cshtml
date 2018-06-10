@@ -15,12 +15,12 @@
         </tr>
         @{var logs = Model.LogMessages; }
         @foreach (var log in logs)
-            {
+        {
                 <tr>
                     <td>@Html.DisplayFor(model => log.Type)</td>
                     <td>@Html.DisplayFor(model => log.Message)</td>
                 </tr>
-            }
+        }
         
     </table>
 
@@ -32,9 +32,9 @@
     </table>
     <button type="button" id="btnFilter" style="margin:10px" onclick="onFilter()">filter</button>
     <script type="text/javascript">
-    function onFilter() {
-        var st = $("#logType");
-        @Model.LogMessages.RemoveAll(log => (!String.Equals(log.Type, "#logType", StringComparison.OrdinalIgnoreCase)));
+        function onFilter() {
+         var st = $("#logType");
+        @Model.LogMessages.RemoveAll(log => (!String.Equals(log.Type, st, StringComparison.OrdinalIgnoreCase)));
         }
     </script>
 </div>
