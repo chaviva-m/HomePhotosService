@@ -17,6 +17,11 @@ namespace WebApp.Models
 			this.thumbnailsDir = Path.Combine(outputDir, "Thumbnails");			
 		}
 
+		/*private void setThumbnailsDir(object sender, )
+		{
+
+		}*/
+
 		private Dictionary<string, string> ThumbnailsList()
 		{
 			string[] allThumbnails = Directory.GetFiles(thumbnailsDir, "*.*", SearchOption.AllDirectories);
@@ -35,7 +40,6 @@ namespace WebApp.Models
 		private string RelativePath(string absolutePath)
 		{
 			string currentDir = HttpContext.Current.Server.MapPath("~");
-			//string solutionDir = Directory.GetParent(currentDir).Parent.FullName;
 			string solutionDir = Directory.GetParent(currentDir).FullName;
 			string relativePath = absolutePath.Replace(solutionDir, "");
 			return relativePath;

@@ -12,6 +12,7 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
 		static ConfigModel configModel = new ConfigModel();
+		//static ThumbnailsModel thumbnailsModel = new ThumbnailsModel();
 		
 		[HttpGet]
 		public ActionResult Config()
@@ -30,18 +31,18 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult DeleteHandlerExecution()
 		{
-			//bool result;
-			//string msg = configModel.DeleteDirRequest(out result);
-			//if (result  == true)
-			//{
-			//	return RedirectToAction("Config", configModel);
-			//} else
-			//{
-			//	ErrorModel errorModel = new ErrorModel(msg);
-			//	return RedirectToAction("Error", errorModel);
-			//}
-			configModel.DeleteDirRequest();
-			return RedirectToAction("Config", configModel);
+			bool result;
+			string msg = configModel.DeleteDirRequest(out result);
+			if (result  == true)
+			{
+				return RedirectToAction("Config", configModel);
+			} else
+			{
+				ErrorModel errorModel = new ErrorModel(msg);
+				return RedirectToAction("Error", errorModel);
+			}
+			//configModel.DeleteDirRequest();
+			//return RedirectToAction("Config", configModel);
 
 		}
 

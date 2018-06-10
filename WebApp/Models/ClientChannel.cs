@@ -11,7 +11,7 @@ namespace WebApp.Models
 	public sealed class ClientChannel
 	{
 		//event that will be invoked when client receives command from server
-		public event EventHandler<CommandReceivedEventArgs> CommandReceived;
+		//public event EventHandler<CommandReceivedEventArgs> CommandReceived;
 
 		public static readonly IPAddress IP = IPAddress.Parse("127.0.0.1");
 		public static readonly int Port = 8000;
@@ -21,7 +21,7 @@ namespace WebApp.Models
 		private NetworkStream stream;
 		private BinaryReader reader;
 		private BinaryWriter writer;
-		private bool stop;
+		//private bool stop;
 
 		private Object thisLock = new Object();
 
@@ -52,13 +52,13 @@ namespace WebApp.Models
 				//open stream
 				stream = client.GetStream();
 				writer = new BinaryWriter(stream);
-				//reader = new BinaryReader(stream);
+				reader = new BinaryReader(stream);
 				//read commands
-				Task t = new Task(() =>
+				/*Task t = new Task(() =>
 				{
 					ReadCommands();
 				});
-				t.Start();
+				t.Start();*/
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace WebApp.Models
 		/// <summary>
 		/// read commands from server in infinite loop as long as connected to server
 		/// </summary>
-		private void ReadCommands()
+		/*private void ReadCommands()
 		{
 			stop = false;
 			reader = new BinaryReader(stream);
@@ -105,9 +105,9 @@ namespace WebApp.Models
 					OnStop();
 				}
 			}
-		}
+		}*/
 
-		/*public CommandReceivedEventArgs ReadCommand()
+		public CommandReceivedEventArgs ReadCommand()
 		{
 			try
 			{
@@ -121,7 +121,7 @@ namespace WebApp.Models
 				OnStop();
 				return null; //should I return null?
 			}
-		}*/
+		}
 
 		/// <summary>
 		/// send server command
@@ -168,7 +168,7 @@ namespace WebApp.Models
 		/// </summary>
 		private void OnStop()
 		{
-			stop = true;
+			//stop = true;
 			if (isConnected == true)
 			{
 				isConnected = false;

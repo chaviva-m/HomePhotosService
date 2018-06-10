@@ -25,16 +25,16 @@ namespace WebApp.Models
 		{
 			ClientChannel clientChannel = ClientChannel.Instance;
 			//add methods to client channel's event
-			clientChannel.CommandReceived += GetAppConfig;
-			clientChannel.CommandReceived += DeleteDir;
+			//clientChannel.CommandReceived += GetAppConfig;
+			//clientChannel.CommandReceived += DeleteDir;
 			//request app config settings
 			string[] args = { "" };
 			clientChannel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.GetConfigCommand, args, ""));
-			/*CommandReceivedEventArgs cmdArgs = clientChannel.ReadCommand();
+			CommandReceivedEventArgs cmdArgs = clientChannel.ReadCommand();
 			if (cmdArgs != null)
 			{
 				GetAppConfig(cmdArgs);
-			}*/
+			}
 		}
 
 		/// <summary>
@@ -42,11 +42,11 @@ namespace WebApp.Models
 		/// </summary>
 		/// <param name="sender">the sender object</param>
 		/// <param name="cmdArgs">commmand args</param>
-		private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
-		//private void GetAppConfig(CommandReceivedEventArgs cmdArgs)
+		//private void GetAppConfig(object sender, CommandReceivedEventArgs cmdArgs)
+		private void GetAppConfig(CommandReceivedEventArgs cmdArgs)
 		{
-			if (cmdArgs.CommandID == (int)CommandEnum.GetConfigCommand)
-			{
+			//if (cmdArgs.CommandID == (int)CommandEnum.GetConfigCommand)
+			//{
 				//set all properties to values in args from client channel
 				OutputDirectory = cmdArgs.Args[0];
 				SourceName = cmdArgs.Args[1];
@@ -56,7 +56,7 @@ namespace WebApp.Models
 				{
 					directories.Add(cmdArgs.Args[i]);
 				}
-			}
+			//}
 		}
 
 		/// <summary>
@@ -64,39 +64,34 @@ namespace WebApp.Models
 		/// </summary>
 		/// <param name="sender">the sender object</param>
 		/// <param name="cmdArgs">commmand args</param>
-		private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
-		//private bool DeleteDir(CommandReceivedEventArgs cmdArgs)
+		//private void DeleteDir(object sender, CommandReceivedEventArgs cmdArgs)
+		private void DeleteDir(CommandReceivedEventArgs cmdArgs)
 		{
-			if (cmdArgs.CommandID == (int)CommandEnum.CloseDirectoryCommand)
-			{
+			//if (cmdArgs.CommandID == (int)CommandEnum.CloseDirectoryCommand)
+			//{
 				directories.Remove(cmdArgs.RequestDirPath);
 				//return true;
-			}
+			//}
 			//return false;
 		}
 
-		public void DeleteDirRequest()
-		//public string DeleteDirRequest(out bool result)
+		//public void DeleteDirRequest()
+		public string DeleteDirRequest(out bool result)
 		{
 			ClientChannel channel = ClientChannel.Instance;
 			string[] args = { "" };
 			channel.SendCommand(new CommandReceivedEventArgs((int)CommandEnum.CloseDirectoryCommand, args, DirToRemove));
-			/*CommandReceivedEventArgs cmdArgs = channel.ReadCommand();
+			CommandReceivedEventArgs cmdArgs = channel.ReadCommand();
 			if (cmdArgs == null)
 			{
 				result = false;
 				return "Couldn't read from server\n";
 			} else
 			{
-				result = DeleteDir(cmdArgs);
-				if (result == false)
-				{
-					return "Couldn't remove directory\n";
-				} else
-				{
-					return "Successfully removed directory\n";
-				}
-			}*/
+				DeleteDir(cmdArgs);
+				result = true;
+				return "Successfully removed directory\n";
+			}
 		}
 	}
 }

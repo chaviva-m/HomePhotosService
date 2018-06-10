@@ -52,7 +52,7 @@ namespace ImageServiceProgram.TcpServer
 		public ImageServer(ILoggingService logger, int port, IClientHandler ch)
         {
             this.Logger = logger;
-            Logger.MessageRecieved += SendClientsLog;
+            //Logger.MessageRecieved += SendClientsLog; -- don't want to automatically update web app
             this.Port = port;
 			this.IP = IPAddress.Parse("127.0.0.1");
 			this.clientHandler = ch;
