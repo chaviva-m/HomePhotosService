@@ -52,6 +52,7 @@ namespace WebApp.Models
 				//open stream
 				stream = client.GetStream();
 				writer = new BinaryWriter(stream);
+				//reader = new BinaryReader(stream);
 				//read commands
 				Task t = new Task(() =>
 				{
@@ -106,6 +107,22 @@ namespace WebApp.Models
 			}
 		}
 
+		/*public CommandReceivedEventArgs ReadCommand()
+		{
+			try
+			{
+				string input = reader.ReadString();
+				CommandReceivedEventArgs cmdArgs = JsonConvert.DeserializeObject<CommandReceivedEventArgs>(input);
+				return cmdArgs;
+			}
+			catch (Exception)
+			{
+				//connection with server was disconnected
+				OnStop();
+				return null; //should I return null?
+			}
+		}*/
+
 		/// <summary>
 		/// send server command
 		/// </summary>
@@ -152,10 +169,13 @@ namespace WebApp.Models
 		private void OnStop()
 		{
 			stop = true;
-			isConnected = false;
-			reader.Close();
-			writer.Close();
-			stream.Close();
+			if (isConnected == true)
+			{
+				isConnected = false;
+				reader.Close();
+				writer.Close();
+				stream.Close();
+			}
 		}
 	}
 }
