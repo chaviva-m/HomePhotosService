@@ -15,7 +15,7 @@ namespace WebApp.Models
 		public LogModel() { }
 
 		/// <summary>
-		/// if command is LogHistoryCommand, adds all log messages in cmdArgs
+		/// adds all log messages in cmdArgs
 		/// </summary>
 		/// <param name="sender">the sender object</param>
 		/// <param name="cmdArgs">cmdArgs.Args = type, message, type, message etc.</param>
@@ -33,6 +33,9 @@ namespace WebApp.Models
 			LogMessages = logsList;
 		}
 
+		/// <summary>
+		/// request log history from server.
+		/// </summary>
 		private void getLogMessagesFromServer()
 		{
 			clientChannel clientChannel = clientChannel.Instance;
@@ -53,6 +56,5 @@ namespace WebApp.Models
 			get { getLogMessagesFromServer(); return logMessages; }
 			set { logMessages = value; }
 		}
-
 	}
 }

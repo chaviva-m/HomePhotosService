@@ -170,7 +170,7 @@
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\ConfigModel.cs" />
-    <Compile Include="Models\Name.cs" />
+    <Compile Include="Models\Student.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\PhotoModel.cs" />
     <Compile Include="Models\ThumbnailsModel.cs" />
