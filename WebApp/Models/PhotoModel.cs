@@ -15,6 +15,11 @@ namespace WebApp.Models
 		private string date;
 		public string Date { get { return date; } set { date = value; } }
 
+		/// <summary>
+		/// construct photo model
+		/// </summary>
+		/// <param name="thumbnailPath">path of thumbnail of photo</param>
+		/// <param name="photoDate">date of photo</param>
 		public PhotoModel(string thumbnailPath, string photoDate)
 		{
 			ThumbnailPath = thumbnailPath;
@@ -22,6 +27,11 @@ namespace WebApp.Models
 			Date = photoDate;
 		}
 
+		/// <summary>
+		/// get path to the photo
+		/// </summary>
+		/// <param name="thumbnailPath">path of thumbnail</param>
+		/// <returns>return path to photo</returns>
 		private string FindPhotoPath(string thumbnailPath)
 		{
 			string thumbnailDir = "Thumbnails";
@@ -29,11 +39,21 @@ namespace WebApp.Models
 			return photoPath;
 		}
 
-		public void DeletePhoto()
+		/// <summary>
+		/// delete photo and thumbnail fom output directory
+		/// </summary>
+		/// <returns>true on success, else false</returns>
+		public bool DeletePhoto()
 		{
-			
-			File.Delete(HttpContext.Current.Server.MapPath(Path.Combine("~", PhotoPath)));
-			File.Delete(HttpContext.Current.Server.MapPath(Path.Combine("~", ThumbnailPath)));
+			try
+			{
+				File.Delete(HttpContext.Current.Server.MapPath(Path.Combine("~", PhotoPath)));
+				File.Delete(HttpContext.Current.Server.MapPath(Path.Combine("~", ThumbnailPath)));
+				return true;
+			} catch(Exception)
+			{
+				return false;
+			}
 		}
 	}
 }

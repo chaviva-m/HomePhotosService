@@ -21,6 +21,9 @@ namespace WebApp.Models
 		private string dirToRemove;
 		public string DirToRemove { get { return dirToRemove; } set { dirToRemove = value; } }
 
+		/// <summary>
+		/// config model constructor. get info frm server.
+		/// </summary>
 		public ConfigModel()
 		{
 			CommandReceivedEventArgs cmdArgs;
@@ -36,7 +39,7 @@ namespace WebApp.Models
 		}
 
 		/// <summary>
-		/// if command is GetConfigCommand, sets all values of settings according to cmdArgs
+		/// sets all values of settings according to cmdArgs
 		/// </summary>
 		/// <param name="sender">the sender object</param>
 		/// <param name="cmdArgs">commmand args</param>
@@ -55,7 +58,7 @@ namespace WebApp.Models
 		}
 
 		/// <summary>
-		/// if command is CloseDirectoryCommand, delets relevant directory from directories
+		/// delete relevant directory from directories
 		/// </summary>
 		/// <param name="sender">the sender object</param>
 		/// <param name="cmdArgs">commmand args</param>
@@ -64,6 +67,11 @@ namespace WebApp.Models
 			directories.Remove(cmdArgs.RequestDirPath);
 		}
 
+		/// <summary>
+		/// send server command to delete directory.
+		/// </summary>
+		/// <param name="result">set true on success, false on failure</param>
+		/// <returns>return string describing result of deletion</returns>
 		public string DeleteDirRequest(out bool result)
 		{
 			clientChannel channel = clientChannel.Instance;

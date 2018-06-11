@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebApp.Models
 {
-    public class Name
+    public class Student
     {
         
         //type of log
@@ -20,7 +20,7 @@ namespace WebApp.Models
         /// </summary>
         /// <param name="type"></param>
         /// <param name="msg"></param>
-        public Name(string fullName, int id)
+        public Student(string fullName, int id)
         {
             this.fullName = fullName;
             this.id = id;

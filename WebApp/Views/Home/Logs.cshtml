@@ -8,24 +8,23 @@
 
 
 <div id="myDiv">
-    <table class="table" id="myTable">
-        <tr>
-            <th>Type</th>
-            <th>Message</th>
-        </tr>
-        @{var logs = Model.LogMessages; }
-        @foreach (var log in logs)
-        {
-            <tr>
-                <td>@Html.DisplayFor(model => log.Type)</td>
-                <td>@Html.DisplayFor(model => log.Message)</td>
-            </tr>
-        }
+	<input type="text" id="myInput" />
+	<button type="button" id="btnFilter" style="margin:10px" onclick="myFilter()">filter</button>
+	<table class="table" id="myTable">
+		<tr>
+			<th>Type</th>
+			<th>Message</th>
+		</tr>
+		@{var logs = Model.LogMessages; }
+		@foreach (var log in logs)
+		{
+			<tr>
+				<td>@Html.DisplayFor(model => log.Type)</td>
+				<td>@Html.DisplayFor(model => log.Message)</td>
+			</tr>
+		}
 
-    </table>
-    <input type="text" id="myInput"/>
-    <button type="button" id="btnFilter" style="margin:10px" onclick="myFilter()">filter</button>
-    
+	</table>
 </div>
 
 <script>

@@ -15,18 +15,30 @@ namespace WebApp.Controllers
         static LogModel logModel = new LogModel();
         static HomePageModel homePageModel = new HomePageModel();
 		
+		/// <summary>
+		/// config view
+		/// </summary>
+		/// <returns>returns config view</returns>
 		[HttpGet]
 		public ActionResult Config()
 		{
 			return View(configModel);
 		}
 
+		/// <summary>
+		/// log view
+		/// </summary>
+		/// <returns>return log view</returns>
         [HttpGet]
         public ActionResult Logs()
 		{ 
             return View(logModel);
         }
 
+		/// <summary>
+		/// home page view
+		/// </summary>
+		/// <returns>return home page view</returns>
         [HttpGet]
         public ActionResult HomePage()
         {
@@ -34,6 +46,11 @@ namespace WebApp.Controllers
             return View(homePageModel);
         }
 
+		/// <summary>
+		/// delete handler validation view
+		/// </summary>
+		/// <param name="handler">handler to delete</param>
+		/// <returns>return delete handler validation view</returns>
         [HttpGet]
 		public ActionResult DeleteHandler(string handler)
 		{
@@ -41,6 +58,10 @@ namespace WebApp.Controllers
 			return View(configModel);
 		}
 
+		/// <summary>
+		/// delete requested handler
+		/// </summary>
+		/// <returns>on success, return config view. on error, return error view</returns>
 		[HttpGet]
 		public ActionResult DeleteHandlerExecution()
 		{
@@ -56,6 +77,10 @@ namespace WebApp.Controllers
 			}
 		}
 
+		/// <summary>
+		/// thumbnails view
+		/// </summary>
+		/// <returns>return thumbnails view</returns>
 		[HttpGet]
 		public ActionResult Thumbnails()
 		{
@@ -63,6 +88,12 @@ namespace WebApp.Controllers
 			return View(thumbnailsModel);
 		}
 
+		/// <summary>
+		/// return view of photo
+		/// </summary>
+		/// <param name="path">path to thumbnail of photo</param>
+		/// <param name="date">date of photo</param>
+		/// <returns>return photo view</returns>
 		[HttpGet]
 		public ActionResult Photo(string path, string date)
 		{
@@ -70,6 +101,12 @@ namespace WebApp.Controllers
 			return View(photoModel);
 		}
 
+		/// <summary>
+		/// delete photo validation view
+		/// </summary>
+		/// <param name="thumbnailPath">path to thumbnail of photo</param>
+		/// <param name="date">date of photo</param>
+		/// <returns>return delete photo validation view</returns>
 		[HttpGet]
 		public ActionResult DeletePhoto(string thumbnailPath, string date)
 		{
@@ -77,15 +114,32 @@ namespace WebApp.Controllers
 			return View(photoModel);
 		}
 
+		/// <summary>
+		/// delete requested photo
+		/// </summary>
+		/// <param name="thumbnailPath">path to thumbnail of photo</param>
+		/// <param name="date">date of photo</param>
+		/// <return>return thumbnails view on success, else return error</returns>
 		[HttpGet]
 		public ActionResult DeletePhotoExecution(string thumbnailPath, string date)
 		{
 			PhotoModel photoModel = new PhotoModel(thumbnailPath, date);
-			photoModel.DeletePhoto();
-			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
-			return RedirectToAction("Thumbnails", thumbnailsModel);
+			bool result = photoModel.DeletePhoto();
+			if (result == true)
+			{
+				ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
+				return RedirectToAction("Thumbnails", thumbnailsModel);
+			} else
+			{
+				ErrorModel errorModel = new ErrorModel("error deleting photo");
+				return RedirectToAction("Error", errorModel);
+			}
 		}
 
+		/// <summary>
+		/// cancel photo deletion
+		/// </summary>
+		/// <returns>return thumbnails view</returns>
 		[HttpGet]
 		public ActionResult CancelDeletePhoto()
 		{
@@ -93,6 +147,11 @@ namespace WebApp.Controllers
 			return RedirectToAction("Thumbnails", thumbnailsModel);
 		}
 		
+		/// <summary>
+		/// error view
+		/// </summary>
+		/// <param name="errorModel">error model with error message</param>
+		/// <returns>return error view</returns>
 		[HttpGet]
 		public ActionResult Error(ErrorModel errorModel)
 		{

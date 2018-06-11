@@ -71,6 +71,10 @@ namespace WebApp.Models
 			}
 		}
 	
+		/// <summary>
+		/// read command from server
+		/// </summary>
+		/// <returns>command received event args that was read from server. if read failed, return null.</returns>
 		public CommandReceivedEventArgs ReadCommand()
 		{
 			try
