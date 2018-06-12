@@ -9,7 +9,7 @@ namespace WebApp.Models
     {
         string ThumbnailPath { get; }
         string PhotoPath { get; }
-        string Date { get; set; }
+        string Date { get; }
         bool DeletePhoto();
     }
 }

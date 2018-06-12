@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
-    interface IThumbnailsModel
+    public interface IThumbnailsModel
     {
         Dictionary<string, string> Thumbnails { get; }
             

@@ -6,14 +6,14 @@ using System.Web;
 
 namespace WebApp.Models
 {
-	public class PhotoModel
+	public class PhotoModel : IPhotoModel
 	{
 		private string thumbnailPath;
 		public string ThumbnailPath { get { return thumbnailPath; } private set { thumbnailPath = value; } }
 		private string path;
 		public string PhotoPath { get{ return path; } private set { path = value; } }
 		private string date;
-		public string Date { get { return date; } set { date = value; } }
+		public string Date { get { return date; } private set { date = value; } }
 
 		/// <summary>
 		/// construct photo model

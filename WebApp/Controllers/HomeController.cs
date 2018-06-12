@@ -84,7 +84,7 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult Thumbnails()
 		{
-			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
+			IThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
 			return View(thumbnailsModel);
 		}
 
@@ -97,7 +97,7 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult Photo(string path, string date)
 		{
-			PhotoModel photoModel = new PhotoModel(path, date);
+			IPhotoModel photoModel = new PhotoModel(path, date);
 			return View(photoModel);
 		}
 
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult DeletePhoto(string thumbnailPath, string date)
 		{
-			PhotoModel photoModel = new PhotoModel(thumbnailPath, date);
+			IPhotoModel photoModel = new PhotoModel(thumbnailPath, date);
 			return View(photoModel);
 		}
 
@@ -123,11 +123,11 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult DeletePhotoExecution(string thumbnailPath, string date)
 		{
-			PhotoModel photoModel = new PhotoModel(thumbnailPath, date);
+			IPhotoModel photoModel = new PhotoModel(thumbnailPath, date);
 			bool result = photoModel.DeletePhoto();
 			if (result == true)
 			{
-				ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
+				IThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
 				return RedirectToAction("Thumbnails", thumbnailsModel);
 			} else
 			{
@@ -143,7 +143,7 @@ namespace WebApp.Controllers
 		[HttpGet]
 		public ActionResult CancelDeletePhoto()
 		{
-			ThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
+			IThumbnailsModel thumbnailsModel = new ThumbnailsModel(configModel.OutputDirectory);
 			return RedirectToAction("Thumbnails", thumbnailsModel);
 		}
 		

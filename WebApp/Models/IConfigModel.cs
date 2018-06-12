@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
-    interface IConfigModel
+    public interface IConfigModel
     {
         string OutputDirectory { get; set; }
         string SourceName { get;  }

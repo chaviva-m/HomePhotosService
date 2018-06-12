@@ -6,7 +6,7 @@ using System.Web;
 
 namespace WebApp.Models
 {
-	public class ThumbnailsModel
+	public class ThumbnailsModel : IThumbnailsModel
 	{
 		private string thumbnailsDir;
 
