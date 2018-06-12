@@ -8,7 +8,7 @@ using WebApp.Models;
 
 namespace WebApp.Models
 {
-    public class HomePageModel
+    public class HomePageModel : IHomePageModel
     {
         clientChannel clientChannel = clientChannel.Instance;
         
@@ -16,9 +16,9 @@ namespace WebApp.Models
         public string Status { get { return status; } set { status = value; } }
         private int numPics;
         public int NumPics { get { return numPics; } set { numPics = value; } }
-        private List<Student> names = new List<Student>();
-        public List<Student> Names { get { return names; } set { names = value; } }
-        string outputDir;
+        private List<Student> students = new List<Student>();
+        public List<Student> Students { get { return students; } set { students = value; } }
+        public string outputDir;
 
 		/// <summary>
 		/// constructor. read details from disk.
@@ -87,7 +87,7 @@ namespace WebApp.Models
                             words = line.Split(' ');
                             name = words[0] + " " + words[1];
                             id = int.Parse(words[2]);
-                            this.names.Add(new Student(name, id));
+                            this.students.Add(new Student(name, id));
                         }
                 }
             }

@@ -11,8 +11,8 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-		static ConfigModel configModel = new ConfigModel();
-        static LogModel logModel = new LogModel();
+		static IConfigModel configModel = new ConfigModel();
+        static ILogModel logModel = new LogModel();
         static HomePageModel homePageModel = new HomePageModel();
 		
 		/// <summary>

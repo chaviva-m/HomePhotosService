@@ -167,6 +167,11 @@
     </Compile>
     <Compile Include="Models\ClientChannel.cs" />
     <Compile Include="Models\HomePageModel.cs" />
+    <Compile Include="Models\IConfigModel.cs" />
+    <Compile Include="Models\IHomePageModel.cs" />
+    <Compile Include="Models\ILogModel.cs" />
+    <Compile Include="Models\IPhotoModel.cs" />
+    <Compile Include="Models\IThumbnailsModel.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\ConfigModel.cs" />

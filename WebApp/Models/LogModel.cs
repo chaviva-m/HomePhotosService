@@ -7,7 +7,7 @@ using WebApp.Models;
 
 namespace WebApp.Models
 {
-    public class LogModel
+    public class LogModel : ILogModel
     {
 		/// <summary>
 		/// constructor

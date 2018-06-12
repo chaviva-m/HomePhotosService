@@ -6,7 +6,7 @@ using WebApp.CommandInfrastructure;
 
 namespace WebApp.Models
 {
-	public class ConfigModel
+	public class ConfigModel : IConfigModel
 	{
 		private string outputDirectory;
 		public string OutputDirectory { get { return outputDirectory; } set { outputDirectory = value; } }
