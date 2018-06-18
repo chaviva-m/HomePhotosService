@@ -33,6 +33,8 @@ namespace CommandInfrastructure.Commands.Enums
 					return "CloseClientCommand";
                 case (int)CommandEnum.GetStatusCommand:
                     return "GetStatusCommand";
+				case (int)CommandEnum.SaveFileCommand:
+					return "SaveFileCommand";
 				default:
 					return "";
 			}
@@ -48,6 +50,7 @@ namespace CommandInfrastructure.Commands.Enums
         CloseDirectoryCommand,  //close directory
         CloseServerCommand,		//server closed
         CloseClientCommand,		//client (GUI) closed
-        GetStatusCommand        //get service status
+        GetStatusCommand,        //get service status
+		SaveFileCommand			//save file in one of the handlers
     }
 }

@@ -59,7 +59,9 @@
     <Compile Include="ImageServiceProgram\Commands\ICommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\LogHistoryCommand.cs" />
     <Compile Include="ImageServiceProgram\Commands\NewFileCommand.cs" />
+    <Compile Include="ImageServiceProgram\Commands\SaveFileCommand.cs" />
     <Compile Include="ImageServiceProgram\Handlers\ClientHandler.cs" />
+    <Compile Include="ImageServiceProgram\Handlers\ClientHandlerImage.cs" />
     <Compile Include="ImageServiceProgram\Handlers\IClientHandler.cs" />
     <Compile Include="ImageServiceProgram\TcpServer\IImageServer.cs" />
     <Compile Include="ImageServiceProgram\Handlers\DirectoryHandler.cs" />

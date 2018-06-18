@@ -58,8 +58,9 @@ namespace ImageServiceProgram.ImageModal
                 return resultDescription;
             }
             //move image to folder
-            string newPath = UniqueFileName(Path.Combine(newLocation, Path.GetFileName(path)));
-            resultDescription = MoveFile(path, newPath, out result);
+            //string newPath = UniqueFileName(Path.Combine(newLocation, Path.GetFileName(path)));
+			string newPath = Path.Combine(newLocation, Path.GetFileName(path));
+			resultDescription = MoveFile(path, newPath, out result);
             if (!result)
             {
                 return resultDescription;
@@ -128,6 +129,11 @@ namespace ImageServiceProgram.ImageModal
         {
             try
             {
+				//overwrite existing file with same name
+				if (File.Exists(destinationFile))
+				{
+					File.Delete(destinationFile);
+				}
                 System.IO.File.Move(sourceFile, destinationFile);
                 result = true;
                 return "Moved file from " + sourceFile + " to " + destinationFile;

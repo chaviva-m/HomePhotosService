@@ -41,8 +41,10 @@ namespace ImageServiceProgram.Service
         private IImageController controller;
         private ILoggingService logger;
         private IClientHandler clientHandler;
-        private string[] directories;
+		private IClientHandler clientHandlerImg;
+		private string[] directories;
         private int serverPort = 8000;
+		private int serverPortImage = 1234; 
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
@@ -108,7 +110,8 @@ namespace ImageServiceProgram.Service
             imageModal = new ImageServiceModal(outputDir, thumbnailSize);
             //create controller and server and client handler
             clientHandler = new ClientHandler();
-            imageServer = new ImageServer(logger, serverPort, clientHandler);
+			clientHandlerImg = new ClientHandlerImage();
+			imageServer = new ImageServer(logger, serverPort, clientHandler, serverPortImage, clientHandlerImg);
             Dictionary<int, ICommand> commandDictionary = new Dictionary<int, ICommand>()
             {
                 { (int)CommandEnum.NewFileCommand, new NewFileCommand(imageModal)  },

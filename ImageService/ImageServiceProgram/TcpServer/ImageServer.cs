@@ -29,9 +29,12 @@ namespace ImageServiceProgram.TcpServer
         private ILoggingService Logger;
         private IPEndPoint EP;
         private TcpListener Listener;
+		private TcpListener ImageListener;
         private IPAddress IP;
         private int Port;
+		private int PortImage;
         private IClientHandler clientHandler;
+		private IClientHandler clientHandlerImage;
         private Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
 		private int lastClientID;
 		private bool stop;
@@ -49,27 +52,69 @@ namespace ImageServiceProgram.TcpServer
 		/// <param name="controller"> the controller</param>
 		/// <param name="logger"> the logger</param>
 		/// <param name="ch">IClientHandler</param>
-		public ImageServer(ILoggingService logger, int port, IClientHandler ch)
+		public ImageServer(ILoggingService logger, int port, IClientHandler ch, int portImg, IClientHandler chImg)
         {
             this.Logger = logger;
             //Logger.MessageRecieved += SendClientsLog; -- don't want to automatically update web app
             this.Port = port;
+			this.PortImage = portImg;
 			this.IP = IPAddress.Parse("127.0.0.1");
 			this.clientHandler = ch;
             ch.CommandReceivedForHandlers += delegate (object sender, CommandReceivedEventArgs cmdArgs)
             {
                 SendHandlersCommand(cmdArgs);
             };
-        }
+			this.clientHandlerImage = chImg;
+			chImg.CommandReceivedForHandlers += delegate (object sender, CommandReceivedEventArgs cmdArgs)
+			{
+				SendHandlersCommand(cmdArgs);
+			};
+			lastClientID = 0;
+		}
+
+
+		/// <summary>
+		/// start bytes stream server
+		/// listen to clients in loop until server is stopped
+		/// </summary>
+		public void StartServerImage()
+		{
+			stop = false;
+			EP = new IPEndPoint(IP, PortImage);
+			ImageListener = new TcpListener(EP);
+			ImageListener.Start();
+			Task task = new Task(() =>
+			{
+				while (!stop)
+				{
+					try
+					{
+						TcpClient client = ImageListener.AcceptTcpClient();
+						lock (thisLock)
+						{
+							lastClientID += 1;
+							clients.Add(lastClientID, client);
+						}
+						clientHandlerImage.HandleClient(client, lastClientID, Logger);
+					}
+					catch (SocketException)
+					{
+						break;
+					}
+				}
+			});
+			task.Start();
+		}
+
+
 
 		/// <summary>
 		/// start server
 		/// listen to clients in loop until server is stopped
 		/// </summary>
-        public void StartServer()
+		public void StartServer()
         {
             stop = false;
-            lastClientID = 0;
             EP = new IPEndPoint(IP, Port);
             Listener = new TcpListener(EP);
             Listener.Start();
@@ -80,9 +125,12 @@ namespace ImageServiceProgram.TcpServer
                     try
                     {
                         TcpClient client = Listener.AcceptTcpClient();
-                        lastClientID += 1;
-                        clients.Add(lastClientID, client);
-                        clientHandler.HandleClient(client, lastClientID, Logger);
+						lock (thisLock)
+						{
+							lastClientID += 1;
+							clients.Add(lastClientID, client);
+						}
+						clientHandler.HandleClient(client, lastClientID, Logger);
                     }
                     catch (SocketException)
                     {
@@ -100,6 +148,7 @@ namespace ImageServiceProgram.TcpServer
         {
             stop = true;
             Listener.Stop();
+			ImageListener.Stop();
 			//close all clients
 			foreach (TcpClient client in clients.Values)
             {
