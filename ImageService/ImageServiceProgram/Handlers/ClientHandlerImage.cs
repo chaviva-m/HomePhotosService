@@ -7,6 +7,7 @@ using ImageServiceProgram.Logging.Modal;
 using ImageServiceProgram.Service;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -36,8 +37,10 @@ namespace ImageServiceProgram.Handlers
 			{
 				byte[] imgBytes;
 				string sizeStr = "";
-				int size;
+                int size;
 				string imgName;
+                byte[] nameByte;
+                int nameSize;
 				NetworkStream stream = client.GetStream();
 				BinaryReader reader = new BinaryReader(stream);
 				while (client.Connected)
@@ -45,13 +48,19 @@ namespace ImageServiceProgram.Handlers
 					//read command input from client
 					try
 					{
-						sizeStr = reader.ReadString();
-						size = Int32.Parse(sizeStr);
+                        size = reader.ReadInt32();
+                        //sizeStr = reader.ReadString();
+                        Debug.WriteLine("get size");
+                        //size = Int32.Parse(sizeStr);
 						imgBytes = reader.ReadBytes(size);
-						imgName = reader.ReadString();
+                        Debug.WriteLine("get imgBytes");
+                        nameSize = reader.ReadInt32();
+                        nameByte = reader.ReadBytes(nameSize);
+                        imgName = System.Text.Encoding.UTF8.GetString(nameByte);
+                        Debug.WriteLine("get name");
 						ExecuteCommand(imgBytes, imgName, clientID, logger);
 					}
-					catch (Exception)
+					catch (Exception e)
 					{
 						return;
 					}
@@ -66,7 +75,8 @@ namespace ImageServiceProgram.Handlers
 			try
 			{
 				imageStr = Convert.ToBase64String(image);
-			} catch (Exception)
+                Debug.WriteLine("converting bytes to image");
+            } catch (Exception)
 			{
 				logger.Log("could not save picture because convert to base 64 string failed.", MessageTypeEnum.FAIL);
 				return;

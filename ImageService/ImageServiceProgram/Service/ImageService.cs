@@ -44,7 +44,7 @@ namespace ImageServiceProgram.Service
 		private IClientHandler clientHandlerImg;
 		private string[] directories;
         private int serverPort = 8000;
-		private int serverPortImage = 1234; 
+		private int serverPortImage = 8200; 
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
@@ -130,6 +130,7 @@ namespace ImageServiceProgram.Service
             }
 			//start server
             imageServer.StartServer();
+            imageServer.StartServerImage();
         }
 
         /// <summary>
