@@ -24,10 +24,11 @@ namespace ImageServiceProgram.Commands
 		/// <returns>return string indicating if command was successful</returns>
 		public string Execute(string[] args, out bool result)
 		{
-			// Convert Base64 String to byte[]
-			byte[] imageBytes = Convert.FromBase64String(args[0]);
+            // Convert Base64 String to byte[]
+            byte[] imageBytes = Convert.FromBase64String(args[0]);
 
-			string handler = args[2];
+
+            string handler = args[2];
 
 			Image image;
 			string name;

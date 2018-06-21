@@ -8,6 +8,8 @@ using ImageServiceProgram.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -71,7 +73,8 @@ namespace ImageServiceProgram.Handlers
 
 		private void ExecuteCommand(byte[] image, string imgName, int clientID, ILoggingService logger)
 		{
-			string imageStr;
+
+			/*string imageStr;
 			try
 			{
 				imageStr = Convert.ToBase64String(image);
@@ -80,12 +83,58 @@ namespace ImageServiceProgram.Handlers
 			{
 				logger.Log("could not save picture because convert to base 64 string failed.", MessageTypeEnum.FAIL);
 				return;
-			}
+			}*/
 			string handler = AppConfigData.Instance.Directories[0];
-			string[] args = { imageStr, imgName, handler, clientID.ToString() };
-			CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.SaveFileCommand, args, handler);
-			//send command to handler
-			CommandReceivedForHandlers?.Invoke(this, cmdArgs);
-		}
-	}
+            //string[] args = { imageStr, imgName, handler, clientID.ToString() };
+            //CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.SaveFileCommand, args, handler);
+            //send command to handler
+            //CommandReceivedForHandlers?.Invoke(this, cmdArgs);
+            Image image2;
+            string name;
+            ImageFormat format;
+
+            //save byte array as image in handler
+            using (MemoryStream mStream = new MemoryStream(image))
+            {
+                image2 = Image.FromStream(mStream);
+                name = imgName;
+                try
+                {
+                    format = GetImageFormat(name);
+                    image2.Save(Path.Combine(handler, name), format);
+                    Debug.WriteLine("successfully saved image: " + name);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+            }
+        }
+        private ImageFormat GetImageFormat(string name)
+        {
+            string ext = Path.GetExtension(name);
+            if (string.IsNullOrEmpty(ext))
+                throw new ArgumentException(
+                    string.Format("Unable to determine file extension for fileName: {0}", name));
+
+            switch (ext.ToLower())
+            {
+                case @".bmp":
+                    return ImageFormat.Bmp;
+
+                case @".gif":
+                    return ImageFormat.Gif;
+
+                case @".jpg":
+                case @".jpeg":
+                    return ImageFormat.Jpeg;
+
+                case @".png":
+                    return ImageFormat.Png;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+    }
 }
