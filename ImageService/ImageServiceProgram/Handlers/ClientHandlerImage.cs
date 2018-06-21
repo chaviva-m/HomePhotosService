@@ -18,91 +18,78 @@ using System.Threading.Tasks;
 
 namespace ImageServiceProgram.Handlers
 {
-	class ClientHandlerImage : IClientHandler
-	{
-		private IImageController controller;
-		public IImageController Controller { set { controller = value; } }
+    class ClientHandlerImage : IClientHandler
+    {
+        private IImageController controller;
+        public IImageController Controller { set { controller = value; } }
 
-		public event EventHandler<CommandReceivedEventArgs> CommandReceivedForHandlers;
+        public event EventHandler<CommandReceivedEventArgs> CommandReceivedForHandlers;
 
-		public ClientHandlerImage() { }
+        public ClientHandlerImage() { }
 
-		/// <summary>
-		/// read commands from client
-		/// </summary>
-		/// <param name="client">the tcp client to handle</param>
-		/// <param name="clientID">the client's id</param>
-		/// <param name="logger">ILoggingService</param>
-		public void HandleClient(TcpClient client, int clientID, ILoggingService logger)
-		{
-			Task task = new Task(() =>
-			{
-				byte[] imgBytes;
-				string sizeStr = "";
+        /// <summary>
+        /// read image commands from client
+        /// </summary>
+        /// <param name="client">the tcp client to handle</param>
+        /// <param name="clientID">the client's id</param>
+        /// <param name="logger">ILoggingService</param>
+        public void HandleClient(TcpClient client, int clientID, ILoggingService logger)
+        {
+            Task task = new Task(() =>
+            {
+                byte[] imgBytes;
                 int size;
-				string imgName;
+                string imgName;
                 byte[] nameByte;
                 int nameSize;
-				NetworkStream stream = client.GetStream();
-				BinaryReader reader = new BinaryReader(stream);
-				while (client.Connected)
-				{
-					//read command input from client
-					try
-					{
+                NetworkStream stream = client.GetStream();
+                BinaryReader reader = new BinaryReader(stream);
+                while (client.Connected)
+                {
+                    //read command input from client
+                    try
+                    {
                         size = reader.ReadInt32();
                         //sizeStr = reader.ReadString();
                         Debug.WriteLine("get size");
                         //size = Int32.Parse(sizeStr);
-						imgBytes = reader.ReadBytes(size);
+                        imgBytes = reader.ReadBytes(size);
                         Debug.WriteLine("get imgBytes");
                         nameSize = reader.ReadInt32();
                         nameByte = reader.ReadBytes(nameSize);
                         imgName = System.Text.Encoding.UTF8.GetString(nameByte);
                         Debug.WriteLine("get name");
-						ExecuteCommand(imgBytes, imgName, clientID, logger);
-					}
-					catch (Exception e)
-					{
-						return;
-					}
-				}
-			});
-			task.Start();
-		}
+                        ExecuteCommand(imgBytes, imgName, clientID, logger);
+                    }
+                    catch (Exception e)
+                    {
+                        return;
+                    }
+                }
+            });
+            task.Start();
+        }
 
-		private void ExecuteCommand(byte[] image, string imgName, int clientID, ILoggingService logger)
-		{
-
-			/*string imageStr;
-			try
-			{
-				imageStr = Convert.ToBase64String(image);
-                Debug.WriteLine("converting bytes to image");
-            } catch (Exception)
-			{
-				logger.Log("could not save picture because convert to base 64 string failed.", MessageTypeEnum.FAIL);
-				return;
-			}*/
-			string handler = AppConfigData.Instance.Directories[0];
-            //string[] args = { imageStr, imgName, handler, clientID.ToString() };
-            //CommandReceivedEventArgs cmdArgs = new CommandReceivedEventArgs((int)CommandEnum.SaveFileCommand, args, handler);
-            //send command to handler
-            //CommandReceivedForHandlers?.Invoke(this, cmdArgs);
-            Image image2;
-            string name;
+        /// <summary>
+        /// save image in handler
+        /// </summary>
+        /// <param name="imageBytes">image in bytes</param>
+        /// <param name="imgName">name of image</param>
+        /// <param name="clientID">id of client</param>
+        /// <param name="logger">logging service</param>
+        private void ExecuteCommand(byte[] imageBytes, string imgName, int clientID, ILoggingService logger)
+        {
+            string handler = AppConfigData.Instance.Directories[0];
+            Image image;
             ImageFormat format;
-
             //save byte array as image in handler
-            using (MemoryStream mStream = new MemoryStream(image))
+            using (MemoryStream mStream = new MemoryStream(imageBytes))
             {
-                image2 = Image.FromStream(mStream);
-                name = imgName;
+                image = Image.FromStream(mStream);
                 try
                 {
-                    format = GetImageFormat(name);
-                    image2.Save(Path.Combine(handler, name), format);
-                    Debug.WriteLine("successfully saved image: " + name);
+                    format = GetImageFormat(imgName);
+                    image.Save(Path.Combine(handler, imgName), format);
                 }
                 catch (Exception e)
                 {
@@ -110,6 +97,12 @@ namespace ImageServiceProgram.Handlers
                 }
             }
         }
+
+        /// <summary>
+        /// get format of image
+        /// </summary>
+        /// <param name="name">name of image</param>
+        /// <returns>format of image</returns>
         private ImageFormat GetImageFormat(string name)
         {
             string ext = Path.GetExtension(name);
